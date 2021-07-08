@@ -14,30 +14,35 @@ const scene = new THREE.Scene();
 
 //camera
 const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0, 3, 7);
+//camera.position.set(4, 2.1, -2);
+//camera.rotation.set(0,2,0);
+camera.position.set(0, 1,2.5);
+//camera.position.set(-2, 0.2, 0.7);
+//camera.rotation.set(0,-2,0);
+//camera.rotation.set(0,2,0);
 //camera.up.set(0,0,1);
 //camera.lookAt(0,0,1);
 
 //gui
-var gui = new GUI.GUI();
+const gui = new GUI.GUI();
 const cameraRotationFolder = gui.addFolder("cameraRotationFolder")
-cameraRotationFolder.add(camera.rotation, "x", -1, Math.PI * 2);
-cameraRotationFolder.add(camera.rotation, "y", -1, Math.PI * 2);
-cameraRotationFolder.add(camera.rotation, "z", -1, Math.PI * 2);
+cameraRotationFolder.add(camera.rotation, "x", -10, Math.PI * 10);
+cameraRotationFolder.add(camera.rotation, "y", -10, Math.PI * 10);
+cameraRotationFolder.add(camera.rotation, "z", -10, Math.PI * 10);
 
 const cameraPositionFolder = gui.addFolder("cameraPositionFolder");
-cameraPositionFolder.add(camera.position, "x", -1, Math.PI * 2);
-cameraPositionFolder.add(camera.position, "y", -1, Math.PI * 2);
-cameraPositionFolder.add(camera.position, "z", -1, Math.PI * 2);
+cameraPositionFolder.add(camera.position, "x", -10, Math.PI * 10);
+cameraPositionFolder.add(camera.position, "y", -10, Math.PI * 10);
+cameraPositionFolder.add(camera.position, "z", -10, Math.PI * 10);
 
 
 //lights
 //const ambientLight = new THREE.AmbientLight(0x282828, 0.6);
-const ambientLight = new THREE.AmbientLight(0x000000, 0.6);
+const ambientLight = new THREE.AmbientLight(0x404040);
 scene.add(ambientLight);
 
-const dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
-dirLight.position.set(200, -200, 300);
+const dirLight = new THREE.DirectionalLight(0xffffff);
+dirLight.position.set(0, 10, -50);
 scene.add(dirLight);
 
 const size = 100;
@@ -58,14 +63,6 @@ renderer.setClearColor(0xffffff);
 //renderer.autoClear = true;
 //document.body.appendChild( renderer.domElement );
 
-/*var geometry = new THREE.BoxGeometry(1, 1, 1);
-var mesh = new THREE.Mesh(
-	geometry,
-	new THREE.MeshPhongMaterial({
-		color: 0x80FF80
-	})
-);*/
-
 var prevTime = 0;
 var aTime = 0;
 
@@ -84,9 +81,9 @@ const animate = function(timeElapsed) {
 
   prevTime = timeElapsed;
   requestAnimationFrame(animate);
-
-  player.Update(aTime);
-  world.Update(aTime);
+  TWEEN.update();
+  //1player.Update(aTime);
+  //world.Update(aTime);
 	//cube.translateOnAxis(new THREE.Vector3(1,0,0), 0.1);
 
   renderer.render(scene, camera);
@@ -95,16 +92,13 @@ const animate = function(timeElapsed) {
 };
 var player;
 var world;
-const geometry2 = new THREE.BoxGeometry(1,1,1);
-const material2 = new THREE.MeshPhongMaterial( { color: 0x00ff00 } );
-var cube = new THREE.Mesh( geometry2, material2 );
 
 window.onload = function init() {
 
-
   //document.body.appendChild(canvas);
   player = new Player({
-    scene: scene
+    scene: scene,
+    GUI: gui
   });
 
  world=new WorldManager({
@@ -112,11 +106,13 @@ window.onload = function init() {
  });
 
   player.InitInput();
+
   const geometry = new THREE.PlaneGeometry(1000, 1000);
   const material = new THREE.MeshBasicMaterial({
     color: 0x808080,
     side: THREE.DoubleSide
   });
+
   const plane = new THREE.Mesh(geometry, material);
 
   //scene.add( plane );
