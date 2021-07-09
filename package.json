@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "wwobjloader2": "github:kaisalmen/WWOBJLoader"
+    "@tweenjs/tween.js": "github:tweenjs/tween.js",
+    "three": "^0.130.1"
   }
 }
