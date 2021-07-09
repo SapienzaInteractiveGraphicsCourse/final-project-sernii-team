@@ -3,8 +3,10 @@ import {OBJLoader2} from './node_modules/wwobjloader2/src/loaders/OBJLoader2.js'
 import {MTLLoader} from './node_modules/three/examples/jsm/loaders/MTLLoader.js';
 import {MtlObjBridge} from './node_modules/wwobjloader2/src/loaders/utils/MtlObjBridge.js';
 
-/*
+
 const obj={
+
+  ninjaHead:{objHref:"./assets/ninjaHead.obj", mtlHref:"./assets/ninjaHead.mtl"}
 
 }
 
@@ -15,4 +17,3 @@ mtlLoader.load("./assets/ninjaHead.mtl", mtlParseResult => {
     objLoader.addMaterials(materials);
     objLoader.load("model.obj", obj => scene.add(obj));
 });
-*/
