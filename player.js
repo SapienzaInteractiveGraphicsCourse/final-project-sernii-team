@@ -1,5 +1,5 @@
 import * as THREE from './node_modules/three/build/three.module.js';
-//import {assets} from  './loader.js'
+import {assets} from  './loader.js'
 /*
 IMPORTANTE
 il position serve ad aggiornare la posizione della mesh
