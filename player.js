@@ -100,7 +100,7 @@ export class Player {
     this.scene.add(this.character);
     //this.scene.add(this.torso);
 
-    //this.runAnimation();
+    this.runAnimation();
 
   }
 
@@ -327,21 +327,18 @@ export class Player {
 
   runAnimation() {
 
-    let pos = new THREE.Vector3(this.lowerRightArmRoot.rotation);
-    let aux = this.lowerRightArmRoot;
-    let lowerRightArmRootTween = new TWEEN.Tween(pos);
-    lowerRightArmRootTween.to({
-      z: "-" + Math.PI / 2
+    let pos = this.upperRightArmRoot.rotation;
+    let aux = this.upperRightArmRoot;
+    let upperRightArmRootTween = new TWEEN.Tween({x: pos.x, y: pos.y, z: pos.z});
+    upperRightArmRootTween.to({
+      x: "-" + Math.PI  / 3
     }, 1000);
-    //lowerRightArmRootTween.delay(3000);
-    //this.upperRightLegRoot.position.y=0;
+    //lowerRightArmRootTween.delay(3000)
 
-    lowerRightArmRootTween.onUpdate(function(object, elapsed) {
-      aux.rotation.x = object.z;
-      console.log(object.z);
+    upperRightArmRootTween.onUpdate(function(object, elapsed) {
+      aux.rotation.x = object.x;
+      console.log(object.x);
     })
-    lowerRightArmRootTween.repeat(Infinity);
-
     /*upperRightLegRootTween.onComplete(function() {
             // Check that the full 360 degrees of rotation,
             // and calculate the remainder of the division to avoid overflow.
@@ -351,8 +348,9 @@ export class Player {
             }
             aux.rotation.x=0;
         })*/
-
-    lowerRightArmRootTween.start();
+        
+    upperRightArmRootTween.repeat(Infinity);
+    upperRightArmRootTween.start();
   }
 
   InitInput() {

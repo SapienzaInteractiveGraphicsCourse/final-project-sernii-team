@@ -14,9 +14,11 @@ const scene = new THREE.Scene();
 
 //camera
 const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(3, 1.1, -2);
+camera.rotation.set(0,2,0);
 //camera.position.set(4, 2.1, -2);
 //camera.rotation.set(0,2,0);
-camera.position.set(0, 1,2.5);
+//camera.position.set(0, 1,2.5);
 //camera.position.set(-2, 0.2, 0.7);
 //camera.rotation.set(0,-2,0);
 //camera.rotation.set(0,2,0);
