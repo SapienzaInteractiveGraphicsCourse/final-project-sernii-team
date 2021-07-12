@@ -1,19 +1,47 @@
 import * as THREE from './node_modules/three/build/three.module.js';
-import {OBJLoader2} from 'node_modules/three/examples/jsm/loaders/OBJLoader2.js';
+import {OBJLoader} from './node_modules/three/examples/jsm/loaders/OBJLoader.js';
 import {MTLLoader} from './node_modules/three/examples/jsm/loaders/MTLLoader.js';
-import {MtlObjBridge} from './node_modules/three/examples/jsm/loaders/obj2/bridge/MtlObjBridge.js';
 
+export const ninjaHead = {
+      manager: new THREE.LoadingManager(),
 
-const assets={
+      loaded: false,
 
-  ninjaHead:{objHref:"./assets/ninjaHead.obj", mtlHref:"./assets/ninjaHead.mtl"}
+      objHref: "./assets/ninjaHead.obj",
+
+      mtlHref: "./assets/ninjaHead.mtl",
+
+      load: function(scene) {
+            this.manager.onLoad=function(){
+                  this.loaded=true;
+                  console.log("done!");
+            }
+            this.manager.onProgress= function(url, itemsLoaded, itemsTotal){
+                  console.log("loaded: " + url);
+                  //console.log("left: "+ itemsTotal-itemsLoaded);
+            }
+            const mtlLoader = new MTLLoader(this.manager);
+            mtlLoader.load(ninjaHead.mtlHref, (mtl) => {
+                  mtl.preload();
+                  const objLoader = new OBJLoader(this.manager);
+                  objLoader.setMaterials(mtl);
+                  objLoader.load(ninjaHead.objHref, (obj) => {
+                        this.obj=obj;
+                        scene.add(obj);
+                        obj.position.set(0,0,0.1);
+                        obj.scale.set(0.2,0.2,0.2);
+
+                        obj.rotation.y=(Math.PI/2);
+                        const box = new THREE.Box3().setFromObject(obj);
+                        const boxSize = box.getSize(new THREE.Vector3());
+                        const boxCenter = box.getCenter(new THREE.Vector3());
+                        console.log(boxSize);
+                        console.log(boxCenter);
+                        console.log(scene.position);
+
+                });
+              });
+
+      },
 
 }
-
-const mtlLoader = new MTLLoader();
-const objLoader = new OBJLoader2();
-mtlLoader.load(assets.ninjaHead.mtlHref, (mtlParseResult) => {
-    const materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
-    objLoader.addMaterials(materials);
-    objLoader.load(assets.ninjaHead.objHref, (obj) => assets.ninjaHead.obj=obj);
-});

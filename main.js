@@ -6,6 +6,7 @@ import * as GUI from './node_modules/three/examples/jsm/libs/dat.gui.module.js'
 
 
 
+
 // canvas
 const canvas = document.getElementById('game-canvas');
 
@@ -96,6 +97,8 @@ var player;
 var world;
 
 window.onload = function init() {
+
+
 
   //document.body.appendChild(canvas);
   player = new Player({

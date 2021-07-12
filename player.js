@@ -1,5 +1,6 @@
 import * as THREE from './node_modules/three/build/three.module.js';
-import {assets} from  './loader.js'
+import {ninjaHead} from  "./loader.js";
+
 /*
 IMPORTANTE
 il position serve ad aggiornare la posizione della mesh
@@ -48,7 +49,7 @@ const lowerLegDepth=0.1;
 //feet
 const feetWidth=0.18;
 const feetHeight=0.1;
-const feetDepth=0.2;
+const feetDepth=0.3;
 
 //hand
 //const handWidth=0.12;
@@ -73,6 +74,8 @@ export class Player {
     this.velocity = 0.0;
 
     this.buildCharacter();
+    //console.log(assets);
+    //console.log(assets.load());
     /*
     this.gui=params.GUI;
     let characterGui = this.gui.addFolder("characterControl");
@@ -109,37 +112,37 @@ export class Player {
     //BUILD CHARACTER
     //hierachical model
     this.neckMat = new THREE.MeshPhongMaterial({
-      color: "Teal"
+      color: "black"
     });
     this.rootMat = new THREE.MeshPhongMaterial({
-      color: "Chartreuse"
+      color: "black"
     });
     this.headMat = new THREE.MeshPhongMaterial({
-      color: "LavenderBlush"
+      color: "black"
     });
     this.torsoMat = new THREE.MeshPhongMaterial({
-      color: "LightCoral"
+      color: "black"
     });
     this.legMat = new THREE.MeshPhongMaterial({
-      color: "green"
+      color: "black"
     });
     this.upperArmMat = new THREE.MeshPhongMaterial({
-      color: "indigo"
+      color: "black"
     });
     this.lowerArmMat = new THREE.MeshPhongMaterial({
-      color: "orange"
+      color: "black"
     });
     this.upperLegMat = new THREE.MeshPhongMaterial({
-      color: "HotPink"
+      color: "black"
     });
     this.lowerLegMat = new THREE.MeshPhongMaterial({
-      color: "skyblue"
+      color: "black"
     });
     this.handMat = new THREE.MeshPhongMaterial({
-      color: "red"
+      color: "black"
     });
     this.feetMat = new THREE.MeshPhongMaterial({
-      color: "brown"
+      color: "black"
     });
 
     //this.headGeo = new THREE.BoxBufferGeometry(headWidth, headRadius, headDepth);
@@ -168,68 +171,41 @@ export class Player {
     this.upperLeftArmRoot = new THREE.Mesh(this.upperArmRootGeo, this.rootMat);
     this.lowerLeftArmRoot = new THREE.Mesh(this.lowerArmRootGeo, this.rootMat);
 
-    //this.upperRightLegRoot = new THREE.Mesh(this.upperLegRootGeo,this.upperLegMat);
     this.upperRightLegRoot = new THREE.Object3D();
     this.lowerRightLegRoot = new THREE.Mesh(this.lowerLegRootGeo, this.rootMat);
-    //this.upperLeftLegRoot = new THREE.Mesh(this.upperLegRootGeo,this.upperLegMat);
+
     this.upperLeftLegRoot = new THREE.Object3D();
     this.lowerLeftLegRoot = new THREE.Mesh(this.lowerLegRootGeo, this.rootMat);
 
-    /*    //this.upperRightArmRoot = new THREE.Object3D();
-        this.upperRightArmRoot = new THREE.Mesh(this.upperArmRootGeo,this.rootMat);
-        this.lowerRightArmRoot = new THREE.Object3D();
-        this.upperLeftArmRoot = new THREE.Object3D();
-        this.lowerLeftArmRoot = new THREE.Object3D();
-
-        this.upperRightLegRoot = new THREE.Object3D();
-        this.lowerRightLegRoot = new THREE.Object3D();
-        this.upperLeftLegRoot = new THREE.Object3D();
-        this.lowerLeftLegRoot = new THREE.Object3D();*/
-
     this.torso = new THREE.Mesh(this.torsoGeo, this.torsoMat);
-    //this.torso.translateY(torsoHeight*0.5);
 
-    this.head = new THREE.Mesh(this.headGeo, this.headMat);
-    this.head.position.y = neckRadius * 0.5 + headRadius * 0.5
-    //this.head.translateY(torsoHeight*0.5+headRadius*0.8);
+    this.head= new THREE.Mesh();
+    ninjaHead.load(this.head);
 
 
     this.upperRightArm = new THREE.Mesh(this.upperArmGeo, this.upperArmMat);
-    //this.upperRightArm.translateY(upperArmHeight*0.5);
 
     this.lowerRightArm = new THREE.Mesh(this.lowerArmGeo, this.lowerArmMat);
-    //this.lowerRightArm.translateY(lowerArmHeight*0.5);
 
     this.upperLeftArm = new THREE.Mesh(this.upperArmGeo, this.upperArmMat);
-    //this.upperLeftArm.translateY(upperArmHeight*0.5);
 
     this.lowerLeftArm = new THREE.Mesh(this.lowerArmGeo, this.lowerArmMat);
-    //this.lowerLeftArm.translateY(lowerArmHeight*0.5);
 
     this.upperRightLeg = new THREE.Mesh(this.upperLegGeo, this.upperLegMat);
-    //this.upperRightLeg.translateY(upperLegHeight*0.5);
 
     this.lowerRightLeg = new THREE.Mesh(this.lowerLegGeo, this.lowerLegMat);
-    //this.lowerRightLeg.translateY(lowerLegHeight*0.5);
 
     this.upperLeftLeg = new THREE.Mesh(this.upperLegGeo, this.upperLegMat);
-    //this.upperLeftLeg.translateY(upperLegHeight*0.5);
 
     this.lowerLeftLeg = new THREE.Mesh(this.lowerLegGeo, this.lowerLegMat);
-    //this.lowerLeftLeg.translateY(lowerLegHeight*0.5);
-
 
     this.rightFeet = new THREE.Mesh(this.feetGeo, this.feetMat);
-    //this.rightFeet.translateY(feetHeight*0.5);
 
     this.leftFeet = new THREE.Mesh(this.feetGeo, this.feetMat);
-    //this.leftFeet.translateY(feetHeight*0.5);
 
     this.rightHand = new THREE.Mesh(this.handGeo, this.handMat);
-    //this.rightHand.translateY(handRadius*0.5);
 
     this.leftHand = new THREE.Mesh(this.handGeo, this.handMat);
-    //this.leftHand.translateY(handRadius*0.5);
 
     this.character.add(this.waist);
     this.waist.add(this.torso, this.upperLeftLegRoot, this.upperRightLegRoot);
@@ -239,11 +215,8 @@ export class Player {
 
     this.neckRoot.add(this.head);
     this.neckRoot.position.y += torsoHeight * 0.5 + neckRadius * 0.5;
-    //this.neckRoot.position.y+=torsoHeight;
 
     this.upperLeftArmRoot.add(this.upperLeftArm);
-    //this.upperLeftArmRoot.position.x+=-(torsoWidth*0.5+upperArmWidth*0.5);
-    //this.upperLeftArmRoot.position.y+=torsoHeight*0.5-upperArmHeight*0.5-0.08*torsoHeight;
     this.upperLeftArmRoot.position.x += -(torsoWidth * 0.5 + rootRadius);
     this.upperLeftArmRoot.position.y += torsoHeight * 0.5 - rootRadius;
 
@@ -251,7 +224,6 @@ export class Player {
     this.upperLeftArm.position.y = -rootRadius * 0.5 - 0.5 * upperArmHeight;
 
     this.lowerLeftArmRoot.add(this.lowerLeftArm);
-    //this.lowerLeftArmRoot.position.y+=-lowerArmHeight*0.5-upperArmHeight*0.5;
     this.lowerLeftArmRoot.position.y += -upperArmHeight * 0.5 - rootRadius * 0.5;
 
     this.lowerLeftArm.add(this.leftHand);
@@ -260,8 +232,6 @@ export class Player {
     this.leftHand.position.y += -handRadius * 0.5 - lowerArmHeight * 0.5;
 
     this.upperRightArmRoot.add(this.upperRightArm);
-    //this.upperRightArmRoot.position.x+=(torsoWidth*0.5+upperArmWidth*0.5);
-    //this.upperRightArmRoot.position.y+=torsoHeight*0.5-upperArmHeight*0.5-0.08*torsoHeight;
     this.upperRightArmRoot.position.x += torsoWidth * 0.5 + rootRadius;
     this.upperRightArmRoot.position.y += torsoHeight * 0.5 - rootRadius;
 
@@ -269,7 +239,6 @@ export class Player {
     this.upperRightArm.position.y = -rootRadius * 0.5 - 0.5 * upperArmHeight;
 
     this.lowerRightArmRoot.add(this.lowerRightArm);
-    //this.lowerRightArmRoot.position.y+=-lowerArmHeight*0.5-upperArmHeight*0.5;
     this.lowerRightArmRoot.position.y += -upperArmHeight * 0.5 - rootRadius * 0.5;
 
     this.lowerRightArm.add(this.rightHand);
@@ -286,16 +255,13 @@ export class Player {
     this.upperLeftLeg.add(this.lowerLeftLegRoot);
 
     this.lowerLeftLegRoot.add(this.lowerLeftLeg);
-    //this.lowerLeftLegRoot.position.y+=-lowerLegHeight*0.5-upperLegHeight*0.5;
     this.lowerLeftLegRoot.position.y += -rootRadius * 0.5 - upperLegHeight * 0.5;
 
     this.lowerLeftLeg.add(this.leftFeet);
     this.lowerLeftLeg.position.y += -lowerLegHeight * 0.5 - rootRadius * 0.5;
 
     this.leftFeet.position.y += -lowerLegHeight * 0.5 - feetHeight * 0.5;
-    this.leftFeet.position.z += -feetDepth * 0.5;
-
-    //this.leftFeet.position.y+=-feetHeight;
+    this.leftFeet.position.z += -feetDepth * 0.5 + lowerLegDepth*0.5;
 
     //upper right leg root
 
@@ -304,8 +270,6 @@ export class Player {
     this.upperRightLegRoot.position.x += torsoWidth * 0.5 - upperLegWidth * 0.5;
 
     this.upperRightLeg.add(this.lowerRightLegRoot);
-    //this.upperRightLegRoot.position.y+=-upperLegHeight;
-    //this.upperRightLegRoot.position.x+=torsoWidth*0.5-upperLegWidth*0.5;
 
     this.lowerRightLegRoot.add(this.lowerRightLeg);
     this.lowerRightLegRoot.position.y += -rootRadius * 0.5 - upperLegHeight * 0.5;
@@ -314,15 +278,7 @@ export class Player {
     this.lowerRightLeg.position.y += -lowerLegHeight * 0.5 - rootRadius * 0.5;
 
     this.rightFeet.position.y += -lowerLegHeight * 0.5 - feetHeight * 0.5;
-    this.rightFeet.position.z += -feetDepth * 0.5;
-    //this.lowerRightLegRoot.position.y+=-lowerLegHeight;
-    //this.rightFeet.position.y+=-feetHeight;
-
-    //let quaternion = new THREE.Quaternion().setFromAxisAngle( this.waist.position, (10*Math.PI)/180 );
-    //console.log(this.waist.position)
-    //this.lowerRightArmRoot.rotation.x=((90*Math.PI)/180);
-    //this.upperRightLegRoot.rotateOnAxis(new THREE.Vector3(0,0,0), (30*Math.PI)/180);
-
+    this.rightFeet.position.z += -feetDepth * 0.5 + lowerLegDepth*0.5;
   }
 
 
