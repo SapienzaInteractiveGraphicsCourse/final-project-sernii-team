@@ -15,16 +15,29 @@ const Center=2;
 class WorldObject{
 
   constructor(params) {
-    var geometry = new THREE.BoxGeometry(1, 1, 1);
-    this.mesh = new THREE.Mesh(
-      geometry,
-      new THREE.MeshPhongMaterial({
-        color: 0x88FF88
-      })
-    );
-    this.mesh.position.y+=0.5;
-    this.mesh.position.x+=0.5;
-  }
+        var geometry = new THREE.BoxGeometry(1, 1, 1);
+        this.mesh = new THREE.Mesh(
+          geometry,
+          new THREE.MeshPhongMaterial({
+            color: 0x88FF88
+          })
+        );
+        this.mesh.position.y+=0.5;
+        this.mesh.position.x+=0.5;
+        this.collider=new THREE.Box3();
+    }
+
+    getCollider(){
+        return this.collider;
+    }
+
+    updateCollider(){
+        this.collider.setFromObject(this.mesh);
+    }
+
+    update(timeElapsed){
+        this.updateCollider();
+    }
 }
 
 export class WorldManager {
@@ -33,68 +46,79 @@ export class WorldManager {
 
   constructor(params) {
     this.objects = [[],[],[]];
+    this.colliderCollection=[];
     this.scene = params.scene;
     this.unused = [];
     this.speed = [INITIAL_SPEED, INITIAL_SPEED, INITIAL_SPEED];
     this.separation_distance = [SEPARATIONDISTANCE, SEPARATIONDISTANCE, SEPARATIONDISTANCE];
     this.spawn_distance = [SPAWNDISTANCE, SPAWNDISTANCE, SPAWNDISTANCE];
 
+    const geometry = new THREE.PlaneGeometry( 6, 54);
+    const material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+    this.worldMesh=new THREE.Mesh(geometry,material);
+    this.worldMesh.rotation.x=Math.PI/2;
+    this.worldMesh.position.z+=-25;
+    this.scene.add(this.worldMesh);
+
+  }
+  getColliderCollection(){
+      return this.colliderCollection;
   }
 
   ShouldISpawn(type){
 
     switch (type) {
-      case Right:
-      if(this.objects[Right].length==0){
-        this.SpawnObj(Right);
-      }
-      else{
-        //distance between last spawned object and the spawn location
-        var dist=Math.abs(
-          this.objects[Right][this.objects[Right].length-1].mesh.position.z
-          +
-          this.spawn_distance[Right]
-        );
-        if(dist > this.separation_distance[Right]){
-          this.SpawnObj(Right);
-        }
-      }
-      break;
+        case Right:
+            if(this.objects[Right].length==0){
+                this.SpawnObj(Right);
+            }
+            else{
+                //distance between last spawned object and the spawn location
+                var dist=Math.abs(
+                    this.objects[Right][this.objects[Right].length-1].mesh.position.z
+                    +
+                    this.spawn_distance[Right]
+                );
+                if(dist > this.separation_distance[Right]){
+                    this.SpawnObj(Right);
+                }
+            }
+        break;
+        //break;
+
+        case Center:
+            if(this.objects[Center].length==0){
+                this.SpawnObj(Center);
+            }
+            else{
+                //distance between last spawned object and the spawn location
+                var dist=Math.abs(
+                    this.objects[Center][this.objects[Center].length-1].mesh.position.z
+                    +
+                    this.spawn_distance[Center]
+                );
+                if(dist > this.separation_distance[Center]){
+                    this.SpawnObj(Center);
+                }
+            }
         break;
 
-      case Center:
-        if(this.objects[Center].length==0){
-          this.SpawnObj(Center);
-        }
-        else{
-          //distance between last spawned object and the spawn location
-          var dist=Math.abs(
-            this.objects[Center][this.objects[Center].length-1].mesh.position.z
-            +
-            this.spawn_distance[Center]
-          );
-          if(dist > this.separation_distance[Center]){
-            this.SpawnObj(Center);
-          }
-        }
+        case Left:
+            if(this.objects[Left].length==0){
+                this.SpawnObj(Left);
+            }
+            else{
+                //distance between last spawned object and the spawn location
+                var dist=Math.abs(
+                    this.objects[Left][this.objects[Left].length-1].mesh.position.z
+                    +
+                    this.spawn_distance[Left]
+                );
+                if(dist > this.separation_distance[Left]){
+                    this.SpawnObj(Left);
+                }
+            }
         break;
-
-      case Left:
-      if(this.objects[Left].length==0){
-        this.SpawnObj(Left);
-      }
-      else{
-        //distance between last spawned object and the spawn location
-        var dist=Math.abs(
-          this.objects[Left][this.objects[Left].length-1].mesh.position.z
-          +
-          this.spawn_distance[Left]
-        );
-        if(dist > this.separation_distance[Left]){
-          this.SpawnObj(Left);
-        }
-      }
-      break;
 
 
 
@@ -106,21 +130,22 @@ export class WorldManager {
 
     const obj=new WorldObject();
     obj.mesh.position.z-=100;
+    this.colliderCollection.push(obj.getCollider());
 
 
     switch (type) {
-      case Right:
-        obj.mesh.position.x=RIGHT_X_SPAWN;
-        this.objects[Right].push(obj);
+        case Right:
+            obj.mesh.position.x=RIGHT_X_SPAWN;
+            this.objects[Right].push(obj);
         break;
 
-      case Center:
-        this.objects[Center].push(obj);
+        case Center:
+            this.objects[Center].push(obj);
         break;
 
-      case Left:
-        obj.mesh.position.x=LEFT_X_SPAWN;
-        this.objects[Left].push(obj);
+        case Left:
+            obj.mesh.position.x=LEFT_X_SPAWN;
+            this.objects[Left].push(obj);
         break;
 
 
@@ -129,6 +154,7 @@ export class WorldManager {
     this.scene.add(obj.mesh);
 
   }
+
 
   Update(timeElapsed){
 
@@ -174,6 +200,15 @@ export class WorldManager {
         //visible.push(obj);
       }
       //obj.Update(timeElapsed);
+    }
+    for(let obj of this.objects[Right]){
+        obj.update();
+    }
+    for(let obj of this.objects[Left]){
+        obj.update();
+    }
+    for(let obj of this.objects[Center]){
+        obj.update();
     }
 
     const invisible = [];
