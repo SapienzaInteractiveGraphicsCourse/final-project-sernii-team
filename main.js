@@ -1,6 +1,7 @@
 import * as THREE from './node_modules/three/build/three.module.js';
-import {Player} from './player.js';
-import {WorldManager} from './world.js';
+import {player} from './player.js';
+import {worldManager} from './world.js';
+import {collisionsDetector} from './collisions.js'
 import Stats from './node_modules/three/examples/jsm/libs/stats.module.js'
 import * as GUI from './node_modules/three/examples/jsm/libs/dat.gui.module.js'
 
@@ -86,50 +87,32 @@ const animate = function(timeElapsed) {
 
       prevTime = timeElapsed;
       requestAnimationFrame(animate);
-      TWEEN.update();
-      world.Update(aTime);
-      player.Update(aTime);
+      //TWEEN.update();
+      world_.Update(aTime);
+      player_.Update(aTime);
+      collisionsDetector_.Update(aTime);
       //cube.translateOnAxis(new THREE.Vector3(1,0,0), 0.1);
 
       renderer.render(scene, camera);
 
 
 };
-var player;
-var world;
+const player_= new player.Player({
+  scene: scene,
+  GUI: gui,
+  //worldCollider: world.getColliderCollection,
+});
+
+const world_ = new worldManager.WorldManager({
+  scene: scene
+});
+
+const collisionsDetector_ = new collisionsDetector.CollisionsDetector({
+    player: player_,
+    world: world_,
+    scene: scene,
+});
 
 window.onload = function init() {
-
-
-
-  //document.body.appendChild(canvas);
-  world = new WorldManager({
-    scene: scene
-  });
-
-  player = new Player({
-    scene: scene,
-    GUI: gui,
-    worldCollider: world.getColliderCollection,
-  });
-
-
-
-  player.InitInput();
-
-  const geometry = new THREE.PlaneGeometry(1000, 1000);
-  const material = new THREE.MeshBasicMaterial({
-    color: 0x808080,
-    side: THREE.DoubleSide
-  });
-
-  const plane = new THREE.Mesh(geometry, material);
-
-  //scene.add( plane );
-
-  //scene.add(cube);
-
-
-
-  animate();
+    animate();
 }
