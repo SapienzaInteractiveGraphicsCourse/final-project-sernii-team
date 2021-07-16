@@ -79,7 +79,7 @@ export class WorldManager {
     this.worldMesh.position.z+=-25;
     this.scene.add(this.worldMesh);
 
-    //lavaGround.load(this.scene);
+    lavaGround.load(this.scene);
     /*const lavaGeometry = new THREE.PlaneGeometry( 1000, 1000);
 
     const lavaDisplacementMap = new THREE.TextureLoader().load( "./assets/DisplacementMapLava.png" );
