@@ -1,7 +1,7 @@
-import * as THREE from './node_modules/three/build/three.module.js';
-import {OBJLoader} from './node_modules/three/examples/jsm/loaders/OBJLoader.js';
-import {MTLLoader} from './node_modules/three/examples/jsm/loaders/MTLLoader.js';
-import {GLTFLoader} from './node_modules/three/examples/jsm/loaders/GLTFLoader.js';
+import * as THREE from './libs/three/build/three.module.js';
+import {OBJLoader} from './libs/three/examples/jsm/loaders/OBJLoader.js';
+import {MTLLoader} from './libs/three/examples/jsm/loaders/MTLLoader.js';
+import {GLTFLoader} from './libs/three/examples/jsm/loaders/GLTFLoader.js';
 
 export const ninjaHead = {
     manager: new THREE.LoadingManager(),

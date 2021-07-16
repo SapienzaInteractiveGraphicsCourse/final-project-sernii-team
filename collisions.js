@@ -1,4 +1,4 @@
-import * as THREE from './node_modules/three/build/three.module.js';
+import * as THREE from './libs/three/build/three.module.js';
 const Right=0;
 const Left=1;
 const Center=2;
