@@ -1,0 +1,2 @@
+spikeball.obj filter=lfs diff=lfs merge=lfs -text
+spikeball.mtl filter=lfs diff=lfs merge=lfs -text
