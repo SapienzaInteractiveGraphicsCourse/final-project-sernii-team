@@ -6,7 +6,7 @@ import Stats from './libs/stats.module.js'
 import * as GUI from './libs/dat.gui.module.js'
 import {OrbitControls} from './libs/OrbitControls.js'
 
-
+function main(){
 // canvas
 const canvas = document.getElementById('game-canvas');
 
@@ -80,6 +80,22 @@ const renderer = new THREE.WebGLRenderer({
   canvas: canvas
 });
 
+const player_= new Player({
+  scene: scene,
+  //GUI: gui,
+  //worldCollider: world.getColliderCollection,
+});
+
+const world_ = new WorldManager({
+  scene: scene
+});
+
+const collisionsDetector_ = new CollisionsDetector({
+    player: player_,
+    world: world_,
+    scene: scene,
+});
+
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setClearColor(0xffffff);
 //renderer.autoClear = true;
@@ -91,8 +107,8 @@ controls.dampingFactor = 0.25;
 controls.enableZoom = true;
 controls.autoRotate = true;
 
-var prevTime = 0;
-var aTime = 0;
+let prevTime = 0;
+let aTime = 0;
 
 
 const render= function(timeElapsed) {
@@ -119,27 +135,14 @@ const render= function(timeElapsed) {
     requestAnimationFrame(render);
 
 };
-const player_= new Player({
-  scene: scene,
-  //GUI: gui,
-  //worldCollider: world.getColliderCollection,
-});
 
-const world_ = new WorldManager({
-  scene: scene
-});
+requestAnimationFrame(render);
 
-const collisionsDetector_ = new CollisionsDetector({
-    player: player_,
-    world: world_,
-    scene: scene,
-});
 
-window.onload = function init() {
+/*window.onload = function init() {
     //startGame();
-}
-function main(){
-    render();
+}*/
+
 }
 
 main();
