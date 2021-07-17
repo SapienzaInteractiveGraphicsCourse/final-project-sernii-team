@@ -1,0 +1,2 @@
+Terrain_normal.png filter=lfs diff=lfs merge=lfs -text
+Terrain_baseColor.png filter=lfs diff=lfs merge=lfs -text
