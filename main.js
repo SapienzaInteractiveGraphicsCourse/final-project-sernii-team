@@ -131,6 +131,7 @@ const render= function(timeElapsed) {
         player_.Update(aTime);
         collisionsDetector_.Update(aTime);
     }
+    console.log('ciao');
     renderer.render(scene, camera);
     requestAnimationFrame(render);
 
