@@ -1,16 +1,16 @@
-import * as THREE from './libs/three/build/three.module.js';
-import {OBJLoader} from './libs/three/examples/jsm/loaders/OBJLoader.js';
-import {MTLLoader} from './libs/three/examples/jsm/loaders/MTLLoader.js';
-import {GLTFLoader} from './libs/three/examples/jsm/loaders/GLTFLoader.js';
+import * as THREE from './libs/three.module.js';
+import {OBJLoader} from './libs/OBJLoader.js';
+import {MTLLoader} from './libs/MTLLoader.js';
+import {GLTFLoader} from './libs/GLTFLoader.js';
 
 export const ninjaHead = {
     manager: new THREE.LoadingManager(),
 
     loaded: false,
 
-    objHref: "./assets/ninjaHead.obj",
+    objHref: "./assets/ninja/ninjaHead.obj",
 
-    mtlHref: "./assets/ninjaHead.mtl",
+    mtlHref: "./assets/ninja/ninjaHead.mtl",
 
     load: function(mesh) {
 
@@ -51,7 +51,7 @@ export const ninjaHead = {
 export const lavaGround={
     loader: new GLTFLoader(),
 
-    gltfHref: "./assets/lava3/scene.gltf",
+    gltfHref: "./assets/lavaModel/scene.gltf",
 
     onLoadFunction: function(gltf){
 

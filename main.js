@@ -1,10 +1,10 @@
-import * as THREE from './libs/three/build/three.module.js';
+import * as THREE from './libs/three.module.js';
 import {Player} from './player.js';
 import {WorldManager} from './world.js';
 import {CollisionsDetector} from './collisions.js'
-import Stats from './libs/three/examples/jsm/libs/stats.module.js'
-import * as GUI from './libs/three/examples/jsm/libs/dat.gui.module.js'
-import {OrbitControls} from './libs/three/examples/jsm/controls/OrbitControls.js'
+import Stats from './libs/stats.module.js'
+import * as GUI from './libs/dat.gui.module.js'
+import {OrbitControls} from './libs/OrbitControls.js'
 
 
 // canvas
