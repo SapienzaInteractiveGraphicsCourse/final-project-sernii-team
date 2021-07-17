@@ -95,7 +95,7 @@ var prevTime = 0;
 var aTime = 0;
 
 
-const animate = function(timeElapsed) {
+const startGame= function(timeElapsed) {
     //renderer.clear()
 
     if (prevTime == null) {
@@ -116,7 +116,7 @@ const animate = function(timeElapsed) {
         collisionsDetector_.Update(aTime);
     }
     renderer.render(scene, camera);
-    requestAnimationFrame(animate);
+    requestAnimationFrame(startGame);
 
 };
 const player_= new Player({
@@ -136,5 +136,5 @@ const collisionsDetector_ = new CollisionsDetector({
 });
 
 window.onload = function init() {
-    animate();
+    startGame();
 }
