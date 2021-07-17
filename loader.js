@@ -72,8 +72,8 @@ export const lavaGround={
     load: function(scene){
 
         var textureLoader = new THREE.TextureLoader();
-        var texture = textureLoader.load( "assets/lava3/textures/Terrain_baseColor.png" );
-        var roughTexture = textureLoader.load( "assets/lava3/textures/Terrain_normal.png" );
+        var texture = textureLoader.load( "./assets/lavaModel/textures/Terrain_baseColor.png" );
+        var roughTexture = textureLoader.load( "./assets/lavaModel/textures/Terrain_normal.png" );
         texture.flipY = false;
 
         this.loader.load( this.gltfHref, (gltf)=>{
