@@ -1,16 +1,16 @@
-import * as THREE from './libs/three/build/three.module.js';
-import {OBJLoader} from './libs/three/examples/jsm/loaders/OBJLoader.js';
-import {MTLLoader} from './libs/three/examples/jsm/loaders/MTLLoader.js';
-import {GLTFLoader} from './libs/three/examples/jsm/loaders/GLTFLoader.js';
+import * as THREE from 'libs/three/build/three.module.js';
+import {OBJLoader} from 'libs/three/examples/jsm/loaders/OBJLoader.js';
+import {MTLLoader} from 'libs/three/examples/jsm/loaders/MTLLoader.js';
+import {GLTFLoader} from 'libs/three/examples/jsm/loaders/GLTFLoader.js';
 
 export const ninjaHead = {
     manager: new THREE.LoadingManager(),
 
     loaded: false,
 
-    objHref: "./assets/ninjaHead.obj",
+    objHref: "assets/ninjaHead.obj",
 
-    mtlHref: "./assets/ninjaHead.mtl",
+    mtlHref: "assets/ninjaHead.mtl",
 
     load: function(mesh) {
 
@@ -51,7 +51,7 @@ export const ninjaHead = {
 export const lavaGround={
     loader: new GLTFLoader(),
 
-    gltfHref: "./assets/lava3/scene.gltf",
+    gltfHref: "assets/lava3/scene.gltf",
 
     onLoadFunction: function(gltf){
 
@@ -72,8 +72,8 @@ export const lavaGround={
     load: function(scene){
 
         var textureLoader = new THREE.TextureLoader();
-        var texture = textureLoader.load( "./assets/lava3/textures/Terrain_baseColor.png" );
-        var roughTexture = textureLoader.load( "./assets/lava3/textures/Terrain_normal.png" );
+        var texture = textureLoader.load( "assets/lava3/textures/Terrain_baseColor.png" );
+        var roughTexture = textureLoader.load( "assets/lava3/textures/Terrain_normal.png" );
         texture.flipY = false;
 
         this.loader.load( this.gltfHref, (gltf)=>{
@@ -113,8 +113,8 @@ export class SpikeBall{
         this.mesh=params.scene;
         this.manager=new THREE.LoadingManager();
         //this.loaded=false;
-        this.objHref="./assets/spikeBall/spikeball.obj";
-        this.mtlHref="./assets/spikeBall/spikeball.mtl";
+        this.objHref="assets/spikeBall/spikeball.obj";
+        this.mtlHref="assets/spikeBall/spikeball.mtl";
         this.obj=0;
 
     }
