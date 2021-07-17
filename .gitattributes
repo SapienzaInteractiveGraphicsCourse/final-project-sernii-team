@@ -1,9 +1,0 @@
-assets/ filter=lfs diff=lfs merge=lfs -text
-assets/ninjaHead.mtl filter=lfs diff=lfs merge=lfs -text
-assets/ninjaHead.obj filter=lfs diff=lfs merge=lfs -text
-assets/ninjaHead.png filter=lfs diff=lfs merge=lfs -text
-assets/NormalMapLava.png filter=lfs diff=lfs merge=lfs -text
-assets/spikeBall filter=lfs diff=lfs merge=lfs -text
-assets/DisplacementMapLava.png filter=lfs diff=lfs merge=lfs -text
-assets/lava3 filter=lfs diff=lfs merge=lfs -text
-assets/lava.jpg filter=lfs diff=lfs merge=lfs -text
