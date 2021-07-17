@@ -1,5 +1,5 @@
 import * as THREE from './libs/three.module.js';
-import {ninjaHead} from "./loader.js";
+import {ninjaHead} from './loader.js';
 
 const Right=0;
 const Left=1;

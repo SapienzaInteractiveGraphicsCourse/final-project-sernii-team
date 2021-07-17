@@ -1,6 +1,6 @@
 import * as THREE from './libs/three.module.js';
-import {lavaGround} from "./loader.js";
-import {SpikeBall} from "./loader.js"
+import {lavaGround} from './loader.js';
+import {SpikeBall} from './loader.js';
 
 
 const SPAWNDISTANCE=100;
