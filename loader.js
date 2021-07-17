@@ -51,7 +51,7 @@ export const ninjaHead = {
 export const lavaGround={
     loader: new GLTFLoader(),
 
-    gltfHref: "./assets/lavaModel/scene.gltf",
+    gltfHref: "./libs/lavaModel/scene.gltf",
 
     onLoadFunction: function(gltf){
 
@@ -72,8 +72,8 @@ export const lavaGround={
     load: function(scene){
 
         var textureLoader = new THREE.TextureLoader();
-        var texture = textureLoader.load( "./assets/lavaModel/textures/Terrain_baseColor.png" );
-        var roughTexture = textureLoader.load( "./assets/lavaModel/textures/Terrain_normal.png" );
+        var texture = textureLoader.load( "./libs/lavaModel/textures/Terrain_baseColor.png" );
+        var roughTexture = textureLoader.load( "./libs/lavaModel/textures/Terrain_normal.png" );
         texture.flipY = false;
 
         this.loader.load( this.gltfHref, (gltf)=>{
