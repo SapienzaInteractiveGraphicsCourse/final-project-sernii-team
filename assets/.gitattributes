@@ -1,0 +1,4 @@
+*cd filter=lfs diff=lfs merge=lfs -text
+NormalMapLava.png filter=lfs diff=lfs merge=lfs -text
+DisplacementMapLava.png filter=lfs diff=lfs merge=lfs -text
+lava.jpg filter=lfs diff=lfs merge=lfs -text
