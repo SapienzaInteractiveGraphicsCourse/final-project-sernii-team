@@ -1,3 +1,0 @@
-ninjaHead.mtl filter=lfs diff=lfs merge=lfs -text
-ninjaHead.obj filter=lfs diff=lfs merge=lfs -text
-ninjaHead.png filter=lfs diff=lfs merge=lfs -text
