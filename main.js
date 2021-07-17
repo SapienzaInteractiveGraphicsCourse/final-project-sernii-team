@@ -136,5 +136,6 @@ const collisionsDetector_ = new CollisionsDetector({
 });
 
 window.onload = function init() {
-    startGame();
+    //startGame();
 }
+startGame();
