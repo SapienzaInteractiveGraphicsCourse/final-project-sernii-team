@@ -79,11 +79,12 @@ export class WorldManager {
     this.worldMesh.position.z+=-25;
     this.scene.add(this.worldMesh);
 
-    lavaGround.load(this.scene);
-    /*const lavaGeometry = new THREE.PlaneGeometry( 1000, 1000);
-
+    //lavaGround.load(this.scene);
+    const lavaGeometry = new THREE.PlaneGeometry( 1000, 1000);
     const lavaDisplacementMap = new THREE.TextureLoader().load( "./assets/DisplacementMapLava.png" );
     const lavaNormalMap = new THREE.TextureLoader().load( "./assets/NormalMapLava.png" );
+    //const lavaNormalMap = new THREE.TextureLoader().load( "./assets/NormalMapLava2.png" );
+    //const lavaDisplacementMap = new THREE.TextureLoader().load( "./assets/DisplacementMapLava2.png" );
 
     const lavaTexture = new THREE.TextureLoader().load( "./assets/lava.jpg" );
     lavaTexture.wrapS = THREE.RepeatWrapping;
@@ -98,15 +99,23 @@ export class WorldManager {
             //bumpMap:lavaNormalMap,
             displacementMap: lavaDisplacementMap,
             side: THREE.DoubleSide,
-            //emissive: 0xe56520,
+            //emissive: 0xec8058,
         });
 
     //const lavaMaterial = new THREE.MeshBasicMaterial( {color: "black", side: THREE.DoubleSide} );
     const lava=new THREE.Mesh(lavaGeometry,lavaMaterial);
+    lava.receiveShadow = false;
     lava.position.y-=5;
     lava.rotation.x=Math.PI/2;
     this.scene.add(lava);
-    */
+
+    const rectLight = new THREE.RectAreaLight( 0xff4e01, 1,  1000, 1000 );
+    //rectLight.position.set( 5, 5, 0 );
+    rectLight.rotation.x=Math.PI/2;
+    rectLight.position.y-=5;
+    rectLight.lookAt( 0, 0, 0 );
+    this.scene.add( rectLight )
+
   }
 
   getObjects(){

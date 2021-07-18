@@ -2,9 +2,12 @@ import * as THREE from './libs/three.module.js';
 import {Player} from './player.js';
 import {WorldManager} from './world.js';
 import {CollisionsDetector} from './collisions.js'
+import {AnimationManager} from './animations.js'
+import{ControlManager} from './controls.js'
 import Stats from './libs/stats.module.js'
 import * as GUI from './libs/dat.gui.module.js'
 import {OrbitControls} from './libs/OrbitControls.js'
+
 
 function main(){
 // canvas
@@ -15,20 +18,8 @@ const scene = new THREE.Scene();
 
 //camera
 const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.001, 1000);
-//camera.position.set(0.7,2.1,-3.4);
-//camera.rotation.set(0,15.3,0);
 camera.position.set(2.5,3,4.3);
 camera.rotation.set(0,6.4,0);
-//camera.position.set(3, 1.1, -2);
-//camera.rotation.set(0, 2, 0);
-//camera.position.set(4, 2.1, -2);
-//camera.rotation.set(0,2,0);
-//camera.position.set(0, 1,2.5);
-//camera.position.set(-2, 0.2, 0.7);
-//camera.rotation.set(0,-2,0);
-//camera.rotation.set(0,2,0);
-//camera.up.set(0,0,1);
-//camera.lookAt(0,0,1);
 
 //gui
 /*
@@ -81,10 +72,14 @@ const renderer = new THREE.WebGLRenderer({
 });
 
 const player_= new Player({
-  scene: scene,
-  //GUI: gui,
-  //worldCollider: world.getColliderCollection,
+  scene: scene
 });
+
+
+//let parts=player_.getCharacterParts();
+const animationManager_= new AnimationManager(
+    player_.getCharacterParts()
+);
 
 const world_ = new WorldManager({
   scene: scene
@@ -95,6 +90,11 @@ const collisionsDetector_ = new CollisionsDetector({
     world: world_,
     scene: scene,
 });
+
+const controlManager_= new ControlManager({
+    animationManager: animationManager_,
+})
+
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setClearColor(0xffffff);
@@ -124,25 +124,20 @@ const render= function(timeElapsed) {
     aTime = (timeElapsed - prevTime) * 0.001;
     prevTime = timeElapsed;
 
-    //TWEEN.update();
+    TWEEN.update();
 
     if(!collisionsDetector_.getgameOverFlag()){
         world_.Update(aTime);
-        player_.Update(aTime);
+        //player_.Update(aTime);
+        controlManager_.Update(timeElapsed);
         collisionsDetector_.Update(aTime);
     }
-    console.log('ciao');
     renderer.render(scene, camera);
     requestAnimationFrame(render);
 
 };
 
 requestAnimationFrame(render);
-
-
-/*window.onload = function init() {
-    //startGame();
-}*/
 
 }
 

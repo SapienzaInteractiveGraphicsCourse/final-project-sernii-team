@@ -82,31 +82,53 @@ export class Player {
         this.scene.add(this.character);
 
         this.characterBox= new THREE.Box3();
-        //this.characterBox.setFromObject(this.character);
 
         this.boxHelper=new THREE.BoxHelper(this.character, 0xffff00);
         this.scene.add(this.boxHelper);
 
-        this.runAnimation();
-        this.InitInput();
+        this.AnimationManager=params.AnimationManager
 
-        /*var geometry = new THREE.BoxGeometry(1, 1, 1);
-        this.mesh = new THREE.Mesh(
-          geometry,
-          new THREE.MeshPhongMaterial({
-            color: 0x80FF80
-          })
-        );*/
-
-        // l'ho fatto direttamente nella funzione update
-        //this.position.x+=0.5;
-        //this.position.y+=0.5;
+        //this.InitInput();
 
 
-        //this.mesh.castShadow = true;
-        //this.mesh.receiveShadow = true;
+    }
 
+    getCharacterParts(){
 
+        return{
+            character: this.character,
+            waist: this.waist,
+
+            neckRoot: this.neckRoot,
+            torso: this.torso,
+            head:this.head,
+
+            upperRightArmRoot :this.upperRightArmRoot,
+            lowerRightArmRoot: this.lowerRightArmRoot,
+            upperRightArm: this.upperRightArm,
+            lowerRightArm: this.lowerRightArm,
+            rightHand: this.rightHand,
+
+            upperLeftArmRoot: this.upperLeftArmRoot,
+            lowerLeftArmRoot: this.lowerLeftArmRoot,
+            upperLeftArm: this.upperLeftArm,
+            lowerLeftArm: this.lowerLeftArm,
+            leftHand: this.leftHand,
+
+            upperRightLegRoot: this.upperRightLegRoot,
+            lowerRightLegRoot: this.lowerRightLegRoot,
+            upperRightLeg: this.upperRightLeg,
+            lowerRightLeg: this.lowerRightLeg,
+            rightFeetRoot: this.rightFeetRoot,
+            rightFeet: this.rightFeet,
+
+            upperLeftLegRoot: this.upperLeftLegRoot,
+            lowerLeftLegRoot: this.lowerLeftLegRoot,
+            upperLeftLeg: this.upperLeftLeg,
+            lowerLeftLeg: this.lowerLeftLeg,
+            leftFeetRoot: this.leftFeetRoot,
+            leftFeet: this.leftFeet,
+        }
     }
 
     getCharacterBox(){
@@ -173,7 +195,7 @@ export class Player {
 
         this.character = new THREE.Object3D();
         this.waist = new THREE.Object3D();
-        this.torsoRoot = new THREE.Object3D();
+        //this.torsoRoot = new THREE.Object3D();
         this.neckRoot = new THREE.Mesh(this.neckGeo, this.neckMat);
 
         this.upperRightArmRoot = new THREE.Mesh(this.upperArmRootGeo, this.rootMat);
@@ -194,28 +216,22 @@ export class Player {
 
 
         this.upperRightArm = new THREE.Mesh(this.upperArmGeo, this.upperArmMat);
-
         this.lowerRightArm = new THREE.Mesh(this.lowerArmGeo, this.lowerArmMat);
+        this.leftHand = new THREE.Mesh(this.handGeo, this.handMat);
 
         this.upperLeftArm = new THREE.Mesh(this.upperArmGeo, this.upperArmMat);
-
         this.lowerLeftArm = new THREE.Mesh(this.lowerArmGeo, this.lowerArmMat);
-
-        this.upperRightLeg = new THREE.Mesh(this.upperLegGeo, this.upperLegMat);
-
-        this.lowerRightLeg = new THREE.Mesh(this.lowerLegGeo, this.lowerLegMat);
-
-        this.upperLeftLeg = new THREE.Mesh(this.upperLegGeo, this.upperLegMat);
-
-        this.lowerLeftLeg = new THREE.Mesh(this.lowerLegGeo, this.lowerLegMat);
-
-        this.rightFeet = new THREE.Mesh(this.feetGeo, this.feetMat);
-
-        this.leftFeet = new THREE.Mesh(this.feetGeo, this.feetMat);
-
         this.rightHand = new THREE.Mesh(this.handGeo, this.handMat);
 
-        this.leftHand = new THREE.Mesh(this.handGeo, this.handMat);
+        this.upperRightLeg = new THREE.Mesh(this.upperLegGeo, this.upperLegMat);
+        this.lowerRightLeg = new THREE.Mesh(this.lowerLegGeo, this.lowerLegMat);
+        this.rightFeetRoot= new THREE.Object3D();
+        this.rightFeet = new THREE.Mesh(this.feetGeo, this.feetMat);
+
+        this.upperLeftLeg = new THREE.Mesh(this.upperLegGeo, this.upperLegMat);
+        this.lowerLeftLeg = new THREE.Mesh(this.lowerLegGeo, this.lowerLegMat);
+        this.leftFeetRoot= new THREE.Object3D();
+        this.leftFeet = new THREE.Mesh(this.feetGeo, this.feetMat);
 
         this.character.add(this.waist);
         this.waist.add(this.torso, this.upperLeftLegRoot, this.upperRightLegRoot);
@@ -259,159 +275,47 @@ export class Player {
         //upper left leg root
 
         this.upperLeftLegRoot.add(this.upperLeftLeg);
-        this.upperLeftLegRoot.position.y += -upperLegHeight * 0.5 - torsoHeight * 0.5;
-        this.upperLeftLegRoot.position.x += -torsoWidth * 0.5 + upperLegWidth * 0.5;
+        this.upperLeftLegRoot.position.y += - torsoHeight * 0.5;
+        this.upperLeftLegRoot.position.x += -torsoWidth * 0.5;
 
         this.upperLeftLeg.add(this.lowerLeftLegRoot);
+        this.upperLeftLeg.position.x += upperLegWidth * 0.5;
+        this.upperLeftLeg.position.y += -upperLegHeight * 0.5;
+
 
         this.lowerLeftLegRoot.add(this.lowerLeftLeg);
         this.lowerLeftLegRoot.position.y += -rootRadius * 0.5 - upperLegHeight * 0.5;
 
-        this.lowerLeftLeg.add(this.leftFeet);
+        this.lowerLeftLeg.add(this.leftFeetRoot);
         this.lowerLeftLeg.position.y += -lowerLegHeight * 0.5 - rootRadius * 0.5;
 
-        this.leftFeet.position.y += -lowerLegHeight * 0.5 - feetHeight * 0.5;
-        this.leftFeet.position.z += -feetDepth * 0.5 + lowerLegDepth * 0.5;
+        this.leftFeetRoot.add(this.leftFeet);
+        this.leftFeetRoot.position.y += -lowerLegHeight * 0.5;
+        this.leftFeetRoot.position.z +=  lowerLegDepth * 0.5;
+        this.leftFeet.position.y += - feetHeight * 0.5;
+        this.leftFeet.position.z += -feetDepth * 0.5 ;
 
         //upper right leg root
 
         this.upperRightLegRoot.add(this.upperRightLeg);
-        this.upperRightLegRoot.position.y += -upperLegHeight * 0.5 - torsoHeight * 0.5;
-        this.upperRightLegRoot.position.x += torsoWidth * 0.5 - upperLegWidth * 0.5;
+        this.upperRightLegRoot.position.y += - torsoHeight * 0.5;
+        this.upperRightLegRoot.position.x += torsoWidth * 0.5;
 
         this.upperRightLeg.add(this.lowerRightLegRoot);
+        this.upperRightLeg.position.y += -upperLegHeight * 0.5;
+        this.upperRightLeg.position.x += - upperLegWidth * 0.5;
 
         this.lowerRightLegRoot.add(this.lowerRightLeg);
         this.lowerRightLegRoot.position.y += -rootRadius * 0.5 - upperLegHeight * 0.5;
 
-        this.lowerRightLeg.add(this.rightFeet);
+        this.lowerRightLeg.add(this.rightFeetRoot);
         this.lowerRightLeg.position.y += -lowerLegHeight * 0.5 - rootRadius * 0.5;
 
-        this.rightFeet.position.y += -lowerLegHeight * 0.5 - feetHeight * 0.5;
-        this.rightFeet.position.z += -feetDepth * 0.5 + lowerLegDepth * 0.5;
-    }
-
-    runAnimation() {
-
-        let pos = this.upperRightArmRoot.rotation;
-        let aux = this.upperRightArmRoot;
-        let upperRightArmRootTween = new TWEEN.Tween({
-          x: pos.x,
-          y: pos.y,
-          z: pos.z
-        });
-        upperRightArmRootTween.to({
-          x: "-" + Math.PI / 3
-        }, 1000);
-        //lowerRightArmRootTween.delay(3000)
-
-        upperRightArmRootTween.onUpdate(function(object, elapsed) {
-          aux.rotation.x = object.x;
-          console.log(object.x);
-        })
-        /*upperRightLegRootTween.onComplete(function() {
-                // Check that the full 360 degrees of rotation,
-                // and calculate the remainder of the division to avoid overflow.
-
-                if (Math.abs(aux.rotation.y)>=2*Math.PI) {
-                    this.upperRightLegRoot.rotation.y = this.upperRightLegRoot.rotation.y % (2*Math.PI);
-                }
-                aux.rotation.x=0;
-            })*/
-
-        upperRightArmRootTween.repeat(Infinity);
-        //upperRightArmRootTween.start();
-    }
-
-    InitInput() {
-        this.keys_ = {
-          spacebar: false,
-          arrowR_d: false,
-          arrowL_a: false,
-        };
-        this.oldKeys = {
-          ...this.keys_
-        };
-
-        document.addEventListener('keydown', (e) => this.OnKeyDown_(e), false);
-        document.addEventListener('keyup', (e) => this.OnKeyUp_(e), false);
-    }
-
-    OnKeyDown_(event) {
-        switch (event.keyCode) {
-          //spacebar
-          case 32:
-            this.keys_.spacebar = true;
-            break;
-
-            //right arrow or d
-          case 39:
-          case 68:
-            this.keys_.arrowR_d = true;
-            break;
-
-            //left arrow or a
-          case 37:
-          case 65:
-            this.keys_.arrowL_a = true;
-            break;
-        }
-
-    }
-
-    OnKeyUp_(event) {
-        switch (event.keyCode) {
-          case 32:
-            this.keys_.spacebar = false;
-            break;
-
-          case 39:
-          case 68:
-            this.keys_.arrowR_d = false;
-            break;
-
-            //left arrow or a
-          case 37:
-          case 65:
-            this.keys_.arrowL_a = false;
-            break;
-        }
-    }
-
-    Update(timeElapsed) {
-
-        if (this.keys_.spacebar && this.position.y == INITIAL_Y_POS) {
-          this.velocity = 30;
-
-        }
-
-        const acceleration = -100 * timeElapsed;
-
-        this.position.y += timeElapsed * (
-          this.velocity + acceleration * 0.5);
-        this.position.y = Math.max(this.position.y, INITIAL_Y_POS);
-
-        this.velocity += acceleration;
-        this.velocity = Math.max(this.velocity, -100);
-
-        //se non si è in volo e neanche a destra o sinistra
-        //quando in scivolatà servirà una condizione ulteriore
-        if (this.position.y == INITIAL_Y_POS) {
-          if (this.keys_.arrowR_d) {
-            this.position.x = RIGHT_DASH;
-          } else if (this.keys_.arrowL_a) {
-            this.position.x = LEFT_DASH;
-          } else {
-            this.position.x = INITIAL_X_POS;
-          }
-
-        }
-
-        this.character.position.copy(this.position);
-        this.boxHelper.update();
-        //preferisco farlo nel collider manager
-        //this.characterBox.setFromObject(this.character);
-
+        this.rightFeetRoot.add(this.rightFeet);
+        this.rightFeetRoot.position.y += -lowerLegHeight * 0.5 ;
+        this.rightFeetRoot.position.z +=  lowerLegDepth * 0.5;
+        this.rightFeet.position.y += - feetHeight * 0.5;
+        this.rightFeet.position.z += -feetDepth * 0.5 ;
     }
 
 };

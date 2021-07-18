@@ -8,9 +8,9 @@ export const ninjaHead = {
 
     loaded: false,
 
-    objHref: window.location.href + 'assets/ninja/ninjaHead.obj',
+    objHref: /*window.location.href +*/ './assets/ninja/ninjaHead.obj',
 
-    mtlHref: window.location.href + 'assets/ninja/ninjaHead.mtl',
+    mtlHref:  './assets/ninja/ninjaHead.mtl',
 
     load: function(mesh) {
 
@@ -51,7 +51,7 @@ export const ninjaHead = {
 export const lavaGround={
     loader: new GLTFLoader(),
 
-    gltfHref: window.location.href + 'assets/lava-2/scene.gltf',
+    gltfHref: './assets/lava-2/scene.gltf',
 
     onLoadFunction: function(gltf){
 
@@ -74,8 +74,8 @@ export const lavaGround={
         var textureLoader = new THREE.TextureLoader();
         //var texture = textureLoader.load( window.location.href + 'assets/lavaModel/textures/Terrain_baseColor.png' );
         //var roughTexture = textureLoader.load( window.location.href + 'assets/lavaModel/textures/Terrain_normal.png' );
-        var texture = textureLoader.load( window.location.href + 'assets/lava-2/textures/Material_26_baseColor.png' );
-        var roughTexture = textureLoader.load( window.location.href + 'assets/lava-2/textures/Material_26_metallicRoughness.png');
+        var texture = textureLoader.load('./assets/lava-2/textures/Material_26_baseColor.png' );
+        var roughTexture = textureLoader.load('./assets/lava-2/textures/Material_26_metallicRoughness.png');
         texture.flipY = false;
 
         this.loader.load( this.gltfHref, (gltf)=>{
@@ -115,8 +115,8 @@ export class SpikeBall{
         this.mesh=params.scene;
         this.manager=new THREE.LoadingManager();
         //this.loaded=false;
-        this.objHref=window.location.href + 'assets/spikeBall/spikeball.obj';
-        this.mtlHref=window.location.href + 'assets/spikeBall/spikeball.mtl';
+        this.objHref= './assets/spikeBall/spikeball.obj';
+        this.mtlHref= './assets/spikeBall/spikeball.mtl';
         this.obj=0;
 
     }
