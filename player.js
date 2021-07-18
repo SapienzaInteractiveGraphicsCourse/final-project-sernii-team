@@ -318,4 +318,8 @@ export class Player {
         this.rightFeet.position.z += -feetDepth * 0.5 ;
     }
 
+    Update(timeElapsed){
+        this.boxHelper.update();
+    }
+
 };

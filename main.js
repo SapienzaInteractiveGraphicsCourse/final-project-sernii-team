@@ -127,10 +127,10 @@ const render= function(timeElapsed) {
     TWEEN.update();
 
     if(!collisionsDetector_.getgameOverFlag()){
-        world_.Update(aTime);
-        //player_.Update(aTime);
+        //world_.Update(aTime);
+        player_.Update(aTime);
         controlManager_.Update(timeElapsed);
-        collisionsDetector_.Update(aTime);
+        //collisionsDetector_.Update(aTime);
     }
     renderer.render(scene, camera);
     requestAnimationFrame(render);
