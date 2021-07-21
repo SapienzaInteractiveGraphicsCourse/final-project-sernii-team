@@ -66,7 +66,7 @@ class WorldObject{
 export class WorldManager {
 
   constructor(params) {
-     this.stalagmites=new THREE.Mesh();
+    this.stalagmites=new THREE.Mesh();
     this.textures=[];
     this.objects = [[],[],[]];
     this.scene = params.scene;
@@ -75,44 +75,8 @@ export class WorldManager {
     this.separation_distance = [SEPARATIONDISTANCE, SEPARATIONDISTANCE, SEPARATIONDISTANCE];
     this.spawn_distance = [SPAWNDISTANCE, SPAWNDISTANCE, SPAWNDISTANCE];
 
-    //lavaGround.load(this.scene);
-    const lavaGeometry = new THREE.PlaneGeometry( LAVA_PLANE_WIDTH, LAVA_PLANE_HEIGHT);
-    const lavaDisplacementMap = new THREE.TextureLoader().load( "./assets/DisplacementMapLava.png" );
-    const lavaNormalMap = new THREE.TextureLoader().load( "./assets/NormalMapLava.png" );
-    //const lavaNormalMap = new THREE.TextureLoader().load( "./assets/NormalMapLava2.png" );
-    //const lavaDisplacementMap = new THREE.TextureLoader().load( "./assets/DisplacementMapLava2.png" );
-
-    const lavaTexture = new THREE.TextureLoader().load( "./assets/lava.jpg" );
-    lavaTexture.wrapS = THREE.RepeatWrapping;
-    lavaTexture.wrapT = THREE.RepeatWrapping;
-    lavaTexture.repeat.set( 200, 200 );
-    lavaTexture.magFilter= THREE.NearestFilter;
-    lavaTexture.minFilter= THREE.NearestFilter;
-    const lavaMaterial = new THREE.MeshStandardMaterial(
-        {
-            map: lavaTexture,
-            normalMap:lavaNormalMap,
-            //bumpMap:lavaNormalMap,
-            displacementMap: lavaDisplacementMap,
-            side: THREE.DoubleSide,
-            //shininess: 0,
-            //emissive: 0xec8058,
-        });
-
-    //const lavaMaterial = new THREE.MeshBasicMaterial( {color: "black", side: THREE.DoubleSide} );
-    const lava=new THREE.Mesh(lavaGeometry,lavaMaterial);
-    lava.roughness=1;
-    lava.receiveShadow = false;
-    lava.position.y+=LAVA_PLANE_Y_POS;
-    lava.rotation.x=Math.PI/2;
-    this.scene.add(lava);
-
-    const rectLight = new THREE.RectAreaLight( 0xff4e01, 1,  1000, 1000 );
-    //rectLight.position.set( 5, 5, 0 );
-    rectLight.rotation.x=Math.PI/2;
-    rectLight.position.y+=-5;
-    rectLight.lookAt( 0, 0, 0 );
-    this.scene.add( rectLight );
+    this.setupLights();
+    this.createLava();
     this.createBridge();
     this. spawnStalagamites();
 
@@ -124,6 +88,111 @@ export class WorldManager {
           stal.loadStal2(this.stalagmites);
       }
       this.scene.add(this.stalagmites);
+
+  }
+
+  setupLights(){
+      //lights
+      //const ambientLight = new THREE.AmbientLight(0x404040);
+      const ambientLight = new THREE.AmbientLight(0xffffff);
+      this.scene.add(ambientLight);
+
+      const dirLight = new THREE.DirectionalLight(0x0000ff);
+      dirLight.position.set(0, 100, 0);
+      //this.scene.add(dirLight);
+
+      const spotLight = new THREE.SpotLight( 0xcf6010 );
+      spotLight.position.set( 10, 30, 0 );
+      //scene.add( spotLight );
+
+      //const light = new THREE.PointLight( 0xff0000, 1, 100 );
+      //light.position.set( 0, 0, 0 );
+      //scene.add( light );
+
+      const skyColor =  0x0F0F0F;  // light blue
+      const groundColor = 0xff4e01;  // brownish orange
+      const intensity = 1;
+      const hemispherelight = new THREE.HemisphereLight(skyColor, groundColor, intensity);
+      this.scene.add(hemispherelight);
+  }
+
+  createLava(){
+      //lavaGround.load(this.scene);
+      const lavaGeometry = new THREE.PlaneGeometry( LAVA_PLANE_WIDTH, LAVA_PLANE_HEIGHT);
+
+      const lavaNormalMap = new THREE.TextureLoader().load( "./assets/lava/normal.jpg" )
+      lavaNormalMap.wrapS = THREE.RepeatWrapping;
+      lavaNormalMap.wrapT = THREE.RepeatWrapping;
+      lavaNormalMap.repeat.set( 100, 100 );
+      lavaNormalMap.magFilter= THREE.NearestFilter;
+      lavaNormalMap.minFilter= THREE.NearestFilter;
+
+      const lavaRoughnessMap = new THREE.TextureLoader().load( "./assets/lava/roughness.jpg" );
+      lavaRoughnessMap.wrapS = THREE.RepeatWrapping;
+      lavaRoughnessMap.wrapT = THREE.RepeatWrapping;
+      lavaRoughnessMap.repeat.set( 100, 100 );
+      lavaRoughnessMap.magFilter= THREE.NearestFilter;
+      lavaRoughnessMap.minFilter= THREE.NearestFilter;
+
+      const lavaColorMap = new THREE.TextureLoader().load( "./assets/lava/color.jpg" );
+      lavaColorMap.wrapS = THREE.RepeatWrapping;
+      lavaColorMap.wrapT = THREE.RepeatWrapping;
+      lavaColorMap.repeat.set( 100, 100 );
+      lavaColorMap.magFilter= THREE.NearestFilter;
+      lavaColorMap.minFilter= THREE.NearestFilter;
+
+
+      const lavaEmissiveMap = new THREE.TextureLoader().load( "./assets/lava/emissive.jpg" );
+      lavaEmissiveMap.wrapS = THREE.RepeatWrapping;
+      lavaEmissiveMap.wrapT = THREE.RepeatWrapping;
+      lavaEmissiveMap.repeat.set( 100, 100 );
+      lavaEmissiveMap.magFilter= THREE.NearestFilter;
+      lavaEmissiveMap.minFilter= THREE.NearestFilter;
+
+      const lavaHeightMap = new THREE.TextureLoader().load( "./assets/lava/height.jpg" );
+      lavaHeightMap.wrapS = THREE.RepeatWrapping;
+      lavaHeightMap.wrapT = THREE.RepeatWrapping;
+      lavaHeightMap.repeat.set( 100, 100 );
+      lavaHeightMap.magFilter= THREE.NearestFilter;
+      lavaHeightMap.minFilter= THREE.NearestFilter
+
+      const lavaAoMap = new THREE.TextureLoader().load( "./assets/lava/ao.jpg" );
+      lavaAoMap.wrapS = THREE.RepeatWrapping;
+      lavaAoMap.wrapT = THREE.RepeatWrapping;
+      lavaAoMap.repeat.set( 100, 100 );
+      lavaAoMap.magFilter= THREE.NearestFilter;
+      lavaAoMap.minFilter= THREE.NearestFilter;
+
+      const lavaMaterial = new THREE.MeshStandardMaterial(
+          {
+              map: lavaColorMap,
+              aoMap: lavaAoMap,
+              normalMap:lavaNormalMap,
+              roughnessMap: lavaRoughnessMap,
+              emissiveMap: lavaEmissiveMap,
+              bumpMap: lavaHeightMap,
+              side: THREE.DoubleSide,
+              //emissiveIntensity: 10,
+              emissive: 0xec8058,
+          });
+
+      //const lavaMaterial = new THREE.MeshBasicMaterial( {color: "black", side: THREE.DoubleSide} );
+      const lava=new THREE.Mesh(lavaGeometry,lavaMaterial);
+      //lava.rotation.x=Math.PI/2;
+      //lava.roughness=1;
+      lava.receiveShadow = false;
+      lava.position.y+=LAVA_PLANE_Y_POS;
+      lava.rotation.x=Math.PI/2;
+      this.scene.add(lava);
+
+      const rectLight = new THREE.RectAreaLight( 0xff4e01, 1,  1000, 1000 );
+      //rectLight.position.set( 5, 5, 0 );
+      rectLight.rotation.x=Math.PI/2;
+      rectLight.position.y-=6;
+      //rectLight.lookAt( 0, 0, 0 );
+      //let helper = new RectAreaLightHelper(rectLight);
+      //rectLight.add(helper);
+      this.scene.add( rectLight );
 
   }
 
@@ -152,12 +221,27 @@ export class WorldManager {
         bridgeTexture.magFilter= THREE.NearestFilter;
         bridgeTexture.minFilter= THREE.NearestFilter;
 
+        let bridgeNormalMap = new THREE.TextureLoader().load( 'assets/bridge/StoneNormalMap.png' );
+        bridgeNormalMap.wrapS = THREE.RepeatWrapping;
+        bridgeNormalMap.wrapT = THREE.RepeatWrapping;
+        bridgeNormalMap.repeat.set( 10, 1 );
+        bridgeNormalMap.magFilter= THREE.NearestFilter;
+        bridgeNormalMap.minFilter= THREE.NearestFilter;
+
+
         let bridgeTextureUp = new THREE.TextureLoader().load( 'assets/bridge/stonetext.jpg' );
         bridgeTextureUp.wrapS = THREE.RepeatWrapping;
         bridgeTextureUp.wrapT = THREE.RepeatWrapping;
-        bridgeTextureUp.repeat.set( 5, 20 );
+        bridgeTextureUp.repeat.set( 5, 50 );
         bridgeTextureUp.magFilter= THREE.NearestFilter;
         bridgeTextureUp.minFilter= THREE.NearestFilter;
+
+        let bridgeNormalUp= new THREE.TextureLoader().load( 'assets/bridge/StoneNormalMap.png' );
+        bridgeNormalUp.wrapS = THREE.RepeatWrapping;
+        bridgeNormalUp.wrapT = THREE.RepeatWrapping;
+        bridgeNormalUp.repeat.set( 5, 50 );
+        bridgeNormalUp.magFilter= THREE.NearestFilter;
+        bridgeNormalUp.minFilter= THREE.NearestFilter;
 
         let bridgeTextureLateralR = new THREE.TextureLoader().load( 'assets/bridge/stonetext.jpg' );
         bridgeTextureLateralR.wrapS = THREE.RepeatWrapping;
@@ -166,6 +250,13 @@ export class WorldManager {
         bridgeTextureLateralR.magFilter= THREE.NearestFilter;
         bridgeTextureLateralR.minFilter= THREE.NearestFilter;
 
+        let bridgeLateralNormalR= new THREE.TextureLoader().load( 'assets/bridge/StoneNormalMap.png' );
+        bridgeLateralNormalR.wrapS = THREE.RepeatWrapping;
+        bridgeLateralNormalR.wrapT = THREE.RepeatWrapping;
+        bridgeLateralNormalR.repeat.set( 40, 1 );
+        bridgeLateralNormalR.magFilter= THREE.NearestFilter;
+        bridgeLateralNormalR.minFilter= THREE.NearestFilter;
+
         let bridgeTextureLateralL = new THREE.TextureLoader().load( 'assets/bridge/stonetext.jpg' );
         bridgeTextureLateralL.wrapS = THREE.RepeatWrapping;
         bridgeTextureLateralL.wrapT = THREE.RepeatWrapping;
@@ -173,19 +264,27 @@ export class WorldManager {
         bridgeTextureLateralL.magFilter= THREE.NearestFilter;
         bridgeTextureLateralL.minFilter= THREE.NearestFilter;
 
+        let bridgeLateralNormalL= new THREE.TextureLoader().load( 'assets/bridge/StoneNormalMap.png' );
+        bridgeLateralNormalL.wrapS = THREE.RepeatWrapping;
+        bridgeLateralNormalL.wrapT = THREE.RepeatWrapping;
+        bridgeLateralNormalL.repeat.set( 40, 1 );
+        bridgeLateralNormalL.magFilter= THREE.NearestFilter;
+        bridgeLateralNormalL.minFilter= THREE.NearestFilter;
+
         const materials = [
-            new THREE.MeshStandardMaterial( {map: bridgeTextureLateralR ,side: THREE.DoubleSide,}),
-            new THREE.MeshStandardMaterial( {map: bridgeTextureLateralL ,side: THREE.DoubleSide,}),
+            new THREE.MeshStandardMaterial( {map: bridgeTextureLateralR ,  normalMap: bridgeLateralNormalR, side: THREE.DoubleSide}),
+            new THREE.MeshStandardMaterial( {map: bridgeTextureLateralL ,  normalMap: bridgeLateralNormalL, side: THREE.DoubleSide}),
             //new THREE.MeshLambertMaterial( { transparent: true, opacity: 0 }),
-            new THREE.MeshStandardMaterial( {map: bridgeTextureUp,side: THREE.DoubleSide,}),
-            new THREE.MeshStandardMaterial( {map: bridgeTextureUp,side: THREE.DoubleSide,}),
-            new THREE.MeshStandardMaterial( {map: bridgeTexture,side: THREE.DoubleSide,}),
-            new THREE.MeshStandardMaterial( {map: bridgeTexture,side: THREE.DoubleSide,}),
+            new THREE.MeshStandardMaterial( {map: bridgeTextureUp, normalMap: bridgeNormalUp, side: THREE.DoubleSide}),
+            new THREE.MeshStandardMaterial( {map: bridgeTextureUp, normalMap: bridgeNormalUp, side: THREE.DoubleSide}),
+            new THREE.MeshStandardMaterial( {map: bridgeTexture, normalMap: bridgeNormalMap, side: THREE.DoubleSide}),
+            new THREE.MeshStandardMaterial( {map: bridgeTexture, normalMap: bridgeNormalMap, side: THREE.DoubleSide}),
         ];
 
         this.bridge=new THREE.Mesh(bridgeGeometry ,materials);
         this.bridge.position.y+=-0.5;
         this.bridge.position.z+=-50;
+
         this.scene.add(this.bridge);
 
         let rotateFlag=false;
@@ -219,6 +318,14 @@ export class WorldManager {
             archTex.magFilter= THREE.NearestFilter;
             archTex.minFilter= THREE.NearestFilter;
 
+            let archNormal = new THREE.TextureLoader().load( 'assets/bridge/StoneNormalMap.png' );
+            archNormal.rotation=Math.PI*0.5;
+            archNormal.wrapS = THREE.RepeatWrapping;
+            archNormal.wrapT = THREE.RepeatWrapping;
+            archNormal.repeat.set( 1, 1 );
+            archNormal.magFilter= THREE.NearestFilter;
+            archNormal.minFilter= THREE.NearestFilter;
+
             let archTexLateral = new THREE.TextureLoader().load( 'assets/bridge/stonetext.jpg' );
             archTexLateral.rotation=Math.PI*0.5;
             archTexLateral.wrapS = THREE.RepeatWrapping;
@@ -227,14 +334,22 @@ export class WorldManager {
             archTexLateral.magFilter= THREE.NearestFilter;
             archTexLateral.minFilter= THREE.NearestFilter;
 
+            let archNormalLateral = new THREE.TextureLoader().load( 'assets/bridge/StoneNormalMap.png' );
+            archNormalLateral.rotation=Math.PI*0.5;
+            archNormalLateral.wrapS = THREE.RepeatWrapping;
+            archNormalLateral.wrapT = THREE.RepeatWrapping;
+            archNormalLateral.repeat.set( 1, 1 );
+            archNormalLateral.magFilter= THREE.NearestFilter;
+            archNormalLateral.minFilter= THREE.NearestFilter;
+
 
             let archMat=[
-                new THREE.MeshStandardMaterial( {map: archTexLateral,side: THREE.DoubleSide,}),
-                new THREE.MeshStandardMaterial( {map: archTex, side: THREE.DoubleSide,}),
+                new THREE.MeshStandardMaterial( {map: archTexLateral, normalMap: archNormalLateral, side: THREE.DoubleSide,}),
+                new THREE.MeshStandardMaterial( {map: archTex, normalMap: archNormal, side: THREE.DoubleSide,}),
                 //new THREE.MeshLambertMaterial( { transparent: true, opacity: 0 }),
-                new THREE.MeshStandardMaterial( {map:archTex, side: THREE.DoubleSide,}),
-                new THREE.MeshStandardMaterial( {map: archTex, side: THREE.DoubleSide,}),
-                new THREE.MeshStandardMaterial( {map: archTex, side: THREE.DoubleSide,}),
+                new THREE.MeshStandardMaterial( {map:archTex, normalMap: archNormal, side: THREE.DoubleSide,}),
+                new THREE.MeshStandardMaterial( {map: archTex,normalMap: archNormal, side: THREE.DoubleSide,}),
+                new THREE.MeshStandardMaterial( {map: archTex, normalMap: archNormal, side: THREE.DoubleSide,}),
             ]
             let archGeometry = new THREE.ExtrudeGeometry(arch, extrudeSettings);
             let mesh= new THREE.Mesh(archGeometry, archMat);
@@ -285,6 +400,13 @@ export class WorldManager {
         leftArmRestTex.magFilter= THREE.NearestFilter;
         leftArmRestTex.minFilter= THREE.NearestFilter;
 
+        let leftArmRestNormalMap= new THREE.TextureLoader().load( 'assets/bridge/restArmStonNMap.jpg' );
+        leftArmRestNormalMap.wrapS = THREE.RepeatWrapping;
+        leftArmRestNormalMap.wrapT = THREE.RepeatWrapping;
+        leftArmRestNormalMap.repeat.set( 0.08, 5 );
+        leftArmRestNormalMap.magFilter= THREE.NearestFilter;
+        leftArmRestNormalMap.minFilter= THREE.NearestFilter;
+
         let leftArmRestTex2 = new THREE.TextureLoader().load( 'assets/bridge/restArmStone.jpg' );
         leftArmRestTex2.wrapS = THREE.RepeatWrapping;
         leftArmRestTex2.wrapT = THREE.RepeatWrapping;
@@ -292,15 +414,23 @@ export class WorldManager {
         leftArmRestTex2.magFilter= THREE.NearestFilter;
         leftArmRestTex2.minFilter= THREE.NearestFilter;
 
+        let leftArmRestNormalMap2= new THREE.TextureLoader().load( 'assets/bridge/restArmStonNMap.jpg' );
+        leftArmRestNormalMap2.wrapS = THREE.RepeatWrapping;
+        leftArmRestNormalMap2.wrapT = THREE.RepeatWrapping;
+        leftArmRestNormalMap2.repeat.set( 0.05, 0.05 );
+        leftArmRestNormalMap2.magFilter= THREE.NearestFilter;
+        leftArmRestNormalMap2.minFilter= THREE.NearestFilter;
+
         let leftArmRestMat=[
-            new THREE.MeshStandardMaterial( {map: leftArmRestTex2 ,side: THREE.DoubleSide,}),
-            new THREE.MeshStandardMaterial( {map: leftArmRestTex, side: THREE.DoubleSide,}),
+            new THREE.MeshStandardMaterial( {map: leftArmRestTex2,normalMap: leftArmRestNormalMap2, side: THREE.DoubleSide,}),
+            new THREE.MeshStandardMaterial( {map: leftArmRestTex, normalMap: leftArmRestNormalMap, side: THREE.DoubleSide,}),
             //new THREE.MeshLambertMaterial( { transparent: true, opacity: 0 }),
-            new THREE.MeshStandardMaterial( {map: leftArmRestTex, side: THREE.DoubleSide,}),
-            new THREE.MeshStandardMaterial( {map:leftArmRestTex, side: THREE.DoubleSide,}),
-            new THREE.MeshStandardMaterial( {map:leftArmRestTex, side: THREE.DoubleSide,}),
-            new THREE.MeshStandardMaterial( {map:leftArmRestTex, side: THREE.DoubleSide,}),
+            new THREE.MeshStandardMaterial( {map: leftArmRestTex, normalMap: leftArmRestNormalMap, side: THREE.DoubleSide,}),
+            new THREE.MeshStandardMaterial( {map:leftArmRestTex, normalMap: leftArmRestNormalMap, side: THREE.DoubleSide,}),
+            new THREE.MeshStandardMaterial( {map:leftArmRestTex, normalMap: leftArmRestNormalMap, side: THREE.DoubleSide,}),
+            new THREE.MeshStandardMaterial( {map:leftArmRestTex, normalMap: leftArmRestNormalMap, side: THREE.DoubleSide,}),
         ];
+
         mesh = new THREE.Mesh( leftArmRest, leftArmRestMat );
         mesh.rotation.z=Math.PI/2;
         mesh.position.x+=-4+0.45;
@@ -321,6 +451,13 @@ export class WorldManager {
         rightArmRestTex.magFilter= THREE.NearestFilter;
         rightArmRestTex.minFilter= THREE.NearestFilter;
 
+        let rightArmRestNormalMap= new THREE.TextureLoader().load( 'assets/bridge/restArmStonNMap.jpg' );
+        rightArmRestNormalMap.wrapS = THREE.RepeatWrapping;
+        rightArmRestNormalMap.wrapT = THREE.RepeatWrapping;
+        rightArmRestNormalMap.repeat.set( 0.08, 5 );
+        rightArmRestNormalMap.magFilter= THREE.NearestFilter;
+        rightArmRestNormalMap.minFilter= THREE.NearestFilter;
+
         let rightArmRestTex2 = new THREE.TextureLoader().load( 'assets/bridge/restArmStone.jpg' );
         rightArmRestTex2.wrapS = THREE.RepeatWrapping;
         rightArmRestTex2.wrapT = THREE.RepeatWrapping;
@@ -328,14 +465,21 @@ export class WorldManager {
         rightArmRestTex2.magFilter= THREE.NearestFilter;
         rightArmRestTex2.minFilter= THREE.NearestFilter;
 
+        let rightArmRestNormalMap2= new THREE.TextureLoader().load( 'assets/bridge/restArmStonNMap.jpg' );
+        rightArmRestNormalMap2.wrapS = THREE.RepeatWrapping;
+        rightArmRestNormalMap2.wrapT = THREE.RepeatWrapping;
+        rightArmRestNormalMap2.repeat.set( 0.05, 0.05 );
+        rightArmRestNormalMap2.magFilter= THREE.NearestFilter;
+        rightArmRestNormalMap2.minFilter= THREE.NearestFilter;
+
         let rightArmRestMat=[
-            new THREE.MeshStandardMaterial( {map: rightArmRestTex2 ,side: THREE.DoubleSide,}),
-            new THREE.MeshStandardMaterial( {map: rightArmRestTex, side: THREE.DoubleSide,}),
+            new THREE.MeshStandardMaterial( {map: rightArmRestTex2, normalMap: rightArmRestNormalMap2, side: THREE.DoubleSide,}),
+            new THREE.MeshStandardMaterial( {map: rightArmRestTex, normalMap: rightArmRestNormalMap, side: THREE.DoubleSide,}),
             //new THREE.MeshLambertMaterial( { transparent: true, opacity: 0 }),
-            new THREE.MeshStandardMaterial( {map: rightArmRestTex, side: THREE.DoubleSide,}),
-            new THREE.MeshStandardMaterial( {map:rightArmRestTex, side: THREE.DoubleSide,}),
-            new THREE.MeshStandardMaterial( {map:rightArmRestTex, side: THREE.DoubleSide,}),
-            new THREE.MeshStandardMaterial( {map:rightArmRestTex, side: THREE.DoubleSide,}),
+            new THREE.MeshStandardMaterial( {map: rightArmRestTex, normalMap: rightArmRestNormalMap, side: THREE.DoubleSide,}),
+            new THREE.MeshStandardMaterial( {map:rightArmRestTex, normalMap: rightArmRestNormalMap, side: THREE.DoubleSide,}),
+            new THREE.MeshStandardMaterial( {map:rightArmRestTex, normalMap: rightArmRestNormalMap, side: THREE.DoubleSide,}),
+            new THREE.MeshStandardMaterial( {map:rightArmRestTex, normalMap: rightArmRestNormalMap, side: THREE.DoubleSide,}),
         ];
 
         let mesh2 = new THREE.Mesh( rightArmRest, rightArmRestMat ) ;

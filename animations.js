@@ -49,6 +49,7 @@ export class AnimationManager{
 
     stopRunning(){
         this.initialRunTween.stop();
+        this.stopTrumbling();
     }
 
     startRunning(){
