@@ -83,7 +83,7 @@ export class WorldManager {
   }
 
   spawnStalagamites(){
-      for(let i=0; i<50; i++){
+      for(let i=0; i<30; i++){
           let stal=new Stalagmites();
           stal.loadStal2(this.stalagmites);
       }
@@ -185,8 +185,8 @@ export class WorldManager {
       lava.rotation.x=Math.PI/2;
       this.scene.add(lava);
 
-      const rectLight = new THREE.RectAreaLight( 0xff4e01, 1,  1000, 1000 );
-      //rectLight.position.set( 5, 5, 0 );
+      const rectLight = new THREE.RectAreaLight( 0xff4e01, 1,  100, 100 );
+      rectLight.position.set( 0, 0, 0 );
       rectLight.rotation.x=Math.PI/2;
       rectLight.position.y-=6;
       //rectLight.lookAt( 0, 0, 0 );
