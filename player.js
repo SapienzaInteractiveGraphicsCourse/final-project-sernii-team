@@ -93,6 +93,10 @@ export class Player {
 
     }
 
+    getCharacterPosition(){
+        return this.waist.position;
+    }
+
     getCharacterParts(){
 
         return{

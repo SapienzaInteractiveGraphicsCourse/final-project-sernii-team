@@ -138,13 +138,10 @@ export class SpikeBall{
             objLoader.load(this.objHref, (obj) => {
                 this.obj=obj;
                 this.mesh.add(obj);
-                //obj.position.set(0,0,0.1);
-                //obj.position.x+=0.05;
-                //obj.position.z+=0.1;
-                //obj.scale.set(0.2,0.2,0.2);
-                //obj.rotation.y=(Math.PI/2);
-                //const box = new THREE.Box3().setFromObject(obj);
-                //const boxSize = box.getSize(new THREE.Vector3());
+                obj.scale.set(0.7,0.6,0.7);
+                const box = new THREE.Box3().setFromObject(obj);
+                const boxSize = box.getSize(new THREE.Vector3());
+                obj.position.y+=0.5*boxSize.y;
                 //const boxCenter = box.getCenter(new THREE.Vector3());
                 //console.log(boxSize);
                 //console.log(boxCenter);
@@ -152,4 +149,74 @@ export class SpikeBall{
             });
         });
     }
+}
+
+export class Stalagmites{
+
+    constructor(){
+        this.loader=new GLTFLoader();
+        this.gltfHref='./assets/stalagmites/scene.gltf';
+    }
+
+    onLoadFunction(gltf){
+
+        scene.add(gltf.scene);
+
+        gltf.animations; // Array<THREE.AnimationClip>
+        gltf.scene; // THREE.Group
+        gltf.scenes; // Array<THREE.Group>
+        gltf.cameras; // Array<THREE.Camera>
+        gltf.asset; // Object
+
+    }
+
+    onProgressFunction(xhr){
+
+    }
+
+    loadStal2(scene){
+
+        function getRandomArbitrary(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function dumpObject(obj, lines = [], isLast = true, prefix = '') {
+            const localPrefix = isLast ? '└─' : '├─';
+            lines.push(`${prefix}${prefix ? localPrefix : ''}${obj.name || '*no-name*'} [${obj.type}]`);
+            const newPrefix = prefix + (isLast ? '  ' : '│ ');
+            const lastNdx = obj.children.length - 1;
+            obj.children.forEach((child, ndx) => {
+            const isLast = ndx === lastNdx;
+            dumpObject(child, lines, isLast, newPrefix);
+            });
+            return lines;
+        }
+        //var textureLoader = new THREE.TextureLoader();
+        //var texture = textureLoader.load( './assets/stalagmites/textures/stalagmite_baseColor.png' );
+        //var normalTexture = textureLoader.load( './assets/stalagmites/textures/stalagmite_normal.png' );
+        //texture.flipY = false;
+
+
+        this.loader.load( this.gltfHref, (gltf)=>{
+            //gltf.scene.scale.set(0.3,0,0.3);
+            //console.log(gltf.scene);
+            let root = gltf.scene;
+            let stalagmite = root.getObjectByName('stalagmite_2');
+            stalagmite.rotation.z=Math.PI;
+            stalagmite.position.y+=getRandomArbitrary(50, 100);
+            stalagmite.position.x+=getRandomArbitrary(-100, 300);
+            stalagmite.position.z+=getRandomArbitrary(-200, 5);
+            stalagmite.scale.set(getRandomArbitrary(0.2, 0.5),getRandomArbitrary(0.2, 0.5),getRandomArbitrary(0.2, 0.5));
+            scene.add(stalagmite);
+
+
+            //console.log(dumpObject(root).join('\n'));
+
+        }, this.onProgressFunction );
+
+
+    }
+
+
+
 }

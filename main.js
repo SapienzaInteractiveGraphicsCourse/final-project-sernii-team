@@ -15,6 +15,10 @@ const canvas = document.getElementById('game-canvas');
 
 //Scene
 const scene = new THREE.Scene();
+scene.background=new THREE.Color( 0x181818 );
+//const texture = new THREE.TextureLoader().load( './assets/cave_background/back_cave.png' );
+//const material = new THREE.MeshBasicMaterial( { map: texture } );
+//scene.background=texture;
 
 //camera
 const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.001, 1000);
@@ -37,7 +41,7 @@ cameraPositionFolder.add(camera.position, "z", -10, Math.PI * 10);
 
 //lights
 //const ambientLight = new THREE.AmbientLight(0x404040);
-const ambientLight = new THREE.AmbientLight(0xff4e01);
+const ambientLight = new THREE.AmbientLight(0xffffff);
 scene.add(ambientLight);
 
 const dirLight = new THREE.DirectionalLight(0xffffff);
@@ -61,11 +65,13 @@ const hemispherelight = new THREE.HemisphereLight(skyColor, groundColor, intensi
 const size = 100;
 const divisions = 100;
 
+/*
 const gridHelper = new THREE.GridHelper(size, divisions);
 scene.add(gridHelper);
 
 const axesHelper = new THREE.AxesHelper(5);
 scene.add(axesHelper);
+*/
 
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas
@@ -93,6 +99,7 @@ const collisionsDetector_ = new CollisionsDetector({
 
 const controlManager_= new ControlManager({
     animationManager: animationManager_,
+    player: player_,
 })
 
 
@@ -138,6 +145,7 @@ const render= function(timeElapsed) {
 };
 
 requestAnimationFrame(render);
+
 
 }
 

@@ -5,6 +5,9 @@ export class ControlManager{
     constructor(params){
 
         this.animationManager=params.animationManager;
+        this.player=params.player;
+        this.playerPos=this.player.getCharacterPosition();
+        console.log(this.player.getCharacterPosition());
 
         this.InitInput();
 
@@ -71,48 +74,50 @@ export class ControlManager{
 
     Update(timeElapsed) {
 
-        if (!this.keys_.spacebar && !this.animationManager.getJumpingFlag()) {
+        if (!this.keys_.spacebar && !this.animationManager.getJumpingFlag()){
 
             if(!this.animationManager.getRunnintFlag()){
                 this.animationManager.startRunning();
             }
+
+            if (this.keys_.arrowR_d) {
+
+                switch (this.playerPos.x) {
+
+                    case 0:
+                        this.animationManager.rightDashTo2();
+                    break;
+
+                    case -2:
+                        this.animationManager.rightDashTo0();
+                    break;
+
+                    default:
+                    break;
+                }
+            }
+            else if (this.keys_.arrowL_a) {
+
+                switch (this.playerPos.x) {
+
+                    case 0:
+                        this.animationManager.leftDashToMinus2();
+                    break;
+
+                    case 2:
+                        this.animationManager.leftDashTo0();
+                    break;
+
+                    default:
+                    break;
+                }
+            }
         }
 
         else if (this.keys_.spacebar && !this.animationManager.getJumpingFlag()) {
-          //this.velocity = 30;
           this.animationManager.stopRunning();
-          //this.animationManager.basicPosAnimation();
           this.animationManager.jumpAnimation();
         }
 
-        /*
-        const acceleration = -100 * timeElapsed;
-
-        this.position.y += timeElapsed * (
-          this.velocity + acceleration * 0.5);
-        this.position.y = Math.max(this.position.y, INITIAL_Y_POS);
-
-        this.velocity += acceleration;
-        this.velocity = Math.max(this.velocity, -100);
-
-
-        //se non si è in volo e neanche a destra o sinistra
-        //quando in scivolatà servirà una condizione ulteriore
-        if (this.position.y == INITIAL_Y_POS) {
-          if (this.keys_.arrowR_d) {
-            this.position.x = RIGHT_DASH;
-          } else if (this.keys_.arrowL_a) {
-            this.position.x = LEFT_DASH;
-          } else {
-            this.position.x = INITIAL_X_POS;
-          }
-
-        }
-
-        //this.character.position.copy(this.position);
-        //this.boxHelper.update();
-        //preferisco farlo nel collider manager
-        //this.characterBox.setFromObject(this.character);
-        */
     }
 }

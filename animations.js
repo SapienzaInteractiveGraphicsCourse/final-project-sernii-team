@@ -42,6 +42,7 @@ export class AnimationManager{
         this.runninFlag=false;
 
         this.loadRunAnimation();
+        this.trumblingAnimation();
         //this.initialRunTween= new TWEEN.Tween();
 
     }
@@ -52,6 +53,15 @@ export class AnimationManager{
 
     startRunning(){
         this.initialRunTween.start();
+        this.startTrumbling();
+    }
+
+    startTrumbling(){
+        this.trumbling.start();
+    }
+
+    stopTrumbling(){
+        this.trumbling.stop();
     }
 
     getJumpingFlag(){
@@ -121,7 +131,7 @@ export class AnimationManager{
                                 this.leftFeetRoot.rotation,
                                 this.rightFeetRoot.rotation,
                             ])
-        .to([{x:0, y: 0, z:0},{x:0, y: 0, z:0},{x:0, y: 0, z:0},{x:0, y: 0, z:0} ,{x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0},
+        .to([{x:0, y: 0, z:0},{ y: 0, z:0},{x:0, y: 0, z:0},{x:0, y: 0, z:0} ,{x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0},
         {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}], 100)
         .easing(TWEEN.Easing.Linear.None);
 
@@ -255,6 +265,29 @@ export class AnimationManager{
 
     }
 
+    trumblingAnimation(){
+        this.trumbling=new TWEEN.Tween([
+
+                                this.waist.rotation,
+
+                            ])
+        .to([{y: -Math.PI/26}], 300)
+        .easing(TWEEN.Easing.Sinusoidal.Out);
+
+        let trumbling2=new TWEEN.Tween([
+
+                                this.waist.rotation,
+
+
+                            ])
+        .to([{y: Math.PI/26}], 300)
+        .easing(TWEEN.Easing.Sinusoidal.Out)
+        //.delay(600);
+
+        this.trumbling.chain(trumbling2);
+        trumbling2.chain(this.trumbling);
+    }
+
     loadRunAnimation(){
         this.initialRunTween= new TWEEN.Tween([
 
@@ -288,7 +321,7 @@ export class AnimationManager{
 
         let runPos1=new TWEEN.Tween([
 
-                                this.waist.rotation,
+                                //this.waist.rotation,
 
                                 this.upperLeftArmRoot.rotation,
                                 this.upperRightArmRoot.rotation,
@@ -302,7 +335,7 @@ export class AnimationManager{
                                 this.leftFeetRoot.rotation,
                                 this.rightFeetRoot.rotation,
                             ])
-        .to([{y: -Math.PI/26},
+        .to([//{y: -Math.PI/26},
             {x: -Math.PI/6},{x:-Math.PI/5},
             {x: Math.PI/2},{x: -Math.PI/4},
             {x: -Math.PI/6}, {x: 0},
@@ -311,7 +344,7 @@ export class AnimationManager{
 
         let runPos2=new TWEEN.Tween([
 
-                                this.waist.rotation,
+                                //this.waist.rotation,
 
                                 this.upperLeftArmRoot.rotation,
                                 this.upperRightArmRoot.rotation,
@@ -325,7 +358,7 @@ export class AnimationManager{
                                 this.leftFeetRoot.rotation,
                                 this.rightFeetRoot.rotation,
                             ])
-        .to([{y: Math.PI/26},
+        .to([//{y: Math.PI/26},
             {x: -Math.PI/5},{x: -Math.PI/6},
             {x: -Math.PI/6},{x: 0},
              {x: Math.PI/2}, {x: -Math.PI/4},
@@ -338,7 +371,99 @@ export class AnimationManager{
         runPos1.chain(runPos2);
         runPos2.chain(runPos1);
 
+
     }
 
+    rightDashTo2(){
+        this.stopTrumbling();
+        let dashStart= new TWEEN.Tween([
+                                this.waist.position,
+                                this.waist.rotation,
+
+                            ])
+        .to([{x: 2},{y:Math.PI/6}], 300)
+        .easing(TWEEN.Easing.Cubic.Out);
+        //.start();
+
+        let dashEnd= new TWEEN.Tween([
+                                this.waist.rotation,
+
+                            ])
+        .to([{y:0}], 200)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .onComplete(()=>{
+            this.startTrumbling();
+        })
+        dashStart.chain(dashEnd);
+        dashStart.start();
+    }
+
+    rightDashTo0(){
+        this.stopTrumbling();
+        let dashStart= new TWEEN.Tween([
+                                this.waist.position,
+                                this.waist.rotation,
+                            ])
+        .to([{x: 0},{y:Math.PI/6}], 300)
+        .easing(TWEEN.Easing.Cubic.Out)
+
+        let dashEnd= new TWEEN.Tween([
+                                this.waist.rotation,
+
+                            ])
+        .to([{y:0}], 200)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .onComplete(()=>{
+            this.startTrumbling();
+        })
+        dashStart.chain(dashEnd);
+        dashStart.start();
+
+    }
+
+    leftDashToMinus2(){
+        this.stopTrumbling();
+        let dashStart= new TWEEN.Tween([
+                                this.waist.position,
+                                this.waist.rotation,
+
+                            ])
+        .to([{x: -2},{y:-Math.PI/6},], 300)
+        .easing(TWEEN.Easing.Cubic.Out)
+
+        let dashEnd= new TWEEN.Tween([
+                                this.waist.rotation,
+
+                            ])
+        .to([{y:0}], 200)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .onComplete(()=>{
+            this.startTrumbling();
+        })
+        dashStart.chain(dashEnd);
+        dashStart.start();
+    }
+
+    leftDashTo0(){
+        this.stopTrumbling();
+        let dashStart= new TWEEN.Tween([
+                                this.waist.position,
+                                this.waist.rotation,
+                            ])
+        .to([{x: 0},{y:-Math.PI/6}], 300)
+        .easing(TWEEN.Easing.Cubic.Out)
+
+        let dashEnd= new TWEEN.Tween([
+                                this.waist.rotation,
+
+                            ])
+        .to([{y:0}], 200)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .onComplete(()=>{
+            this.startTrumbling();
+        })
+        dashStart.chain(dashEnd);
+        dashStart.start();
+    }
 
 }
