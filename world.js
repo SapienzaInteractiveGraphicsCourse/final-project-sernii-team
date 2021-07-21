@@ -97,13 +97,27 @@ export class WorldManager {
       const ambientLight = new THREE.AmbientLight(0xffffff);
       this.scene.add(ambientLight);
 
-      const dirLight = new THREE.DirectionalLight(0x0000ff);
-      dirLight.position.set(0, 100, 0);
-      //this.scene.add(dirLight);
+      /*this.dirLight = new THREE.DirectionalLight(0xffffff);
+      this.dirLight.castShadow=true;
+      this.dirLight.position.set(0, 10, 2);
+      this.dirLight.lookAt(0,0,0);
+      this.dirLight.shadow.camera.near=1;
+      this.dirLight.shadow.camera.far=15;
+      //dirLight.shadow.camera.left=1;
+      //dirLight.shadow.camera.right=1;
+      //dirLight.shadow.camera.top=1;
+     // dirLight.shadow.camera.bottom=1;
+      /*const cameraHelper = new THREE.CameraHelper(dirLight.shadow.camera);
+      this.scene.add(cameraHelper);
+
+      const helper = new THREE.DirectionalLightHelper(dirLight);
+      this.scene.add(helper);*/
+
+      //this.scene.add(this.dirLight);
 
       const spotLight = new THREE.SpotLight( 0xcf6010 );
-      spotLight.position.set( 10, 30, 0 );
-      //scene.add( spotLight );
+      spotLight.position.set( 0, 10, 0 );
+      this.scene.add( spotLight );
 
       //const light = new THREE.PointLight( 0xff0000, 1, 100 );
       //light.position.set( 0, 0, 0 );
@@ -180,15 +194,17 @@ export class WorldManager {
       const lava=new THREE.Mesh(lavaGeometry,lavaMaterial);
       //lava.rotation.x=Math.PI/2;
       //lava.roughness=1;
-      lava.receiveShadow = false;
+      //lava.receiveShadow = false;
       lava.position.y+=LAVA_PLANE_Y_POS;
       lava.rotation.x=Math.PI/2;
+      lava.receiveShadow=true;
       this.scene.add(lava);
 
-      const rectLight = new THREE.RectAreaLight( 0xff4e01, 1,  100, 100 );
+      const rectLight = new THREE.RectAreaLight( 0xff4e01, 1,  100, 200 );
       rectLight.position.set( 0, 0, 0 );
       rectLight.rotation.x=Math.PI/2;
       rectLight.position.y-=6;
+      rectLight.position.z-=50;
       //rectLight.lookAt( 0, 0, 0 );
       //let helper = new RectAreaLightHelper(rectLight);
       //rectLight.add(helper);
@@ -282,6 +298,8 @@ export class WorldManager {
         ];
 
         this.bridge=new THREE.Mesh(bridgeGeometry ,materials);
+        //this.bridge.castShadow=true;
+        this.bridge.receiveShadow=true;
         this.bridge.position.y+=-0.5;
         this.bridge.position.z+=-50;
 

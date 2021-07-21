@@ -29,12 +29,16 @@ export const ninjaHead = {
             objLoader.setMaterials(mtl);
             objLoader.load(ninjaHead.objHref, (obj) => {
                 this.obj=obj;
-                mesh.add(obj);
-                //obj.position.set(0,0,0.1);
                 obj.position.x+=0.05;
                 obj.position.z+=0.1;
                 obj.scale.set(0.2,0.2,0.2);
                 obj.rotation.y=(Math.PI/2);
+                obj.traverse(( node )=>{
+                    if ( node instanceof THREE.Mesh ) {
+                        node.castShadow = true;
+                    }
+                });
+                mesh.add(obj);
                 //const box = new THREE.Box3().setFromObject(obj);
                 //const boxSize = box.getSize(new THREE.Vector3());
                 //const boxCenter = box.getCenter(new THREE.Vector3());

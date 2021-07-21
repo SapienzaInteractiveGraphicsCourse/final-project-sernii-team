@@ -3,7 +3,7 @@ import * as THREE from './libs/three.module.js';
 
 export class AnimationManager{
 
-    constructor(params) {
+    constructor(params){
 
         this.character= params.character;
         this.waist= params.waist;
@@ -132,7 +132,7 @@ export class AnimationManager{
                                 this.leftFeetRoot.rotation,
                                 this.rightFeetRoot.rotation,
                             ])
-        .to([{x:0, y: 0, z:0},{ y: 0, z:0},{x:0, y: 0, z:0},{x:0, y: 0, z:0} ,{x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0},
+        .to([{x:0, y: 0, z:0},{ y: 0},{x:0, y: 0, z:0},{x:0, y: 0, z:0} ,{x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0},
         {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}], 100)
         .easing(TWEEN.Easing.Linear.None);
 
@@ -465,6 +465,119 @@ export class AnimationManager{
         })
         dashStart.chain(dashEnd);
         dashStart.start();
+    }
+
+    fallAnimation(){
+        this.stopRunning();
+        this.stopTrumbling();
+
+        let standardPos= new TWEEN.Tween([
+                                this.neckRoot.rotation,
+                                this.waist.position,
+                                this.waist.rotation,
+
+                                this.torso.position,
+
+                                this.upperLeftArmRoot.rotation,
+                                this.lowerLeftArmRoot.rotation,
+
+                                this.upperRightArmRoot.rotation,
+                                this.lowerRightArmRoot.rotation,
+
+                                this.upperLeftLegRoot.rotation,
+                                this.lowerLeftLegRoot.rotation,
+
+                                this.upperRightLegRoot.rotation,
+                                this.lowerRightLegRoot.rotation,
+
+                                this.leftFeetRoot.rotation,
+                                this.rightFeetRoot.rotation,
+                            ])
+        .to([{x:0, y: 0, z:0},{ y: 0, z:4},{x:0, y: 0, z:0},{x:0, y: 0, z:0} ,{x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0},
+        {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}], 100)
+        .easing(TWEEN.Easing.Linear.None)
+
+        let standardPo2= new TWEEN.Tween([
+                                this.neckRoot.rotation,
+                                this.waist.rotation,
+
+                                this.torso.rotation,
+
+                                this.upperLeftArmRoot.rotation,
+                                this.lowerLeftArmRoot.rotation,
+
+                                this.upperRightArmRoot.rotation,
+                                this.lowerRightArmRoot.rotation,
+
+                                this.upperLeftLegRoot.rotation,
+                                this.lowerLeftLegRoot.rotation,
+
+                                this.upperRightLegRoot.rotation,
+                                this.lowerRightLegRoot.rotation,
+
+                                this.leftFeetRoot.rotation,
+                                this.rightFeetRoot.rotation,
+                            ])
+        .to([{x:0, y: THREE.MathUtils.degToRad(10), x:THREE.MathUtils.degToRad(50)}, {x:0, y:0, z:0},
+            {x:0, y:  THREE.MathUtils.degToRad(5), z:0} ,
+            {x:THREE.MathUtils.degToRad(140), y: 0, z:THREE.MathUtils.degToRad(-20)}, {x:0, y: 0, z:THREE.MathUtils.degToRad(20)},
+            {x:THREE.MathUtils.degToRad(220), y: 0, z:THREE.MathUtils.degToRad(40)}, {x:0, y: 0, z:THREE.MathUtils.degToRad(-30)},
+            {x:THREE.MathUtils.degToRad(30), y: 0, z:THREE.MathUtils.degToRad(5)}, {x:THREE.MathUtils.degToRad(-30), y: 0, z:0},
+            {x:THREE.MathUtils.degToRad(-30), y: 0, z:THREE.MathUtils.degToRad(5)}, {x:0, y: 0, z:0},
+            {x:THREE.MathUtils.degToRad(20), y: 0, z:0}, {x:THREE.MathUtils.degToRad(-20), y: 0, z:0}], 500)
+        .easing(TWEEN.Easing.Linear.None)
+
+        let standardPo3= new TWEEN.Tween([
+                                this.neckRoot.rotation,
+                                this.waist.rotation,
+
+                                this.torso.rotation,
+
+                                this.upperLeftArmRoot.rotation,
+                                this.lowerLeftArmRoot.rotation,
+
+                                this.upperRightArmRoot.rotation,
+                                this.lowerRightArmRoot.rotation,
+
+                                this.upperLeftLegRoot.rotation,
+                                this.lowerLeftLegRoot.rotation,
+
+                                this.upperRightLegRoot.rotation,
+                                this.lowerRightLegRoot.rotation,
+
+                                this.leftFeetRoot.rotation,
+                                this.rightFeetRoot.rotation,
+                            ])
+        .to([{x:0, y: THREE.MathUtils.degToRad(10), x:THREE.MathUtils.degToRad(50)}, {x:0, y:0, z:0},
+            {x:0, y:  THREE.MathUtils.degToRad(-5), z:0} ,
+
+            {x:THREE.MathUtils.degToRad(220), y:0, z:THREE.MathUtils.degToRad(-30)}, {x:0, y: 0, z:THREE.MathUtils.degToRad(20)},
+            {x:THREE.MathUtils.degToRad(160), y: 0, z:THREE.MathUtils.degToRad(30)}, {x:0, y: 0, z:THREE.MathUtils.degToRad(-30)},
+
+            {x:THREE.MathUtils.degToRad(-30), y: 0, z:THREE.MathUtils.degToRad(-5)}, {x:0, y: 0, z:0},
+            {x:THREE.MathUtils.degToRad(30), y: 0, z:THREE.MathUtils.degToRad(-5)}, {x:THREE.MathUtils.degToRad(-30), y: 0, z:0},
+            {x:THREE.MathUtils.degToRad(-20), y: 0, z:0}, {x:THREE.MathUtils.degToRad(20), y: 0, z:0}], 500)
+        .easing(TWEEN.Easing.Linear.None)
+
+        let gravity= new TWEEN.Tween([
+                                this.waist.position,
+
+                            ])
+        .to([{y: -5},], 2000)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .delay(500);
+
+
+
+        standardPos.chain(standardPo2);
+        standardPo2.chain(standardPo3);
+        standardPo3.chain(standardPo2);
+        standardPos.start();
+        gravity.start();
+
+
+
+
     }
 
 }

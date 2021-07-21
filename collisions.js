@@ -1,4 +1,5 @@
 import * as THREE from './libs/three.module.js';
+
 const Right=0;
 const Left=1;
 const Center=2;
@@ -10,7 +11,13 @@ export class CollisionsDetector{
     constructor(params){
 
         this.player=params.player;
+        let parts=this.player.getCharacterParts();
+        this.waist=parts.waist;
+
         this.world=params.world;
+
+        this.animationManager=params.animationManager;
+
         this.detected={};
         this.gameOverFlag=false;
         this.invulnerableFlag=false;
@@ -33,6 +40,8 @@ export class CollisionsDetector{
 
         if(Object.keys(this.detected).length==3){
             this.gameOverFlag=true;
+            this.animationManager.fallAnimation();
+
         }
         if(!this.invulnerableFlag){
             if(!this.gameOverFlag){
@@ -117,6 +126,11 @@ export class CollisionsDetector{
 
 
                     }
+                }
+
+                if(collisionDetected){
+                    console.log("?")
+                    this.waist.position.z+=1;
                 }
             }
         }

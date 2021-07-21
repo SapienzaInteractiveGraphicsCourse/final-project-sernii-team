@@ -88,6 +88,13 @@ export class Player {
 
         this.AnimationManager=params.AnimationManager
 
+        this.dirLight = new THREE.DirectionalLight(0xffffff);
+        this.dirLight.castShadow=true;
+        this.dirLight.position.set(0, 10, 2);
+        this.dirLight.lookAt(0,0,0);
+        this.dirLight.shadow.camera.near=1;
+        this.dirLight.shadow.camera.far=25;
+        this.scene.add(this.dirLight);
         //this.InitInput();
 
 
@@ -147,37 +154,37 @@ export class Player {
 
         //BUILD CHARACTER
         //hierachical model
-        this.neckMat = new THREE.MeshPhongMaterial({
+        this.neckMat = new THREE.MeshStandardMaterial({
           color: "black"
         });
-        this.rootMat = new THREE.MeshPhongMaterial({
+        this.rootMat = new THREE.MeshStandardMaterial({
           color: "black"
         });
-        this.headMat = new THREE.MeshPhongMaterial({
+        this.headMat = new THREE.MeshStandardMaterial({
           color: "black"
         });
-        this.torsoMat = new THREE.MeshPhongMaterial({
+        this.torsoMat = new THREE.MeshStandardMaterial({
           color: "black"
         });
-        this.legMat = new THREE.MeshPhongMaterial({
+        this.legMat = new THREE.MeshStandardMaterial({
           color: "black"
         });
-        this.upperArmMat = new THREE.MeshPhongMaterial({
+        this.upperArmMat = new THREE.MeshStandardMaterial({
           color: "black"
         });
-        this.lowerArmMat = new THREE.MeshPhongMaterial({
+        this.lowerArmMat = new THREE.MeshStandardMaterial({
           color: "black"
         });
-        this.upperLegMat = new THREE.MeshPhongMaterial({
+        this.upperLegMat = new THREE.MeshStandardMaterial({
           color: "black"
         });
-        this.lowerLegMat = new THREE.MeshPhongMaterial({
+        this.lowerLegMat = new THREE.MeshStandardMaterial({
           color: "black"
         });
-        this.handMat = new THREE.MeshPhongMaterial({
+        this.handMat = new THREE.MeshStandardMaterial({
           color: "black"
         });
-        this.feetMat = new THREE.MeshPhongMaterial({
+        this.feetMat = new THREE.MeshStandardMaterial({
           color: "black"
         });
 
@@ -199,6 +206,7 @@ export class Player {
 
         this.character = new THREE.Object3D();
         this.waist = new THREE.Object3D();
+        //this.waist.castShadow=true;
         //this.torsoRoot = new THREE.Object3D();
         this.neckRoot = new THREE.Mesh(this.neckGeo, this.neckMat);
 
@@ -320,9 +328,24 @@ export class Player {
         this.rightFeetRoot.position.z +=  lowerLegDepth * 0.5;
         this.rightFeet.position.y += - feetHeight * 0.5;
         this.rightFeet.position.z += -feetDepth * 0.5 ;
+
+        this.waist.traverse((node)=>{
+            if(node.isMesh){
+                node.castShadow=true;
+                //node.receiveShadow=true;
+                //console.log(node);
+            }
+        });
     }
 
     Update(timeElapsed){
+        let x=this.waist.position.x;
+        let y=this.waist.position.y;
+        let z=this.waist.position.z;
+
+        this.dirLight.position.set(x, 20, z);
+        this.dirLight.target.position.set(x,y,z);
+
         this.boxHelper.update();
     }
 

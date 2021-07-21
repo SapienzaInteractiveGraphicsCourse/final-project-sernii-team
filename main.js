@@ -56,24 +56,26 @@ const renderer = new THREE.WebGLRenderer({
   canvas: canvas
 });
 
-const player_= new Player({
+const world_ = new WorldManager({
   scene: scene
 });
 
+const player_= new Player({
+  scene: scene,
+});
 
 //let parts=player_.getCharacterParts();
 const animationManager_= new AnimationManager(
     player_.getCharacterParts()
 );
 
-const world_ = new WorldManager({
-  scene: scene
-});
+
 
 const collisionsDetector_ = new CollisionsDetector({
     player: player_,
     world: world_,
     scene: scene,
+    animationManager: animationManager_,
 });
 
 const controlManager_= new ControlManager({
@@ -83,7 +85,8 @@ const controlManager_= new ControlManager({
 
 
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor(0xffffff);
+renderer.setClearColor(0xffffff)
+renderer.shadowMap.enabled = true;
 //renderer.autoClear = true;
 //document.body.appendChild( renderer.domElement );
 
@@ -113,10 +116,10 @@ const render= function(timeElapsed) {
     TWEEN.update();
 
     if(!collisionsDetector_.getgameOverFlag()){
-        //world_.Update(aTime);
+        world_.Update(aTime);
         player_.Update(aTime);
         controlManager_.Update(timeElapsed);
-        //collisionsDetector_.Update(aTime);
+        collisionsDetector_.Update(aTime);
     }
     renderer.render(scene, camera);
     requestAnimationFrame(render);
@@ -124,7 +127,7 @@ const render= function(timeElapsed) {
 };
 
 requestAnimationFrame(render);
-
+//animationManager_.fallAnimation();
 
 }
 
