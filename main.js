@@ -39,28 +39,7 @@ cameraPositionFolder.add(camera.position, "y", -10, Math.PI * 10);
 cameraPositionFolder.add(camera.position, "z", -10, Math.PI * 10);
 */
 
-//lights
-//const ambientLight = new THREE.AmbientLight(0x404040);
-const ambientLight = new THREE.AmbientLight(0xffffff);
-scene.add(ambientLight);
 
-const dirLight = new THREE.DirectionalLight(0xffffff);
-dirLight.position.set(0, 100, 0);
-scene.add(dirLight);
-
-const spotLight = new THREE.SpotLight( 0xcf6010 );
-spotLight.position.set( 10, 30, 0 );
-//scene.add( spotLight );
-
-//const light = new THREE.PointLight( 0xff0000, 1, 100 );
-//light.position.set( 0, 0, 0 );
-//scene.add( light );
-
-const skyColor = 0x333333;  // light blue
-const groundColor = 0xF56801;  // brownish orange
-const intensity = 1;
-const hemispherelight = new THREE.HemisphereLight(skyColor, groundColor, intensity);
-//scene.add(hemispherelight);
 
 const size = 100;
 const divisions = 100;
