@@ -38,6 +38,7 @@ export const ninjaHead = {
                         node.castShadow = true;
                     }
                 });
+
                 mesh.add(obj);
                 //const box = new THREE.Box3().setFromObject(obj);
                 //const boxSize = box.getSize(new THREE.Vector3());
@@ -139,18 +140,27 @@ export class SpikeBall{
             mtl.preload();
             const objLoader = new OBJLoader(this.manager);
             objLoader.setMaterials(mtl);
-            objLoader.load(this.objHref, (obj) => {
-                this.obj=obj;
-                this.mesh.add(obj);
-                obj.scale.set(0.7,0.6,0.7);
-                const box = new THREE.Box3().setFromObject(obj);
+            objLoader.load(this.objHref, (object) => {
+                //this.obj=object;
+                object.scale.set(0.7,0.6,0.7);
+                var box = new THREE.Box3().setFromObject(object);
                 const boxSize = box.getSize(new THREE.Vector3());
-                obj.position.y+=0.5*boxSize.y;
-                //const boxCenter = box.getCenter(new THREE.Vector3());
-                //console.log(boxSize);
-                //console.log(boxCenter);
-                //console.log(scene.position);
+
+                let pivot=new THREE.Object3D();
+                pivot.position.y+=0.5*boxSize.y;
+                pivot.add(object);
+                this.mesh.add(pivot);
+
+                let tween1=new TWEEN.Tween(object.rotation)
+                .to({x:Math.PI},3000)
+                .easing(TWEEN.Easing.Linear.None)
+                .repeat(Infinity)
+                .onUpdate((tweenObj)=>{
+                    object.rotation.x+=tweenObj.x;
+                })
+                .start();
             });
+
         });
     }
 }

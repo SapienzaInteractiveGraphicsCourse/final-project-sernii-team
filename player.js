@@ -97,7 +97,6 @@ export class Player {
         this.scene.add(this.dirLight);
         //this.InitInput();
 
-
     }
 
     getCharacterPosition(){
@@ -223,7 +222,7 @@ export class Player {
 
         this.torso = new THREE.Mesh(this.torsoGeo, this.torsoMat);
 
-        this.head = new THREE.Mesh();
+        this.head = new THREE.Object3D();
         ninjaHead.load(this.head);
 
 

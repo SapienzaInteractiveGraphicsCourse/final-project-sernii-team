@@ -4,6 +4,8 @@ const Right=0;
 const Left=1;
 const Center=2;
 
+const RED=new THREE.Color("red");
+const BLACK=new THREE.Color("black");
 
 
 export class CollisionsDetector{
@@ -11,8 +13,9 @@ export class CollisionsDetector{
     constructor(params){
 
         this.player=params.player;
-        let parts=this.player.getCharacterParts();
-        this.waist=parts.waist;
+        this.parts=this.player.getCharacterParts();
+        //this.character=parts.character;
+        this.waist=this.parts.waist;
 
         this.world=params.world;
 
@@ -26,19 +29,69 @@ export class CollisionsDetector{
     getgameOverFlag(){
         return this.gameOverFlag;
     }
+
+
+    blink(){
+
+        function recursiveBlink(timeWhenBlink, totalTime, timeOfBlink, color, group){
+            if(timeOfBlink==0 || timeWhenBlink==0){
+                return;
+            }
+            if(totalTime-timeWhenBlink<=0){
+                setTimeout(()=>{
+                    group.traverse((node)=>{
+                        if(node.isMesh){
+                                node.material.emissive=color;
+                        }
+                    });
+                }, timeWhenBlink);
+                return;
+            }
+
+            setTimeout(()=>{
+                group.traverse((node)=>{
+                    if(node.isMesh){
+                            node.material.emissive=color;
+                    }
+                });
+            }, timeWhenBlink);
+
+            if(color.equals(BLACK)){
+                recursiveBlink(timeWhenBlink+timeOfBlink, totalTime, timeOfBlink, RED, group);
+            }
+            else{
+                recursiveBlink(timeWhenBlink+timeOfBlink, totalTime, timeOfBlink, BLACK, group);
+            }
+        }
+
+        this.character=this.parts.waist;
+        recursiveBlink(1, 1400, 1399, RED, this.character);
+        recursiveBlink(1400, 2300, 50, RED, this.character);
+        recursiveBlink(2300, 3000, 10, RED, this.character);
+        setInterval(()=>{
+            this.character.traverse((node)=>{
+                if(node.isMesh){
+                        node.material.emissive=BLACK;
+                }
+            });
+        },3000);
+
+    }
+
     /*
     quando è stata detectata una collisioni è inutile computare le altre -> collisionDetected
     se vengono detectate 3 collisioni il gioco termina ->gameOverFlag
     dopo che si è colpiti si ha del tempo di invulnerabilità -> invulnerableFlag
-
     */
+
     Update(timeElapsed){
 
         let objects=this.world.getObjects();
         let playerBox=this.player.getCharacterBox();
         let collisionDetected=false;
 
-        if(Object.keys(this.detected).length==3){
+        let detectedLength=Object.keys(this.detected).length;
+        if(detectedLength==3){
             this.gameOverFlag=true;
             this.animationManager.fallAnimation();
 
@@ -59,10 +112,13 @@ export class CollisionsDetector{
                                 this.detected[id]=1;
                                 collisionDetected=true;
                                 this.invulnerableFlag=true;
+                                if(detectedLength<2){
+                                    this.blink();
+                                }
                                 setTimeout(()=>{
                                     this.invulnerableFlag=false,
                                     console.log("not invulnerabile")
-                                    ;}, 1000);
+                                    ;}, 3000);
                                 console.log("invulnerabile")
                                 break;
                             }
@@ -86,10 +142,13 @@ export class CollisionsDetector{
                                 this.detected[id]=1;
                                 collisionDetected=true;
                                 this.invulnerableFlag=true;
+                                if(detectedLength<2){
+                                    this.blink();
+                                }
                                 setTimeout(()=>{
                                     this.invulnerableFlag=false,
                                     console.log("not invulnerabile")
-                                    ;}, 1000);
+                                    ;}, 3000);
                                 console.log("invulnerabile")
                                 break;
                             }
@@ -115,10 +174,13 @@ export class CollisionsDetector{
                                 this.detected[id]=1;
                                 collisionDetected=true;
                                 this.invulnerableFlag=true;
+                                if(detectedLength<2){
+                                    this.blink();
+                                }
                                 setTimeout(()=>{
                                     this.invulnerableFlag=false,
                                     console.log("not invulnerabile")
-                                    ;}, 1000);
+                                    ;}, 3000);
                                 console.log("invulnerabile")
                                 break;
                             }
@@ -129,7 +191,6 @@ export class CollisionsDetector{
                 }
 
                 if(collisionDetected){
-                    console.log("?")
                     this.waist.position.z+=1;
                 }
             }

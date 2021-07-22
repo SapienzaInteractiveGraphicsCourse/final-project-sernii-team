@@ -60,6 +60,7 @@ const world_ = new WorldManager({
   scene: scene
 });
 
+/*
 const player_= new Player({
   scene: scene,
 });
@@ -82,7 +83,7 @@ const controlManager_= new ControlManager({
     animationManager: animationManager_,
     player: player_,
 })
-
+*/
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setClearColor(0xffffff)
@@ -115,20 +116,18 @@ const render= function(timeElapsed) {
 
     TWEEN.update();
 
-    if(!collisionsDetector_.getgameOverFlag()){
+    //if(!collisionsDetector_.getgameOverFlag()){
         world_.Update(aTime);
-        player_.Update(aTime);
-        controlManager_.Update(timeElapsed);
-        collisionsDetector_.Update(aTime);
-    }
+        //player_.Update(aTime);
+        //controlManager_.Update(timeElapsed);
+        //collisionsDetector_.Update(aTime);
+    //}
     renderer.render(scene, camera);
     requestAnimationFrame(render);
 
 };
 
 requestAnimationFrame(render);
-//animationManager_.fallAnimation();
-
 }
 
 main();
