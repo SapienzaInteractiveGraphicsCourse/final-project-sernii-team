@@ -39,7 +39,7 @@ class WorldObject{
         this.spikeBall=new SpikeBall({scene: this.mesh});
         this.spikeBall.load();
 
-        
+
 
         this.boxHelper=new THREE.BoxHelper(this.mesh, 0xf400a1);
         this.scene=params.scene;

@@ -3,8 +3,24 @@ import {OBJLoader} from './libs/OBJLoader.js';
 import {MTLLoader} from './libs/MTLLoader.js';
 import {GLTFLoader} from './libs/GLTFLoader.js';
 
+function onTransitionEnd( event ) {
+
+	event.target.remove();
+
+}
+
+export const loadingManager = new THREE.LoadingManager( () => {
+
+    const loadingScreen = document.getElementById( 'loading-screen' );
+    loadingScreen.classList.add( 'fade-out' );
+
+    // optional: remove loader from DOM via event listener
+    //loadingScreen.addEventListener( 'transitionend', onTransitionEnd );
+
+} );
+
 export const ninjaHead = {
-    manager: new THREE.LoadingManager(),
+    manager: loadingManager,
 
     loaded: false,
 
@@ -14,14 +30,14 @@ export const ninjaHead = {
 
     load: function(mesh) {
 
-        this.manager.onLoad=function(){
+        /*this.manager.onLoad=function(){
             this.loaded=true;
             console.log("ninjaHead loaded!");
         }
         this.manager.onProgress= function(url, itemsLoaded, itemsTotal){
             console.log("loaded: " + url);
             //console.log("left: "+ itemsTotal-itemsLoaded);
-        }
+        }*/
         const mtlLoader = new MTLLoader(this.manager);
         mtlLoader.load(ninjaHead.mtlHref, (mtl) => {
             mtl.preload();
@@ -54,7 +70,7 @@ export const ninjaHead = {
 }
 
 export const lavaGround={
-    loader: new GLTFLoader(),
+    loader: new GLTFLoader(loadingManager),
 
     gltfHref: './assets/lava-2/scene.gltf',
 
@@ -168,7 +184,7 @@ export class SpikeBall{
 export class Stalagmites{
 
     constructor(){
-        this.loader=new GLTFLoader();
+        this.loader=new GLTFLoader(loadingManager);
         this.gltfHref='./assets/stalagmites/scene.gltf';
     }
 
