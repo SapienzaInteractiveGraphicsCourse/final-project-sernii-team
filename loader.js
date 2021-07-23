@@ -195,8 +195,8 @@ export class Star{
         this.mesh=params.scene;
         this.manager=new THREE.LoadingManager();
 
-        this.objHref= './assets/Red_Star/star.obj';
-        this.mtlHref= './assets/Red_Star/star.mtl';
+        this.objHref= './assets/Star/star.obj';
+        this.mtlHref= './assets/Star/star.mtl';
         this.obj=0;
 
     }
@@ -221,7 +221,7 @@ export class Star{
    			}
             objLoader.setMaterials(mtl);
             objLoader.load(this.objHref, (object) => {
-                
+
                 object.scale.set(0.25,0.25,0.25);
 				object.rotation.x=Math.PI*0.5;
                 var box = new THREE.Box3().setFromObject(object);
