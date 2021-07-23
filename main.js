@@ -11,48 +11,56 @@ import {OrbitControls} from './libs/OrbitControls.js'
 
 
 
-//SETUP BUTTONS
 
-//GAMEOVER MENU
-let restartButtonGO = document.getElementById("gameOver-restart");
-restartButtonGO.onclick= function(){
-    window.location.reload();
-};
-let menuButtonGO = document.getElementById("gameOver-menu");
-menuButtonGO.onclick= function(){
-    window.location.replace('./index.html')
-};
-
-//PAUSE MENU
-let escFlag=false;
-document.addEventListener('keydown', (e) => onKeyPress_(e), false);
-function onKeyPress_(event){
-    switch (event.keyCode) {
-        case 27:
-            escFlag=true;
-        break;
-
-        default:
-        break;
-    }
-}
-
-let restartButtonPause = document.getElementById("pause-restart");
-restartButtonPause.onclick= function(){
-    window.location.reload();
-};
-let resumeButtonPause = document.getElementById("pause-resume");
-resumeButtonPause.onclick= function(){
-    document.getElementById("pause-menu").style.display = "none";
-    escFlag=false;
-};
-let menuButtonPause = document.getElementById("pause-menu-button");
-menuButtonPause.onclick= function(){
-    window.location.replace('./index.html')
-};
 
 function init() {
+    //SETUP BUTTONS
 
+    //GAMEOVER MENU
+    let restartButtonGO = document.getElementById("gameOver-restart");
+    restartButtonGO.onclick= function(){
+        window.location.reload();
+    };
+    let menuButtonGO = document.getElementById("gameOver-menu");
+    menuButtonGO.onclick= function(){
+        window.location.replace('./index.html')
+    };
+
+    //PAUSE MENU
+    let escFlag=false;
+    document.addEventListener('keydown', (e) => onKeyPress_(e), false);
+    function onKeyPress_(event){
+        switch (event.keyCode) {
+            case 27:
+                escFlag=true;
+            break;
+
+            default:
+            break;
+        }
+    }
+
+    let restartButtonPause = document.getElementById("pause-restart");
+    restartButtonPause.onclick= function(){
+        window.location.reload();
+    };
+
+    let resumeButtonPause = document.getElementById("pause-resume");
+    resumeButtonPause.onclick= function(){
+        document.getElementById("pause-menu").style.display = "none";
+        escFlag=false;
+        //pauseTime+=clock.getElapsedTime()*1000;
+        clock.start();
+        for(let obj of tweensTemp){
+            obj.start();
+        }
+        requestAnimationFrame(render);
+    };
+
+    let menuButtonPause = document.getElementById("pause-menu-button");
+    menuButtonPause.onclick= function(){
+        window.location.replace('./index.html')
+    };
     // canvas
     const canvas = document.getElementById('game-canvas');
 
@@ -61,7 +69,7 @@ function init() {
     scene.background = new THREE.Color(0x181818);
 
     //CAMERA
-    let camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 100);
+    let camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 300);
     camera.position.set(2.5, 3, 4.3);
     camera.rotation.set(0, 6.4, 0);
 
@@ -82,6 +90,7 @@ function init() {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0xffffff)
     renderer.shadowMap.enabled = true;
+    //renderer.shadowMap.renderSingleSided = false;
     window.addEventListener('resize', onWindowResize, false);
 
     function resizeRendererToDisplaySize(renderer) {
@@ -102,7 +111,12 @@ function init() {
     controls.enableZoom = true;
     controls.autoRotate = true;
 
- //CLASSES
+    //CLOCK
+    let clock=new THREE.Clock(false);
+    //clock.start();
+    let pauseTime=0
+
+    //CLASSES
     const world_ = new WorldManager({
         scene: scene
     });
@@ -133,10 +147,17 @@ function init() {
         loadingScreen.remove();
         document.body.appendChild(renderer.domElement);
         requestAnimationFrame(render);
+        clock.start();
     }
+
+
 
     let prevTime = 0;
     let aTime = 0;
+    let deltaTime=0;
+    let timeElapsed_=0;
+    let tweensTemp;
+
     const render = function(timeElapsed) {
         //renderer.clear()
         if (resizeRendererToDisplaySize(renderer)) {
@@ -154,26 +175,43 @@ function init() {
         }
 
 
-        aTime = (timeElapsed - prevTime) * 0.001;
-        prevTime = timeElapsed;
+        //aTime = (timeElapsed - prevTime);
+        //let aTime2 = aTime*0.001;
+        //prevTime = timeElapsed;
+        deltaTime=clock.getDelta();
 
+        //timeElapsed_=clock.getElapsedTime();
+        //deltaTime=clock.getDelta();
+        //let timeElapsedMS=timeElapsed_*1000;
+        //console.log("render clock: "+timeElapsed);
+        //console.log("my clock: " +timeElapsedMS);
+        //let totalTimePassed=clock.getElapsedTime();
+        //console.log(pauseTime);
+        //console.log(timeElapsed);
 
 
         if (!collisionsDetector_.getgameOverFlag()) {
             if(escFlag){
+                clock.stop();
+                tweensTemp=TWEEN.getAll();
+                for(let obj of tweensTemp){
+                    console.log(obj);
+                    obj.stop();
+                }
                 document.getElementById("pause-menu").style.display = "block";
+                return
             }
-            else{
-                TWEEN.update(timeElapsed);
-                world_.Update(aTime);
-                player_.Update(aTime);
-                controlManager_.Update(timeElapsed);
-                collisionsDetector_.Update(aTime);
-            }
+
+            TWEEN.update();
+            world_.Update(deltaTime);
+            player_.Update();
+            controlManager_.Update();
+            collisionsDetector_.Update();
+
         }
         else{
             document.getElementById("gameOver").style.display = "block";
-            TWEEN.update(timeElapsed);
+            TWEEN.update();
             setInterval(function(){TWEEN.removeAll(); }, 2500);
 
         }

@@ -7,7 +7,6 @@ export class ControlManager{
         this.animationManager=params.animationManager;
         this.player=params.player;
         this.playerPos=this.player.getCharacterPosition();
-        console.log(this.player.getCharacterPosition());
 
         this.InitInput();
 
@@ -48,7 +47,7 @@ export class ControlManager{
           case 65:
             this.keys_.arrowL_a = true;
             break;
-            
+
           default:
           break;
         }

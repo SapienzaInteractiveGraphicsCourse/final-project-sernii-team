@@ -83,18 +83,28 @@ export class Player {
 
         this.characterBox= new THREE.Box3();
 
-        this.boxHelper=new THREE.BoxHelper(this.character, 0xffff00);
-        this.scene.add(this.boxHelper);
+        //this.boxHelper=new THREE.BoxHelper(this.character, 0xffff00);
+        //this.scene.add(this.boxHelper);
 
         this.AnimationManager=params.AnimationManager
 
+        var d = 5;
         this.dirLight = new THREE.DirectionalLight(0xffffff);
         this.dirLight.castShadow=true;
         this.dirLight.position.set(0, 10, 2);
         this.dirLight.lookAt(0,0,0);
         this.dirLight.shadow.camera.near=1;
         this.dirLight.shadow.camera.far=25;
+        this.dirLight.shadow.camera.left = - d;
+        this.dirLight.shadow.camera.right = d;
+        this.dirLight.shadow.camera.top = d;
+        this.dirLight.shadow.camera.bottom = - d;
         this.scene.add(this.dirLight);
+
+        this.helper = new THREE.DirectionalLightHelper(this.dirLight);
+        this.scene.add(this.helper);
+        this.cameraHelper = new THREE.CameraHelper(this.dirLight.shadow.camera);
+        this.scene.add(this.cameraHelper);
         //this.InitInput();
 
     }
@@ -205,8 +215,7 @@ export class Player {
 
         this.character = new THREE.Object3D();
         this.waist = new THREE.Object3D();
-        //this.waist.castShadow=true;
-        //this.torsoRoot = new THREE.Object3D();
+
         this.neckRoot = new THREE.Mesh(this.neckGeo, this.neckMat);
 
         this.upperRightArmRoot = new THREE.Mesh(this.upperArmRootGeo, this.rootMat);
@@ -344,8 +353,9 @@ export class Player {
 
         this.dirLight.position.set(x, 20, z);
         this.dirLight.target.position.set(x,y,z);
-
-        this.boxHelper.update();
+        this.helper.update();
+        this.cameraHelper.update();
+        //this.boxHelper.update();
     }
 
 };

@@ -38,12 +38,19 @@ class WorldObject{
         this.mesh=new THREE.Mesh();
         this.spikeBall=new SpikeBall({scene: this.mesh});
         this.spikeBall.load();
+        this.mesh.position.z+=-100;
+
+        /*let tween=new TWEEN.Tween(this.mesh.position)
+        .to({z:8},10000)
+        .easing(TWEEN.Easing.Linear.None)
+        .start();*/
 
 
 
-        this.boxHelper=new THREE.BoxHelper(this.mesh, 0xf400a1);
-        this.scene=params.scene;
-        this.scene.add(this.boxHelper);
+
+        //this.boxHelper=new THREE.BoxHelper(this.mesh, 0xf400a1);
+        //this.scene=params.scene;
+        //this.scene.add(this.boxHelper);
 
         this.collider=new THREE.Box3();
     }
@@ -58,7 +65,7 @@ class WorldObject{
 
     updateCollider(){
         this.collider.setFromObject(this.mesh);
-        this.boxHelper.update();
+        //this.boxHelper.update();
     }
 
     Update(timeElapsed){
@@ -293,9 +300,9 @@ export class WorldManager {
 
         const materials = [
             new THREE.MeshStandardMaterial( {map: bridgeTextureLateralR ,  normalMap: bridgeLateralNormalR, side: THREE.DoubleSide}),
-            new THREE.MeshStandardMaterial( {map: bridgeTextureLateralL ,  normalMap: bridgeLateralNormalL, side: THREE.DoubleSide}),
+            new THREE.MeshStandardMaterial( {map: bridgeTextureLateralL ,  normalMap: bridgeLateralNormalL, side: THREE.DoubleSide, shadowSide: THREE.BackSide}),
             //new THREE.MeshLambertMaterial( { transparent: true, opacity: 0 }),
-            new THREE.MeshStandardMaterial( {map: bridgeTextureUp, normalMap: bridgeNormalUp, side: THREE.DoubleSide}),
+            new THREE.MeshStandardMaterial( {map: bridgeTextureUp, normalMap: bridgeNormalUp, side: THREE.DoubleSide, shadowSide: THREE.BackSide}),
             new THREE.MeshStandardMaterial( {map: bridgeTextureUp, normalMap: bridgeNormalUp, side: THREE.DoubleSide}),
             new THREE.MeshStandardMaterial( {map: bridgeTexture, normalMap: bridgeNormalMap, side: THREE.DoubleSide}),
             new THREE.MeshStandardMaterial( {map: bridgeTexture, normalMap: bridgeNormalMap, side: THREE.DoubleSide}),
@@ -376,6 +383,8 @@ export class WorldManager {
             ]
             let archGeometry = new THREE.ExtrudeGeometry(arch, extrudeSettings);
             let mesh= new THREE.Mesh(archGeometry, archMat);
+            mesh.castShadow=true;
+            mesh.receiveShadow=true;
             mesh.position.y+=-0.1;
 
 
@@ -455,11 +464,12 @@ export class WorldManager {
         ];
 
         mesh = new THREE.Mesh( leftArmRest, leftArmRestMat );
+        mesh.castShadow=true;
+        mesh.receiveShadow=true;
         mesh.rotation.z=Math.PI/2;
         mesh.position.x+=-4+0.45;
         let box = new THREE.Box3().setFromObject(mesh);
         let boxSize = box.getSize(new THREE.Vector3());
-        console.log(boxSize);
         mesh.scale.set(0.1,0.05,104/boxSize.z);
         mesh.position.z=-96;
         this.scene.add( mesh );
@@ -506,11 +516,12 @@ export class WorldManager {
         ];
 
         let mesh2 = new THREE.Mesh( rightArmRest, rightArmRestMat ) ;
+        mesh2.castShadow=true;
+        mesh2.receiveShadow=true;
         mesh2.rotation.z=Math.PI/2;
         mesh2.position.x+= 4;
         box = new THREE.Box3().setFromObject(mesh2);
         boxSize = box.getSize(new THREE.Vector3());
-        console.log(boxSize);
         mesh2.scale.set(0.1,0.05,104/boxSize.z);
         mesh2.position.z=-96;
         this.scene.add( mesh2 );
@@ -623,7 +634,6 @@ export class WorldManager {
   SpawnObj(type){
 
     const obj=new WorldObject({scene: this.scene});
-    obj.mesh.position.z+=-100;
 
     switch (type) {
         case Right:
@@ -649,6 +659,7 @@ export class WorldManager {
   Update(timeElapsed){
 
     this.ShouldISpawn(Center);
+
     for(let obj of this.objects[Center]){
       obj.mesh.position.z+=timeElapsed*this.speed[Center];
 
@@ -665,7 +676,7 @@ export class WorldManager {
     this.ShouldISpawn(Left);
 
     for(let obj of this.objects[Left]){
-      obj.mesh.position.z+=timeElapsed*this.speed[Left];
+     obj.mesh.position.z+=timeElapsed*this.speed[Left];
 
       if (obj.mesh.position.z>0){
         //invisible.push(obj);

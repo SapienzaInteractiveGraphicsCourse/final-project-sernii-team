@@ -168,7 +168,7 @@ export class SpikeBall{
                 this.mesh.add(pivot);
 
                 let tween1=new TWEEN.Tween(object.rotation)
-                .to({x:Math.PI},3000)
+                .to({x:Math.PI},500)
                 .easing(TWEEN.Easing.Linear.None)
                 .repeat(Infinity)
                 .onUpdate((tweenObj)=>{
@@ -234,8 +234,9 @@ export class Stalagmites{
             let stalagmite = root.getObjectByName('stalagmite_2');
             stalagmite.rotation.z=Math.PI;
             stalagmite.position.y+=getRandomArbitrary(50, 100);
-            stalagmite.position.x+=getRandomArbitrary(-100, 300);
-            stalagmite.position.z+=getRandomArbitrary(-200, 5);
+            stalagmite.position.x+=getRandomArbitrary(0, 200);
+            stalagmite.position.z+=getRandomArbitrary(-100, 5);
+			console.log(stalagmite.position.x);
             stalagmite.scale.set(getRandomArbitrary(0.2, 0.5),getRandomArbitrary(0.2, 0.5),getRandomArbitrary(0.2, 0.5));
             scene.add(stalagmite);
 
