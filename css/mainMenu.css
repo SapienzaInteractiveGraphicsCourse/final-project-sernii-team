@@ -4,38 +4,42 @@ body {
 
 
 .menu {
- display: block;
+  display: block;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+
 }
 
 .boxmenu-options{
-    width: 400px;
-    height: 500px;
-    background: #B22304;
+    width: 600px;
+    height: 700px;
+    background-image: url("../assets/officialMenuResized2.png");
+    background-position: 45% 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-top: 10px;
+    padding-top: 40px;
 }
 .boxmenu-options .box-options{
-    width:80%;
+    width:40%;
     height:auto;
     padding:10px;
-    margin: 10px 0 10px 0;
-    background: #9D698B;
+    margin: 5px 10px 10px 0;
+    background: black;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 3px solid green;
+    border: 3px;
+    border-style:solid;
+    border-color: #ff0000;
 
 }
 .boxmenu-options .box-options:hover{
     cursor: pointer;
-    background: #22A405 ;
+    background: black ;
 }
 
 .boxmenu-options .box-options button {
@@ -56,7 +60,7 @@ body {
 }
 
 .boxmenu-options .box-options button:hover {
-	box-shadow: 20px 5px 0 black, -20px -5px 0 black;
+	box-shadow: 20px 5px 0  #ff0000, -20px -5px 0  #ff0000;
 }
 
 .boxmenu-options .box-options button:focus {
