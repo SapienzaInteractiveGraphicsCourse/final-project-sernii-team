@@ -1,12 +1,12 @@
-# Blender MTL File: 'spikeball.blend'
+# Blender MTL File: 'spikeball.blend2.blend'
 # Material Count: 1
 
 newmtl Material
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.048260 0.054969 0.048939
-Ks 0.315789 0.315789 0.315789
+Ns 0.000000
+Ka 0.470149 0.470149 0.470149
+Kd 0.005919 0.110689 0.000000
+Ks 0.156716 0.156716 0.156716
 Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
-illum 2
+illum 3

@@ -62,7 +62,7 @@ function init() {
         window.location.replace('./index.html')
     };
     // canvas
-    const canvas = document.getElementById('game-canvas');
+    //const canvas = document.getElementById('game-canvas');
 
     //SCENE
     const scene = new THREE.Scene();
@@ -142,10 +142,33 @@ function init() {
     loadingManager.onProgress = function(url, itemsLoaded, itemsTotal) {
         console.log("loaded: " + url);
     }
+    let hearts = document.createElement('div');
+    hearts.style.position = 'absolute';
+    //hearts.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
+    hearts.style.position="fixed";
+    hearts.style.top=70+"px";
+    hearts.style.left=0+"px";
+    hearts.style.fontSize=50+"px";
+    hearts.style.color="white";
+    hearts.innerHTML = "HEARTS: 0 ";
+
+    let score = document.createElement('div');
+    score.style.position = 'absolute';
+    //score.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
+    score.style.position="fixed";
+    score.style.top=0+"px";
+    score.style.left=0+"px";
+    score.style.fontSize=50+"px";
+    score.style.color="white";
+    score.innerHTML = "SCORE: 0";
+
     loadingManager.onLoad = function() {
         const loadingScreen = document.getElementById('loading-screen');
         loadingScreen.remove();
         document.body.appendChild(renderer.domElement);
+        document.body.appendChild(score);
+        document.body.appendChild(hearts);
+        //score.appendChild(hearts);
         requestAnimationFrame(render);
         clock.start();
     }
@@ -195,7 +218,7 @@ function init() {
                 clock.stop();
                 tweensTemp=TWEEN.getAll();
                 for(let obj of tweensTemp){
-                    console.log(obj);
+                    //console.log(obj);
                     obj.stop();
                 }
                 document.getElementById("pause-menu").style.display = "block";
@@ -215,7 +238,8 @@ function init() {
             setInterval(function(){TWEEN.removeAll(); }, 2500);
 
         }
-
+        hearts.innerHTML = "HEARTS: " + collisionsDetector_.getHearts();
+        score.innerHTML = "SCORE: " + collisionsDetector_.getScore();
         renderer.render(scene, camera);
         requestAnimationFrame(render);
 

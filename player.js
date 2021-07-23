@@ -101,10 +101,10 @@ export class Player {
         this.dirLight.shadow.camera.bottom = - d;
         this.scene.add(this.dirLight);
 
-        this.helper = new THREE.DirectionalLightHelper(this.dirLight);
-        this.scene.add(this.helper);
-        this.cameraHelper = new THREE.CameraHelper(this.dirLight.shadow.camera);
-        this.scene.add(this.cameraHelper);
+        //this.helper = new THREE.DirectionalLightHelper(this.dirLight);
+        //this.scene.add(this.helper);
+        //this.cameraHelper = new THREE.CameraHelper(this.dirLight.shadow.camera);
+        //this.scene.add(this.cameraHelper);
         //this.InitInput();
 
     }
@@ -350,11 +350,11 @@ export class Player {
         let x=this.waist.position.x;
         let y=this.waist.position.y;
         let z=this.waist.position.z;
-
-        this.dirLight.position.set(x, 20, z);
+        this.dirLight.position.set(0, 20, 0);
+        //this.dirLight.position.set(x, 20, z);
         this.dirLight.target.position.set(x,y,z);
-        this.helper.update();
-        this.cameraHelper.update();
+        //this.helper.update();
+        //this.cameraHelper.update();
         //this.boxHelper.update();
     }
 

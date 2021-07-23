@@ -151,10 +151,18 @@ export class SpikeBall{
             //console.log("loaded: " + url);
             //console.log("left: "+ itemsTotal-itemsLoaded);
         }
+
         const mtlLoader = new MTLLoader(this.manager);
         mtlLoader.load(this.mtlHref, (mtl) => {
             mtl.preload();
             const objLoader = new OBJLoader(this.manager);
+			//mtl.normalMap=normalTexture
+			for (const material of Object.values(mtl.materials)) {
+				material.color=new THREE.Color(0x202020);
+				material.reflectivity=0.1;
+				material.specular=new THREE.Color(0x928D8D);
+
+   			}
             objLoader.setMaterials(mtl);
             objLoader.load(this.objHref, (object) => {
                 //this.obj=object;
@@ -175,6 +183,116 @@ export class SpikeBall{
                     object.rotation.x+=tweenObj.x;
                 })
                 .start();
+            });
+
+        });
+    }
+}
+
+export class Star{
+	constructor(params){
+
+        this.mesh=params.scene;
+        this.manager=new THREE.LoadingManager();
+
+        this.objHref= './assets/Red_Star/star.obj';
+        this.mtlHref= './assets/Red_Star/star.mtl';
+        this.obj=0;
+
+    }
+
+    load(){
+        this.manager.onLoad=function(){
+        }
+        this.manager.onProgress= function(url, itemsLoaded, itemsTotal){
+            //console.log("loaded: " + url);
+            //console.log("left: "+ itemsTotal-itemsLoaded);
+        }
+
+        const mtlLoader = new MTLLoader(this.manager);
+        mtlLoader.load(this.mtlHref, (mtl) => {
+            mtl.preload();
+            const objLoader = new OBJLoader(this.manager);
+
+			for (const material of Object.values(mtl.materials)) {
+				//material.color=new THREE.Color(0x202020);
+				//material.reflectivity=0.1;
+				//material.specular=new THREE.Color(0x928D8D);
+   			}
+            objLoader.setMaterials(mtl);
+            objLoader.load(this.objHref, (object) => {
+                
+                object.scale.set(0.25,0.25,0.25);
+				object.rotation.x=Math.PI*0.5;
+                var box = new THREE.Box3().setFromObject(object);
+                const boxSize = box.getSize(new THREE.Vector3());
+
+                let pivot=new THREE.Object3D();
+                pivot.position.y+=0.5*boxSize.y;
+                pivot.add(object);
+                this.mesh.add(pivot);
+				/*
+                let tween1=new TWEEN.Tween(object.rotation)
+                .to({x:Math.PI},500)
+                .easing(TWEEN.Easing.Linear.None)
+                .repeat(Infinity)
+                .onUpdate((tweenObj)=>{
+                    object.rotation.x+=tweenObj.x;
+                })
+                .start();
+				*/
+            });
+
+        });
+    }
+}
+
+export class Heart{
+	constructor(params){
+
+        this.mesh=params.scene;
+        this.manager=new THREE.LoadingManager();
+        this.objHref= './assets/heart/heart.obj';
+        this.mtlHref= './assets/heart/heart.mtl';
+        this.obj=0;
+
+    }
+
+    load(){
+        this.manager.onLoad=function(){
+
+        }
+        this.manager.onProgress= function(url, itemsLoaded, itemsTotal){
+
+        }
+
+        const mtlLoader = new MTLLoader(this.manager);
+        mtlLoader.load(this.mtlHref, (mtl) => {
+            mtl.preload();
+            const objLoader = new OBJLoader(this.manager);
+			for (const material of Object.values(mtl.materials)) {
+				material.color=new THREE.Color(0xFF0000);
+   			}
+            objLoader.setMaterials(mtl);
+            objLoader.load(this.objHref, (object) => {
+                object.scale.set(0.01,0.01,0.01);
+                var box = new THREE.Box3().setFromObject(object);
+                const boxSize = box.getSize(new THREE.Vector3());
+
+                let pivot=new THREE.Object3D();
+                pivot.position.y+=0.5*boxSize.y;
+                pivot.add(object);
+                this.mesh.add(pivot);
+				/*
+                let tween1=new TWEEN.Tween(object.rotation)
+                .to({x:Math.PI},500)
+                .easing(TWEEN.Easing.Linear.None)
+                .repeat(Infinity)
+                .onUpdate((tweenObj)=>{
+                    object.rotation.x+=tweenObj.x;
+                })
+                .start();
+				*/
             });
 
         });

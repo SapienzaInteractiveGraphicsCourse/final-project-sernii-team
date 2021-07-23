@@ -6,7 +6,13 @@ const Center=2;
 
 const RED=new THREE.Color("red");
 const BLACK=new THREE.Color("black");
+const STAR=0;
+const HEART=1;
+const SPIKEBALL=2;
 
+let score=0;
+let totalHearts=0;
+let actualHearts=0;
 
 export class CollisionsDetector{
 
@@ -14,7 +20,7 @@ export class CollisionsDetector{
 
         this.player=params.player;
         this.parts=this.player.getCharacterParts();
-        //this.character=parts.character;
+        this.character=this.parts.character;
         this.waist=this.parts.waist;
 
         this.world=params.world;
@@ -28,6 +34,14 @@ export class CollisionsDetector{
 
     getgameOverFlag(){
         return this.gameOverFlag;
+    }
+
+    getScore(){
+        return score;
+    }
+
+    getHearts(){
+        return actualHearts;
     }
 
 
@@ -90,109 +104,203 @@ export class CollisionsDetector{
         let playerBox=this.player.getCharacterBox();
         let collisionDetected=false;
 
-        let detectedLength=Object.keys(this.detected).length;
-        if(detectedLength==3){
+        let detectedLength=0;
+        for(let key of Object.keys(this.detected)){
+            if(this.detected[key]==2){
+                detectedLength++;
+            }
+        }
+        detectedLength-=totalHearts;
+        if(detectedLength>=3){
             this.gameOverFlag=true;
             this.animationManager.fallAnimation();
 
         }
+
         if(!this.invulnerableFlag){
             if(!this.gameOverFlag){
-                if(!collisionDetected){
-                    for(let obj of objects[Right]){
-                        obj.Update(timeElapsed);
-                        this.player.updateCharacterBox();
-                        let col=obj.getCollider();
-                        if(col.intersectsBox(playerBox)){
 
-                            let mesh=obj.getMesh();
-                            let id=mesh.id;
+                for(let obj of objects[Right]){
+                    obj.Update(timeElapsed);
+                    this.player.updateCharacterBox();
+                    let col=obj.getCollider();
+                    if(col.intersectsBox(playerBox)){
 
-                            if(!(id in this.detected)){
-                                this.detected[id]=1;
-                                collisionDetected=true;
-                                this.invulnerableFlag=true;
-                                if(detectedLength<2){
-                                    this.blink();
-                                }
-                                setTimeout(()=>{
-                                    this.invulnerableFlag=false,
-                                    console.log("not invulnerabile")
-                                    ;}, 3000);
-                                console.log("invulnerabile")
+                        let mesh=obj.getMesh();
+                        let type=obj.getType();
+                        let id=mesh.id;
+
+                        if(!(id in this.detected)){
+
+                            switch(type){
+                                case SPIKEBALL:
+                                    this.detected[id]=SPIKEBALL;
+                                    collisionDetected=true;
+                                    this.invulnerableFlag=true;
+                                    if(actualHearts>0){
+                                        actualHearts--;
+                                    }
+                                    else{
+                                        this.waist.position.z+=1;
+                                    }
+                                    if(detectedLength<2){
+                                        this.blink();
+                                    }
+                                    setTimeout(()=>{
+                                        this.invulnerableFlag=false,
+                                        console.log("not invulnerabile")
+                                        ;}, 3100);
+                                    console.log("invulnerabile")
+                                return
+
+
+                                case HEART:
+                                    mesh.visible = false;
+                                    this.detected[id]=HEART;
+                                    if (this.waist.position.z>0){
+                                        this.waist.position.z+=-1;
+                                    }
+                                    totalHearts++;
+                                    actualHearts++;
+                                break;
+
+                                case STAR:
+                                    mesh.visible = false;
+                                    this.detected[id]=STAR;
+                                    score++;
                                 break;
                             }
+
                         }
                     }
                 }
 
-                if(!collisionDetected){
-                    for(let obj of objects[Center]){
-                        obj.Update(timeElapsed);
-                        this.player.updateCharacterBox();
 
-                        let col=obj.getCollider();
 
-                        if(col.intersectsBox(playerBox)){
+                for(let obj of objects[Center]){
+                    obj.Update(timeElapsed);
+                    this.player.updateCharacterBox();
 
-                            let mesh=obj.getMesh();
-                            let id=mesh.id;
+                    let col=obj.getCollider();
 
-                            if(!(id in this.detected)){
-                                this.detected[id]=1;
-                                collisionDetected=true;
-                                this.invulnerableFlag=true;
-                                if(detectedLength<2){
-                                    this.blink();
-                                }
-                                setTimeout(()=>{
-                                    this.invulnerableFlag=false,
-                                    console.log("not invulnerabile")
-                                    ;}, 3000);
-                                console.log("invulnerabile")
+                    if(col.intersectsBox(playerBox)){
+
+                        let mesh=obj.getMesh();
+                        let type=obj.getType();
+
+                        let id=mesh.id;
+
+
+                        if(!(id in this.detected)){
+
+                            switch(type){
+                                case SPIKEBALL:
+                                    this.detected[id]=SPIKEBALL;
+                                    collisionDetected=true;
+                                    this.invulnerableFlag=true;
+                                    if(actualHearts>0){
+                                        actualHearts--;
+                                    }
+                                    else{
+                                        this.waist.position.z+=1;
+                                    }
+                                    if(detectedLength<2){
+                                        this.blink();
+                                    }
+                                    setTimeout(()=>{
+                                        this.invulnerableFlag=false,
+                                        console.log("not invulnerabile")
+                                        ;}, 3100);
+                                    console.log("invulnerabile")
+                                return
+
+                                case HEART:
+                                    mesh.visible = false;
+                                    this.detected[id]=HEART;
+                                    if (this.waist.position.z>0){
+                                        this.waist.position.z+=-1;
+                                    }
+                                    actualHearts++;
+                                    totalHearts++;
+                                break;
+
+                                case STAR:
+                                    mesh.visible = false;
+                                    this.detected[id]=STAR;
+                                    score++;
                                 break;
                             }
+
+
                         }
-
-
-
                     }
+
+
+
                 }
-                if(!collisionDetected){
-                    for(let obj of objects[Left]){
-                        obj.Update(timeElapsed);
-                        this.player.updateCharacterBox();
 
-                        let col=obj.getCollider();
 
-                        if(col.intersectsBox(playerBox)){
+                for(let obj of objects[Left]){
+                    obj.Update(timeElapsed);
+                    this.player.updateCharacterBox();
 
-                            let mesh=obj.getMesh();
-                            let id=mesh.id;
+                    let col=obj.getCollider();
 
-                            if(!(id in this.detected)){
-                                this.detected[id]=1;
-                                collisionDetected=true;
-                                this.invulnerableFlag=true;
-                                if(detectedLength<2){
-                                    this.blink();
-                                }
-                                setTimeout(()=>{
-                                    this.invulnerableFlag=false,
-                                    console.log("not invulnerabile")
-                                    ;}, 3000);
-                                console.log("invulnerabile")
+                    if(col.intersectsBox(playerBox)){
+
+                        let mesh=obj.getMesh();
+                        let type=obj.getType();
+                        let id=mesh.id;
+
+                        if(!(id in this.detected)){
+                            switch(type){
+                                case SPIKEBALL:
+                                    this.detected[id]=SPIKEBALL;
+                                    collisionDetected=true;
+                                    this.invulnerableFlag=true;
+                                    if(actualHearts>0){
+                                        actualHearts--;
+                                    }
+                                    else{
+                                        this.waist.position.z+=1;
+                                    }
+                                    if(detectedLength<2){
+                                        this.blink();
+                                    }
+                                    setTimeout(()=>{
+                                        this.invulnerableFlag=false,
+                                        console.log("not invulnerabile")
+                                        ;}, 3100);
+                                    console.log("invulnerabile")
+                                return
+
+
+
+                                case HEART:
+                                    mesh.visible = false;
+                                    this.detected[id]=HEART;
+                                    if (this.waist.position.z>0){
+                                        this.waist.position.z+=-1;
+                                    }
+                                    actualHearts++;
+                                    totalHearts++;
+                                break;
+
+                                case STAR:
+                                    mesh.visible = false;
+                                    this.detected[id]=STAR;
+                                    score++;
                                 break;
                             }
+
                         }
-
-
                     }
+
+
                 }
 
-                if(collisionDetected){
-                    this.waist.position.z+=1;
-                }
+
+
             }
         }
 

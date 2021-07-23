@@ -133,7 +133,7 @@ export class AnimationManager{
                                 this.rightFeetRoot.rotation,
                             ])
         .to([{x:0, y: 0, z:0},{ y: 0},{x:0, y: 0, z:0},{x:0, y: 0, z:0} ,{x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0},
-        {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}], 100)
+        {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}, {x:0, y: 0, z:0}], 50)
         .easing(TWEEN.Easing.Linear.None);
 
         let initialPos= new TWEEN.Tween([
@@ -155,13 +155,13 @@ export class AnimationManager{
                                 this.rightFeetRoot.rotation,
                             ])
         .to([{y: -0.1},{y: -0.1},{x: Math.PI/3}, {x: Math.PI/3}, {x: Math.PI/3}, {x: Math.PI/3},
-        {x: Math.PI/6}, {x: -Math.PI/3}, {x: Math.PI/6}, {x: -Math.PI/3},{x: Math.PI/7},{x: Math.PI/7}], 300)
+        {x: Math.PI/6}, {x: -Math.PI/3}, {x: Math.PI/6}, {x: -Math.PI/3},{x: Math.PI/7},{x: Math.PI/7}], 150)
         .easing(TWEEN.Easing.Linear.None)
         .onStart(()=>{
             this.jumpingFlag=true;
             console.log(this.jumpingFlag);
         })
-        //.delay(200)
+
 
         let jump= new TWEEN.Tween([
                                 this.waist.position,
@@ -182,9 +182,8 @@ export class AnimationManager{
                                 this.rightFeetRoot.rotation,
                             ])
         .to([{y: 3.5},{y: 0},{x: 0}, {x: 0}, {x: 0}, {x: 0},
-        {x: 0}, {x: 0}, {x: 0}, {x: 0},{x: 0},{x: 0}], 400)
+        {x: 0}, {x: 0}, {x: 0}, {x: 0},{x: 0},{x: 0}], 100)
         .easing(TWEEN.Easing.Cubic.Out);
-        //.delay(200);
 
         let fallInitialPos= new TWEEN.Tween([
                                 this.upperLeftArmRoot.rotation,
@@ -193,13 +192,13 @@ export class AnimationManager{
                                 this.upperRightArmRoot.rotation,
                                 this.lowerRightArmRoot.rotation,
                             ])
-        .to([{z: -Math.PI/4},{x: Math.PI/3}, {z: Math.PI/4}, {x: Math.PI/3}], 300)
+        .to([{z: -Math.PI/4},{x: Math.PI/3}, {z: Math.PI/4}, {x: Math.PI/3}], 100)
         .easing(TWEEN.Easing.Cubic.Out);
 
         let gravitiFall= new TWEEN.Tween([
                                 this.waist.position,
                             ])
-        .to([{y:0}], 300)
+        .to([{y:0}], 250)
         .easing(TWEEN.Easing.Quartic.In);
 
         let finalPos= new TWEEN.Tween([
@@ -243,7 +242,7 @@ export class AnimationManager{
                                 this.rightFeetRoot.rotation,
                             ])
         .to([{y: 0},{y: 0},{x: 0,z:0}, {x: 0}, {x: 0,z:0}, {x: 0},
-        {x: 0}, {x: 0}, {x: 0}, {x: 0}, {x: 0}, {x: 0}], 200)
+        {x: 0}, {x: 0}, {x: 0}, {x: 0}, {x: 0}, {x: 0}], 150)
         .easing(TWEEN.Easing.Linear.None)
         .onComplete(()=>{
             console.log(this.jumpingFlag);
