@@ -1,0 +1,64 @@
+body {
+  background-color: #282626;
+}
+
+
+.menu {
+ display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.boxmenu-options{
+    width: 400px;
+    height: 500px;
+    background: #B22304;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px;
+}
+.boxmenu-options .box-options{
+    width:80%;
+    height:auto;
+    padding:10px;
+    margin: 10px 0 10px 0;
+    background: #9D698B;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid green;
+
+}
+.boxmenu-options .box-options:hover{
+    cursor: pointer;
+    background: #22A405 ;
+}
+
+.boxmenu-options .box-options button {
+	width: 150px;
+	height: 50px;
+	cursor: pointer;
+	font-size: 20px;
+	font-weight: bold;
+	color: black;
+	background: white;
+	border: 2px solid black;
+	box-shadow: 5px 5px 0 black,
+		-5px -5px 0 black,
+		-5px 5px 0 black,
+		5px -5px 0 black;
+	transition: 500ms ease-in-out;
+
+}
+
+.boxmenu-options .box-options button:hover {
+	box-shadow: 20px 5px 0 black, -20px -5px 0 black;
+}
+
+.boxmenu-options .box-options button:focus {
+	outline: none;
+}

@@ -201,6 +201,7 @@ export class WorldManager {
       lava.position.y+=LAVA_PLANE_Y_POS;
       lava.rotation.x=Math.PI/2;
       lava.receiveShadow=true;
+      lava.castShadow=true;
       this.scene.add(lava);
 
       const rectLight = new THREE.RectAreaLight( 0xff4e01, 1,  100, 200 );
@@ -303,6 +304,7 @@ export class WorldManager {
         this.bridge=new THREE.Mesh(bridgeGeometry ,materials);
         //this.bridge.castShadow=true;
         this.bridge.receiveShadow=true;
+        this.bridge.castShadow=true;
         this.bridge.position.y+=-0.5;
         this.bridge.position.z+=-50;
 

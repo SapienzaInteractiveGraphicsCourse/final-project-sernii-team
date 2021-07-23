@@ -10,7 +10,49 @@ import * as GUI from './libs/dat.gui.module.js'
 import {OrbitControls} from './libs/OrbitControls.js'
 
 
+
+//SETUP BUTTONS
+
+//GAMEOVER MENU
+let restartButtonGO = document.getElementById("gameOver-restart");
+restartButtonGO.onclick= function(){
+    window.location.reload();
+};
+let menuButtonGO = document.getElementById("gameOver-menu");
+menuButtonGO.onclick= function(){
+    window.location.replace('./index.html')
+};
+
+//PAUSE MENU
+let escFlag=false;
+document.addEventListener('keydown', (e) => onKeyPress_(e), false);
+function onKeyPress_(event){
+    switch (event.keyCode) {
+        case 27:
+            escFlag=true;
+        break;
+
+        default:
+        break;
+    }
+}
+
+let restartButtonPause = document.getElementById("pause-restart");
+restartButtonPause.onclick= function(){
+    window.location.reload();
+};
+let resumeButtonPause = document.getElementById("pause-resume");
+resumeButtonPause.onclick= function(){
+    document.getElementById("pause-menu").style.display = "none";
+    escFlag=false;
+};
+let menuButtonPause = document.getElementById("pause-menu-button");
+menuButtonPause.onclick= function(){
+    window.location.replace('./index.html')
+};
+
 function init() {
+
     // canvas
     const canvas = document.getElementById('game-canvas');
 
@@ -19,7 +61,7 @@ function init() {
     scene.background = new THREE.Color(0x181818);
 
     //CAMERA
-    const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.001, 1000);
+    let camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 100);
     camera.position.set(2.5, 3, 4.3);
     camera.rotation.set(0, 6.4, 0);
 
@@ -36,12 +78,22 @@ function init() {
     const renderer = new THREE.WebGLRenderer({
         antialias: true
     });
-    //renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0xffffff)
     renderer.shadowMap.enabled = true;
-    document.body.appendChild(renderer.domElement);
     window.addEventListener('resize', onWindowResize, false);
+
+    function resizeRendererToDisplaySize(renderer) {
+        const canvas = renderer.domElement;
+        const width = canvas.clientWidth;
+        const height = canvas.clientHeight;
+        const needResize = canvas.width !== width || canvas.height !== height;
+        if (needResize) {
+            renderer.setSize(width, height, false);
+        }
+        return needResize;
+    }
 
     //ORBIT
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -50,7 +102,7 @@ function init() {
     controls.enableZoom = true;
     controls.autoRotate = true;
 
-    //CLASSES
+ //CLASSES
     const world_ = new WorldManager({
         scene: scene
     });
@@ -79,6 +131,7 @@ function init() {
     loadingManager.onLoad = function() {
         const loadingScreen = document.getElementById('loading-screen');
         loadingScreen.remove();
+        document.body.appendChild(renderer.domElement);
         requestAnimationFrame(render);
     }
 
@@ -86,6 +139,12 @@ function init() {
     let aTime = 0;
     const render = function(timeElapsed) {
         //renderer.clear()
+        if (resizeRendererToDisplaySize(renderer)) {
+            const canvas = renderer.domElement;
+            camera.aspect = canvas.clientWidth / canvas.clientHeight;
+            camera.updateProjectionMatrix();
+        }
+
 
         if (prevTime == null) {
             prevTime = timeElapsed;
@@ -94,17 +153,31 @@ function init() {
             timeElapsed = 0;
         }
 
+
         aTime = (timeElapsed - prevTime) * 0.001;
         prevTime = timeElapsed;
 
-        TWEEN.update();
+
 
         if (!collisionsDetector_.getgameOverFlag()) {
-            world_.Update(aTime);
-            player_.Update(aTime);
-            controlManager_.Update(timeElapsed);
-            collisionsDetector_.Update(aTime);
+            if(escFlag){
+                document.getElementById("pause-menu").style.display = "block";
+            }
+            else{
+                TWEEN.update(timeElapsed);
+                world_.Update(aTime);
+                player_.Update(aTime);
+                controlManager_.Update(timeElapsed);
+                collisionsDetector_.Update(aTime);
+            }
         }
+        else{
+            document.getElementById("gameOver").style.display = "block";
+            TWEEN.update(timeElapsed);
+            setInterval(function(){TWEEN.removeAll(); }, 2500);
+
+        }
+
         renderer.render(scene, camera);
         requestAnimationFrame(render);
 

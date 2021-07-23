@@ -48,6 +48,9 @@ export class ControlManager{
           case 65:
             this.keys_.arrowL_a = true;
             break;
+            
+          default:
+          break;
         }
 
     }
