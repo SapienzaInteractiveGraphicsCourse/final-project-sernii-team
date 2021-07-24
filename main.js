@@ -272,7 +272,7 @@ function init() {
             world_.Update(deltaTime);
             player_.Update();
             controlManager_.Update();
-            //collisionsDetector_.Update();
+            collisionsDetector_.Update();
 
         }
         else{
