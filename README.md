@@ -1,11 +1,11 @@
 # final-project-sernii-team
 
-##Game
+## Game
 
 you can play the game [Here](https://sapienzainteractivegraphicscourse.github.io/final-project-la_dl-team/).
 Inside the menu you can find a little tutorial.
 
-##Command 
+## Command 
 
 Press **ESC** to pause the game
 Press **SPACE** to jump
