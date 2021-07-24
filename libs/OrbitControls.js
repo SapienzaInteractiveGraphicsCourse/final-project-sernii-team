@@ -109,7 +109,7 @@ class OrbitControls extends EventDispatcher {
 		};
 		this.getCenter = function() {
 			let cent = new THREE.Vector3();
-			cent.copy( this.center );
+			cent.copy( this.object.rotation);
 			return cent;
 		};
 

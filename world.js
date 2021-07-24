@@ -3,6 +3,7 @@ import {lavaGround} from './loader.js';
 import {SpikeBall} from './loader.js';
 import {Star} from './loader.js';
 import {Heart} from './loader.js';
+import {Rock} from './loader.js';
 import {Stalagmites} from './loader.js'
 import {RectAreaLightUniformsLib} from './libs/RectAreaLightUniformsLib.js';
 import {RectAreaLightHelper} from './libs/RectAreaLightHelper.js';
@@ -84,12 +85,14 @@ class WorldObject {
         });
         this.heart.load();
     }
+
     spawnSpikeBall() {
         this.spikeBall = new SpikeBall({
             scene: this.mesh
         });
         this.spikeBall.load();
     }
+
     spawnStar() {
         this.star = new Star({
             scene: this.mesh
@@ -139,7 +142,7 @@ export class WorldManager {
     }
 
     spawnStalagamites() {
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 50; i++) {
             let stal = new Stalagmites();
             stal.loadStal2(this.stalagmites);
         }
@@ -743,39 +746,6 @@ export class WorldManager {
 
     }
 
-    SpawnTexturePlane() {
-
-        const geometry = new THREE.PlaneGeometry(8, 1);
-        const texture = new THREE.TextureLoader().load('assets/bridge.jpg');
-        const material = new THREE.MeshStandardMaterial({
-            map: texture,
-            side: THREE.DoubleSide,
-        });
-        const plane = new THREE.Mesh(geometry, material);
-        plane.rotation.x = Math.PI * 0.5;
-        plane.position.z += -100;
-        this.textures.push(plane);
-        this.scene.add(plane);
-
-    }
-
-    ShouldITextureObj(type) {
-
-        if (this.textures.length == 0) {
-            this.SpawnTexturePlane();
-        } else {
-            //distance between last spawned object and the spawn location
-            var dist = Math.abs(
-                this.textures[this.textures.length - 1].position.z +
-                TEXTSPAWNDISTANCE
-            );
-            if (dist > TEXTSEPARATIONDISTANCE) {
-                this.SpawnTexturePlane();
-            }
-        }
-
-    }
-
     SpawnObj(type) {
 
         const obj = new WorldObject({
@@ -802,6 +772,54 @@ export class WorldManager {
 
         this.scene.add(obj.mesh);
     }
+
+    SpawnTexturePlane() {
+
+
+            /*const geometry = new THREE.PlaneGeometry(2, 0.1);
+        //const texture = new THREE.TextureLoader().load('assets/bridge/stonetext.jpg');
+        const material = new THREE.MeshBasicMaterial({
+            side: THREE.DoubleSide,
+            color: 0x000000,
+        });
+        const plane = new THREE.Mesh(geometry, material);
+        plane.rotation.x = Math.PI * 0.5;
+        plane.rotation.z = Math.PI * 0.5;
+        plane.position.z += -100;
+        plane.position.x += this.getRandomArbitrary(-2, 2);
+        this.textures.push(plane);
+        this.scene.add(plane);*/
+
+
+        let mesh=new THREE.Object3D();
+        mesh.position.z=-100;
+        let stone=new Rock({
+            scene: mesh,
+        })
+        stone.load();
+        this.textures.push(mesh);
+        this.scene.add(mesh);
+
+    }
+
+    ShouldITextureObj(type) {
+
+        if (this.textures.length == 0) {
+            this.SpawnTexturePlane();
+        } else {
+            //distance between last spawned object and the spawn location
+            var dist = Math.abs(
+                this.textures[this.textures.length - 1].position.z +
+                TEXTSPAWNDISTANCE
+            );
+            if (dist > TEXTSEPARATIONDISTANCE) {
+                this.SpawnTexturePlane();
+            }
+        }
+
+    }
+
+
 
     Update(timeElapsed) {
 
@@ -846,18 +864,20 @@ export class WorldManager {
             }
         }
 
-        /*this.ShouldITextureObj();
-    for(let tex of this.textures){
-      tex.position.z+=timeElapsed*this.speed[Center];
+        /*
+        this.ShouldITextureObj();
+        let textureSpeed= 15;
+        for(let tex of this.textures){
+            tex.position.z+=timeElapsed*15;
 
-      if (tex.position.z>4){
-        //invisible.push(obj);
-        tex.visible =false;
-      }
-      else{
-        //visible.push(obj);
-      }
-  }*/
+            if (tex.position.z>4){
+                //invisible.push(obj);
+                tex.visible =false;
+            }
+            else{
+                //visible.push(obj);
+            }
+        }
 
         //preferisco farlo nel collider manager
         /*

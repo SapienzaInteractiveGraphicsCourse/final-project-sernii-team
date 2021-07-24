@@ -31,8 +31,34 @@ function init() {
     document.addEventListener('keydown', (e) => onKeyPress_(e), false);
     function onKeyPress_(event){
         switch (event.keyCode) {
+            //esc
             case 27:
                 escFlag=true;
+            break;
+
+            //1
+            case 49:
+                camera.position.set(pos1.x, pos1.y, pos1.z);
+                camera.rotation.set(rot1.x, rot1.y, rot1.z);
+            break;
+
+            case 50:
+                camera.position.set(pos2.x, pos2.y, pos2.z);
+                camera.rotation.set(rot2.x, rot2.y, rot2.z);
+            break;
+
+            case 51:
+                camera.position.set(pos3.x, pos3.y, pos3.z);
+                camera.rotation.set(rot3.x, rot3.y, rot3.z);
+            break;
+
+            case 52:
+                if(controls.enabled){
+                    controls.enabled=false;
+                }
+                else{
+                    controls.enabled=true;
+                }
             break;
 
             default:
@@ -70,8 +96,14 @@ function init() {
 
     //CAMERA
     let pos1=new THREE.Vector3(-0.01087992252692748, 4.521662348120875, 7.497612977286614);
-    let pos2=new THREE.Vector3( 1.799686096241876, 4.849696792619959,  5.439993648004418);
+    let rot1=new THREE.Vector3(-0.5426813163122307, -0.0012426310974037312, -0.0007494059462511752);
+
+    let pos2=new THREE.Vector3( 7.979663356220904, 5.527074986540818, 6.902485896911645);
+    let rot2= new THREE.Vector3(-0.6751900947442467, 0.7341416722679837, 0.4923836140827761);
+
     let pos3=new THREE.Vector3(0.024576205223744825, 4.008733385983772, 5.035208178921649);
+    let rot3=new THREE.Vector3(-0.5426813163122307, -0.0012426310974037312, -0.0007494059462511752);
+
     let camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 300);
     camera.position.set(pos1.x, pos1.y, pos1.z);
 
@@ -112,10 +144,11 @@ function init() {
     controls.dampingFactor = 0.25;
     controls.enableZoom = true;
     controls.autoRotate = true;
+    controls.enabled=false;
 
     //CLOCK
     let clock=new THREE.Clock(false);
-    //clock.start();
+
     let pauseTime=0
 
     //CLASSES
@@ -145,24 +178,9 @@ function init() {
         console.log("loaded: " + url);
     }
 
-    /*
-    let div= document.createElement('div');
-    div.style.backgroundColor="#8cfc03";
-    div.position="absolute";
-    div.style.display="block";
-    div.style.top=0+"px";
-    div.style.left=0+"px";
-    div.style.zIndex = 2;
-    */
 
     let hearts = document.createElement('div');
     hearts.innerHTML = "HEARTS: 0 ";
-    //hearts.style.position = 'absolute';
-    //hearts.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
-    //hearts.style.position="fixed";
-    //hearts.style.top=70+"px";
-    //hearts.style.left=0+"px";
-    //hearts.style.fontSize=20+"px";
     hearts.style.color="white";
     hearts.style.float="left";
     hearts.style.marginTop=0.6+"%";
@@ -177,7 +195,6 @@ function init() {
     let div = document.createElement('div');
     div.style.position = 'absolute';
     div.style.backgroundColor="black";
-    //div.style.display="inline";
     div.style.position="fixed";
     div.style.width=100+"%";
     div.style.float="left";
@@ -185,7 +202,6 @@ function init() {
     div.style.top=0+"px";
     div.style.left=0+"px";
     div.style.paddingLeft= 10 +"%";
-    //div.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
 
     loadingManager.onLoad = function() {
         const loadingScreen = document.getElementById('loading-screen');
@@ -256,7 +272,7 @@ function init() {
             world_.Update(deltaTime);
             player_.Update();
             controlManager_.Update();
-            collisionsDetector_.Update();
+            //collisionsDetector_.Update();
 
         }
         else{
@@ -268,7 +284,10 @@ function init() {
         hearts.innerHTML = "HEARTS: " + collisionsDetector_.getHearts();
         score.innerHTML = "SCORE: " + collisionsDetector_.getScore();
         renderer.render(scene, camera);
-        console.log(controls.getPos());
+        let posa=controls.getPos();
+        let rota=controls.getCenter();
+        console.log("pos: "+ "x: "+ posa.x + " y:"+ posa.y + "z: " + posa.z );
+        console.log("rot: " + "x: "+ rota.x + " y:"+ rota.y + "z: " + rota.z );
         requestAnimationFrame(render);
 
     };

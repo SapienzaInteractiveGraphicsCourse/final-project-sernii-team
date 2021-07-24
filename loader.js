@@ -299,6 +299,67 @@ export class Heart{
     }
 }
 
+export class Rock{
+	constructor(params){
+
+        this.mesh=params.scene;
+        this.manager=new THREE.LoadingManager();
+
+        this.objHref= './assets/rock/Rock1.obj';
+        this.mtlHref= './assets/rock/Rock1.mtl';
+        this.obj=0;
+
+    }
+
+    load(){
+        this.manager.onLoad=function(){
+        }
+        this.manager.onProgress= function(url, itemsLoaded, itemsTotal){
+            //console.log("loaded: " + url);
+            //console.log("left: "+ itemsTotal-itemsLoaded);
+        }
+		let meshAux=this.mesh;
+
+        const mtlLoader = new MTLLoader(this.manager);
+        mtlLoader.load(this.mtlHref, (mtl) => {
+            mtl.preload();
+            const objLoader = new OBJLoader(this.manager);
+            objLoader.setMaterials(mtl);
+            objLoader.load(this.objHref, (object) => {
+
+                var box = new THREE.Box3().setFromObject(object);
+				//object.material=mtl;
+                const boxSize = box.getSize(new THREE.Vector3());
+				object.traverse( function ( child ) {
+					if ( child instanceof THREE.Object3D  ) {
+						if(child.name=='Cube'){
+							let pivot=new THREE.Object3D();
+							child.scale.set(0.1,0.1,0.1)
+			                pivot.position.y+=0.5*boxSize.y;
+			                pivot.add(child);
+							meshAux.add(pivot);
+							//console.log(child);
+						}
+					}
+				});
+
+
+				/*
+                let tween1=new TWEEN.Tween(object.rotation)
+                .to({x:Math.PI},500)
+                .easing(TWEEN.Easing.Linear.None)
+                .repeat(Infinity)
+                .onUpdate((tweenObj)=>{
+                    object.rotation.x+=tweenObj.x;
+                })
+                .start();
+				*/
+            });
+
+        });
+    }
+}
+
 export class Stalagmites{
 
     constructor(){
@@ -351,11 +412,10 @@ export class Stalagmites{
             let root = gltf.scene;
             let stalagmite = root.getObjectByName('stalagmite_2');
             stalagmite.rotation.z=Math.PI;
-            stalagmite.position.y+=getRandomArbitrary(50, 100);
-            stalagmite.position.x+=getRandomArbitrary(0, 200);
-            stalagmite.position.z+=getRandomArbitrary(-100, 5);
-			console.log(stalagmite.position.x);
-            stalagmite.scale.set(getRandomArbitrary(0.2, 0.5),getRandomArbitrary(0.2, 0.5),getRandomArbitrary(0.2, 0.5));
+            stalagmite.position.y=getRandomArbitrary(20, 60);
+            stalagmite.position.x=getRandomArbitrary(-80, 80);
+            stalagmite.position.z=getRandomArbitrary(-200, -10);
+            stalagmite.scale.set(getRandomArbitrary(0.05, 0.2),getRandomArbitrary(0.05, 0.2),getRandomArbitrary(0.05, 0.2));
             scene.add(stalagmite);
 
 
