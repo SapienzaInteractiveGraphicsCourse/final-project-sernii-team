@@ -2,7 +2,7 @@
 
 ## Game
 
-you can play the game [Here](https://sapienzainteractivegraphicscourse.github.io/final-project-la_dl-team/).
+you can play the game [Here](https://sapienzainteractivegraphicscourse.github.io/final-project-sernii-team/).
 Inside the menu you can find a little tutorial.
 
 ## Command 
