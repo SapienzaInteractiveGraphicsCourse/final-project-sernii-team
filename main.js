@@ -71,7 +71,7 @@ function init() {
     //CAMERA
     let pos1=new THREE.Vector3(-0.01087992252692748, 4.521662348120875, 7.497612977286614);
     let pos2=new THREE.Vector3( 1.799686096241876, 4.849696792619959,  5.439993648004418);
-    let pos3=new THREE.Vector3(0.024576205223744825, 4.008733385983772, 5.035208178921649})
+    let pos3=new THREE.Vector3(0.024576205223744825, 4.008733385983772, 5.035208178921649);
     let camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 300);
     camera.position.set(pos1.x, pos1.y, pos1.z);
 
