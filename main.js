@@ -69,9 +69,11 @@ function init() {
     scene.background = new THREE.Color(0x181818);
 
     //CAMERA
+    let pos1=new THREE.Vector3(-0.01087992252692748, 4.521662348120875, 7.497612977286614);
+    let pos2=new THREE.Vector3( 1.799686096241876, 4.849696792619959,  5.439993648004418);
+    let pos3=new THREE.Vector3(0.024576205223744825, 4.008733385983772, 5.035208178921649})
     let camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 300);
-    camera.position.set(2.5, 3, 4.3);
-    camera.rotation.set(0, 6.4, 0);
+    camera.position.set(pos1.x, pos1.y, pos1.z);
 
     //RENDER
     function onWindowResize() {
@@ -142,33 +144,58 @@ function init() {
     loadingManager.onProgress = function(url, itemsLoaded, itemsTotal) {
         console.log("loaded: " + url);
     }
+
+    /*
+    let div= document.createElement('div');
+    div.style.backgroundColor="#8cfc03";
+    div.position="absolute";
+    div.style.display="block";
+    div.style.top=0+"px";
+    div.style.left=0+"px";
+    div.style.zIndex = 2;
+    */
+
     let hearts = document.createElement('div');
-    hearts.style.position = 'absolute';
-    //hearts.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
-    hearts.style.position="fixed";
-    hearts.style.top=70+"px";
-    hearts.style.left=0+"px";
-    hearts.style.fontSize=50+"px";
-    hearts.style.color="white";
     hearts.innerHTML = "HEARTS: 0 ";
+    //hearts.style.position = 'absolute';
+    //hearts.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
+    //hearts.style.position="fixed";
+    //hearts.style.top=70+"px";
+    //hearts.style.left=0+"px";
+    //hearts.style.fontSize=20+"px";
+    hearts.style.color="white";
+    hearts.style.float="left";
+    hearts.style.marginTop=0.6+"%";
 
     let score = document.createElement('div');
-    score.style.position = 'absolute';
-    //score.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
-    score.style.position="fixed";
-    score.style.top=0+"px";
-    score.style.left=0+"px";
-    score.style.fontSize=50+"px";
+    score.innerHTML = "SCORE: 0 ";
     score.style.color="white";
-    score.innerHTML = "SCORE: 0";
+    score.style.marginLeft=10+"%";
+    score.style.marginTop=0.6+"%";
+
+
+    let div = document.createElement('div');
+    div.style.position = 'absolute';
+    div.style.backgroundColor="black";
+    //div.style.display="inline";
+    div.style.position="fixed";
+    div.style.width=100+"%";
+    div.style.float="left";
+    div.style.height=40+"px";
+    div.style.top=0+"px";
+    div.style.left=0+"px";
+    div.style.paddingLeft= 10 +"%";
+    //div.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
 
     loadingManager.onLoad = function() {
         const loadingScreen = document.getElementById('loading-screen');
         loadingScreen.remove();
         document.body.appendChild(renderer.domElement);
-        document.body.appendChild(score);
-        document.body.appendChild(hearts);
+        document.body.appendChild(div);
+        div.appendChild(hearts);
+        div.appendChild(score);
         //score.appendChild(hearts);
+        //document.body.appendChild(div);
         requestAnimationFrame(render);
         clock.start();
     }
@@ -241,9 +268,11 @@ function init() {
         hearts.innerHTML = "HEARTS: " + collisionsDetector_.getHearts();
         score.innerHTML = "SCORE: " + collisionsDetector_.getScore();
         renderer.render(scene, camera);
+        console.log(controls.getPos());
         requestAnimationFrame(render);
 
     };
+
 
 }
 

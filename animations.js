@@ -198,7 +198,7 @@ export class AnimationManager{
         let gravitiFall= new TWEEN.Tween([
                                 this.waist.position,
                             ])
-        .to([{y:0}], 250)
+        .to([{y:0}], 300)
         .easing(TWEEN.Easing.Quartic.In);
 
         let finalPos= new TWEEN.Tween([

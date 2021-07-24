@@ -7,6 +7,7 @@ import {
 	Vector2,
 	Vector3
 } from './three.module.js';
+import * as THREE from './three.module.js';
 
 // This set of controls performs orbiting, dollying (zooming), and panning.
 // Unlike TrackballControls, it maintains the "up" direction object.up (+Y by default).
@@ -101,6 +102,16 @@ class OrbitControls extends EventDispatcher {
 		//
 		// public methods
 		//
+		this.getPos = function() {
+			let pos = new THREE.Vector3();
+			pos.copy( this.object.position );
+			return  pos;
+		};
+		this.getCenter = function() {
+			let cent = new THREE.Vector3();
+			cent.copy( this.center );
+			return cent;
+		};
 
 		this.getPolarAngle = function () {
 
