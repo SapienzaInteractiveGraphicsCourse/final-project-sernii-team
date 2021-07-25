@@ -73,6 +73,8 @@ export class Player {
 
     constructor(params) {
 
+        this.loadingManager=params.loadingManager;
+
         this.scene = params.scene;
         this.position = new THREE.Vector3(INITIAL_X_POS, INITIAL_Y_POS, 0.0);
         this.velocity = 0.0;
@@ -232,6 +234,7 @@ export class Player {
         this.torso = new THREE.Mesh(this.torsoGeo, this.torsoMat);
 
         this.head = new THREE.Object3D();
+        ninjaHead.manager=this.loadingManager;
         ninjaHead.load(this.head);
 
 

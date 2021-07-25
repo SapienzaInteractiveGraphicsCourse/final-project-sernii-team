@@ -320,10 +320,7 @@ export class CollisionsDetector{
 
             }
         }
-        console.log("detected: "+ this.detectedLength);
-        console.log("actual h: "+actualHearts );
-        console.log("total h: "+totalHearts );
-
+        
 
     }
 };

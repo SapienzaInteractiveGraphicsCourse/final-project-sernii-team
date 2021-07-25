@@ -159,7 +159,6 @@ export class AnimationManager{
         .easing(TWEEN.Easing.Linear.None)
         .onStart(()=>{
             this.jumpingFlag=true;
-            console.log(this.jumpingFlag);
         })
 
 
@@ -246,7 +245,6 @@ export class AnimationManager{
         .easing(TWEEN.Easing.Linear.None)
         .onComplete(()=>{
             console.log(this.jumpingFlag);
-            this.jumpingFlag=false;
         });
 
         standardPos.chain(initialPos);

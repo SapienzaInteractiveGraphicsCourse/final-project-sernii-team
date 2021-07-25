@@ -47,6 +47,7 @@ class WorldObject {
         //this.spikeBall.load();
         this.mesh.position.z += -100;
 
+
         /*let tween=new TWEEN.Tween(this.mesh.position)
         .to({z:8},10000)
         .easing(TWEEN.Easing.Linear.None)
@@ -134,6 +135,7 @@ export class WorldManager {
         this.speed = [INITIAL_SPEED, INITIAL_SPEED, INITIAL_SPEED];
         this.separation_distance = [SEPARATIONDISTANCE, SEPARATIONDISTANCE, SEPARATIONDISTANCE];
         this.spawn_distance = [SPAWNDISTANCE, SPAWNDISTANCE, SPAWNDISTANCE];
+        this.loadingManager=params.loadingManager;
 
         this.setupLights();
         this.createLava();
@@ -144,7 +146,9 @@ export class WorldManager {
 
     spawnStalagamites() {
         for (let i = 0; i < 50; i++) {
-            let stal = new Stalagmites();
+            let stal = new Stalagmites({
+                loadingManager: this.loadingManager,
+            });
             stal.loadStal2(this.stalagmites);
         }
         this.scene.add(this.stalagmites);
@@ -176,21 +180,21 @@ export class WorldManager {
         //lavaGround.load(this.scene);
         const lavaGeometry = new THREE.PlaneGeometry(LAVA_PLANE_WIDTH, LAVA_PLANE_HEIGHT);
 
-        const lavaNormalMap = new THREE.TextureLoader().load("./assets/lava/normal.jpg")
+        const lavaNormalMap = new THREE.TextureLoader(this.loadingManager).load("./assets/lava/normal.jpg")
         lavaNormalMap.wrapS = THREE.RepeatWrapping;
         lavaNormalMap.wrapT = THREE.RepeatWrapping;
         lavaNormalMap.repeat.set(100, 100);
         lavaNormalMap.magFilter = THREE.NearestFilter;
         lavaNormalMap.minFilter = THREE.NearestFilter;
 
-        const lavaRoughnessMap = new THREE.TextureLoader().load("./assets/lava/roughness.jpg");
+        const lavaRoughnessMap = new THREE.TextureLoader(this.loadingManager).load("./assets/lava/roughness.jpg");
         lavaRoughnessMap.wrapS = THREE.RepeatWrapping;
         lavaRoughnessMap.wrapT = THREE.RepeatWrapping;
         lavaRoughnessMap.repeat.set(100, 100);
         lavaRoughnessMap.magFilter = THREE.NearestFilter;
         lavaRoughnessMap.minFilter = THREE.NearestFilter;
 
-        const lavaColorMap = new THREE.TextureLoader().load("./assets/lava/color.jpg");
+        const lavaColorMap = new THREE.TextureLoader(this.loadingManager).load("./assets/lava/color.jpg");
         lavaColorMap.wrapS = THREE.RepeatWrapping;
         lavaColorMap.wrapT = THREE.RepeatWrapping;
         lavaColorMap.repeat.set(100, 100);
@@ -198,21 +202,21 @@ export class WorldManager {
         lavaColorMap.minFilter = THREE.NearestFilter;
 
 
-        const lavaEmissiveMap = new THREE.TextureLoader().load("./assets/lava/emissive.jpg");
+        const lavaEmissiveMap = new THREE.TextureLoader(this.loadingManager).load("./assets/lava/emissive.jpg");
         lavaEmissiveMap.wrapS = THREE.RepeatWrapping;
         lavaEmissiveMap.wrapT = THREE.RepeatWrapping;
         lavaEmissiveMap.repeat.set(100, 100);
         lavaEmissiveMap.magFilter = THREE.NearestFilter;
         lavaEmissiveMap.minFilter = THREE.NearestFilter;
 
-        const lavaHeightMap = new THREE.TextureLoader().load("./assets/lava/height.jpg");
+        const lavaHeightMap = new THREE.TextureLoader(this.loadingManager).load("./assets/lava/height.jpg");
         lavaHeightMap.wrapS = THREE.RepeatWrapping;
         lavaHeightMap.wrapT = THREE.RepeatWrapping;
         lavaHeightMap.repeat.set(100, 100);
         lavaHeightMap.magFilter = THREE.NearestFilter;
         lavaHeightMap.minFilter = THREE.NearestFilter
 
-        const lavaAoMap = new THREE.TextureLoader().load("./assets/lava/ao.jpg");
+        const lavaAoMap = new THREE.TextureLoader(this.loadingManager).load("./assets/lava/ao.jpg");
         lavaAoMap.wrapS = THREE.RepeatWrapping;
         lavaAoMap.wrapT = THREE.RepeatWrapping;
         lavaAoMap.repeat.set(100, 100);
@@ -272,14 +276,14 @@ export class WorldManager {
 
 
         let bridgeGeometry = new THREE.BoxGeometry(BRIDGE_WIDTH, BRIDGE_HEIGHT, BRIDGE_DEPTH);
-        let bridgeTexture = new THREE.TextureLoader().load('assets/bridge/stonetext.jpg');
+        let bridgeTexture = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/stonetext.jpg');
         bridgeTexture.wrapS = THREE.RepeatWrapping;
         bridgeTexture.wrapT = THREE.RepeatWrapping;
         bridgeTexture.repeat.set(10, 1);
         bridgeTexture.magFilter = THREE.NearestFilter;
         bridgeTexture.minFilter = THREE.NearestFilter;
 
-        let bridgeNormalMap = new THREE.TextureLoader().load('assets/bridge/StoneNormalMap.png');
+        let bridgeNormalMap = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/StoneNormalMap.png');
         bridgeNormalMap.wrapS = THREE.RepeatWrapping;
         bridgeNormalMap.wrapT = THREE.RepeatWrapping;
         bridgeNormalMap.repeat.set(10, 1);
@@ -287,42 +291,42 @@ export class WorldManager {
         bridgeNormalMap.minFilter = THREE.NearestFilter;
 
 
-        let bridgeTextureUp = new THREE.TextureLoader().load('assets/bridge/stonetext.jpg');
+        let bridgeTextureUp = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/stonetext.jpg');
         bridgeTextureUp.wrapS = THREE.RepeatWrapping;
         bridgeTextureUp.wrapT = THREE.RepeatWrapping;
         bridgeTextureUp.repeat.set(5, 50);
         bridgeTextureUp.magFilter = THREE.NearestFilter;
         bridgeTextureUp.minFilter = THREE.NearestFilter;
 
-        let bridgeNormalUp = new THREE.TextureLoader().load('assets/bridge/StoneNormalMap.png');
+        let bridgeNormalUp = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/StoneNormalMap.png');
         bridgeNormalUp.wrapS = THREE.RepeatWrapping;
         bridgeNormalUp.wrapT = THREE.RepeatWrapping;
         bridgeNormalUp.repeat.set(5, 50);
         bridgeNormalUp.magFilter = THREE.NearestFilter;
         bridgeNormalUp.minFilter = THREE.NearestFilter;
 
-        let bridgeTextureLateralR = new THREE.TextureLoader().load('assets/bridge/stonetext.jpg');
+        let bridgeTextureLateralR = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/stonetext.jpg');
         bridgeTextureLateralR.wrapS = THREE.RepeatWrapping;
         bridgeTextureLateralR.wrapT = THREE.RepeatWrapping;
         bridgeTextureLateralR.repeat.set(40, 1);
         bridgeTextureLateralR.magFilter = THREE.NearestFilter;
         bridgeTextureLateralR.minFilter = THREE.NearestFilter;
 
-        let bridgeLateralNormalR = new THREE.TextureLoader().load('assets/bridge/StoneNormalMap.png');
+        let bridgeLateralNormalR = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/StoneNormalMap.png');
         bridgeLateralNormalR.wrapS = THREE.RepeatWrapping;
         bridgeLateralNormalR.wrapT = THREE.RepeatWrapping;
         bridgeLateralNormalR.repeat.set(40, 1);
         bridgeLateralNormalR.magFilter = THREE.NearestFilter;
         bridgeLateralNormalR.minFilter = THREE.NearestFilter;
 
-        let bridgeTextureLateralL = new THREE.TextureLoader().load('assets/bridge/stonetext.jpg');
+        let bridgeTextureLateralL = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/stonetext.jpg');
         bridgeTextureLateralL.wrapS = THREE.RepeatWrapping;
         bridgeTextureLateralL.wrapT = THREE.RepeatWrapping;
         bridgeTextureLateralL.repeat.set(40, 1);
         bridgeTextureLateralL.magFilter = THREE.NearestFilter;
         bridgeTextureLateralL.minFilter = THREE.NearestFilter;
 
-        let bridgeLateralNormalL = new THREE.TextureLoader().load('assets/bridge/StoneNormalMap.png');
+        let bridgeLateralNormalL = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/StoneNormalMap.png');
         bridgeLateralNormalL.wrapS = THREE.RepeatWrapping;
         bridgeLateralNormalL.wrapT = THREE.RepeatWrapping;
         bridgeLateralNormalL.repeat.set(40, 1);
@@ -397,7 +401,7 @@ export class WorldManager {
                 bevelSegments: 2,
             };
 
-            let archTex = new THREE.TextureLoader().load('assets/bridge/stonetext.jpg');
+            let archTex = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/stonetext.jpg');
             archTex.rotation = Math.PI * 0.5;
             archTex.wrapS = THREE.RepeatWrapping;
             archTex.wrapT = THREE.RepeatWrapping;
@@ -405,7 +409,7 @@ export class WorldManager {
             archTex.magFilter = THREE.NearestFilter;
             archTex.minFilter = THREE.NearestFilter;
 
-            let archNormal = new THREE.TextureLoader().load('assets/bridge/StoneNormalMap.png');
+            let archNormal = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/StoneNormalMap.png');
             archNormal.rotation = Math.PI * 0.5;
             archNormal.wrapS = THREE.RepeatWrapping;
             archNormal.wrapT = THREE.RepeatWrapping;
@@ -413,7 +417,7 @@ export class WorldManager {
             archNormal.magFilter = THREE.NearestFilter;
             archNormal.minFilter = THREE.NearestFilter;
 
-            let archTexLateral = new THREE.TextureLoader().load('assets/bridge/stonetext.jpg');
+            let archTexLateral = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/stonetext.jpg');
             archTexLateral.rotation = Math.PI * 0.5;
             archTexLateral.wrapS = THREE.RepeatWrapping;
             archTexLateral.wrapT = THREE.RepeatWrapping;
@@ -421,7 +425,7 @@ export class WorldManager {
             archTexLateral.magFilter = THREE.NearestFilter;
             archTexLateral.minFilter = THREE.NearestFilter;
 
-            let archNormalLateral = new THREE.TextureLoader().load('assets/bridge/StoneNormalMap.png');
+            let archNormalLateral = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/StoneNormalMap.png');
             archNormalLateral.rotation = Math.PI * 0.5;
             archNormalLateral.wrapS = THREE.RepeatWrapping;
             archNormalLateral.wrapT = THREE.RepeatWrapping;
@@ -503,28 +507,28 @@ export class WorldManager {
 
         let leftArmRest = new THREE.ExtrudeGeometry(shape, extrudeSettings);
 
-        let leftArmRestTex = new THREE.TextureLoader().load('assets/bridge/restArmStone.jpg');
+        let leftArmRestTex = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/restArmStone.jpg');
         leftArmRestTex.wrapS = THREE.RepeatWrapping;
         leftArmRestTex.wrapT = THREE.RepeatWrapping;
         leftArmRestTex.repeat.set(0.08, 5);
         leftArmRestTex.magFilter = THREE.NearestFilter;
         leftArmRestTex.minFilter = THREE.NearestFilter;
 
-        let leftArmRestNormalMap = new THREE.TextureLoader().load('assets/bridge/restArmStonNMap.jpg');
+        let leftArmRestNormalMap = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/restArmStonNMap.jpg');
         leftArmRestNormalMap.wrapS = THREE.RepeatWrapping;
         leftArmRestNormalMap.wrapT = THREE.RepeatWrapping;
         leftArmRestNormalMap.repeat.set(0.08, 5);
         leftArmRestNormalMap.magFilter = THREE.NearestFilter;
         leftArmRestNormalMap.minFilter = THREE.NearestFilter;
 
-        let leftArmRestTex2 = new THREE.TextureLoader().load('assets/bridge/restArmStone.jpg');
+        let leftArmRestTex2 = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/restArmStone.jpg');
         leftArmRestTex2.wrapS = THREE.RepeatWrapping;
         leftArmRestTex2.wrapT = THREE.RepeatWrapping;
         leftArmRestTex2.repeat.set(0.05, 0.05);
         leftArmRestTex2.magFilter = THREE.NearestFilter;
         leftArmRestTex2.minFilter = THREE.NearestFilter;
 
-        let leftArmRestNormalMap2 = new THREE.TextureLoader().load('assets/bridge/restArmStonNMap.jpg');
+        let leftArmRestNormalMap2 = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/restArmStonNMap.jpg');
         leftArmRestNormalMap2.wrapS = THREE.RepeatWrapping;
         leftArmRestNormalMap2.wrapT = THREE.RepeatWrapping;
         leftArmRestNormalMap2.repeat.set(0.05, 0.05);
@@ -581,28 +585,28 @@ export class WorldManager {
 
         let rightArmRest = new THREE.ExtrudeGeometry(shape, extrudeSettings);
 
-        let rightArmRestTex = new THREE.TextureLoader().load('assets/bridge/restArmStone.jpg');
+        let rightArmRestTex = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/restArmStone.jpg');
         rightArmRestTex.wrapS = THREE.RepeatWrapping;
         rightArmRestTex.wrapT = THREE.RepeatWrapping;
         rightArmRestTex.repeat.set(0.08, 5);
         rightArmRestTex.magFilter = THREE.NearestFilter;
         rightArmRestTex.minFilter = THREE.NearestFilter;
 
-        let rightArmRestNormalMap = new THREE.TextureLoader().load('assets/bridge/restArmStonNMap.jpg');
+        let rightArmRestNormalMap = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/restArmStonNMap.jpg');
         rightArmRestNormalMap.wrapS = THREE.RepeatWrapping;
         rightArmRestNormalMap.wrapT = THREE.RepeatWrapping;
         rightArmRestNormalMap.repeat.set(0.08, 5);
         rightArmRestNormalMap.magFilter = THREE.NearestFilter;
         rightArmRestNormalMap.minFilter = THREE.NearestFilter;
 
-        let rightArmRestTex2 = new THREE.TextureLoader().load('assets/bridge/restArmStone.jpg');
+        let rightArmRestTex2 = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/restArmStone.jpg');
         rightArmRestTex2.wrapS = THREE.RepeatWrapping;
         rightArmRestTex2.wrapT = THREE.RepeatWrapping;
         rightArmRestTex2.repeat.set(0.05, 0.05);
         rightArmRestTex2.magFilter = THREE.NearestFilter;
         rightArmRestTex2.minFilter = THREE.NearestFilter;
 
-        let rightArmRestNormalMap2 = new THREE.TextureLoader().load('assets/bridge/restArmStonNMap.jpg');
+        let rightArmRestNormalMap2 = new THREE.TextureLoader(this.loadingManager).load('assets/bridge/restArmStonNMap.jpg');
         rightArmRestNormalMap2.wrapS = THREE.RepeatWrapping;
         rightArmRestNormalMap2.wrapT = THREE.RepeatWrapping;
         rightArmRestNormalMap2.repeat.set(0.05, 0.05);

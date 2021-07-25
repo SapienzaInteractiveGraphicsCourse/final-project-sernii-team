@@ -4,7 +4,7 @@ import {WorldManager} from './world.js';
 import {CollisionsDetector} from './collisions.js'
 import {AnimationManager} from './animations.js'
 import{ControlManager} from './controls.js'
-import {loadingManager} from './loader.js'
+//import {loadingManager} from './loader.js'
 import Stats from './libs/stats.module.js'
 import * as GUI from './libs/dat.gui.module.js'
 import {OrbitControls} from './libs/OrbitControls.js'
@@ -150,13 +150,35 @@ function init() {
 
     let pauseTime=0
 
+    //SETUP LOADER MANAGER
+    function onTransitionEnd( event ) {
+
+    	event.target.remove();
+
+    }
+
+    const loadingManager = new THREE.LoadingManager( () => {
+
+        const loadingScreen = document.getElementById( 'loading-screen' );
+        loadingScreen.classList.add( 'fade-out' );
+
+        // optional: remove loader from DOM via event listener
+        //loadingScreen.addEventListener( 'transitionend', onTransitionEnd );
+
+    } );
+    loadingManager.onProgress = function(url, itemsLoaded, itemsTotal) {
+        console.log("loaded: " + url);
+    }
+
     //CLASSES
     const world_ = new WorldManager({
-        scene: scene
+        scene: scene,
+        loadingManager: loadingManager,
     });
 
     const player_ = new Player({
         scene: scene,
+        loadingManager: loadingManager,
     });
     const animationManager_ = new AnimationManager(
         player_.getCharacterParts()
@@ -172,10 +194,7 @@ function init() {
         player: player_,
     })
 
-    //SETUP LOADER MANAGER
-    loadingManager.onProgress = function(url, itemsLoaded, itemsTotal) {
-        console.log("loaded: " + url);
-    }
+
 
 
     let hearts = document.createElement('div');
@@ -244,22 +263,12 @@ function init() {
         //prevTime = timeElapsed;
         deltaTime=clock.getDelta();
 
-        //timeElapsed_=clock.getElapsedTime();
-        //deltaTime=clock.getDelta();
-        //let timeElapsedMS=timeElapsed_*1000;
-        //console.log("render clock: "+timeElapsed);
-        //console.log("my clock: " +timeElapsedMS);
-        //let totalTimePassed=clock.getElapsedTime();
-        //console.log(pauseTime);
-        //console.log(timeElapsed);
-
         //if(!stampFlag){
         if (!collisionsDetector_.getgameOverFlag()) {
             if(escFlag){
                 clock.stop();
                 tweensTemp=TWEEN.getAll();
                 for(let obj of tweensTemp){
-                    //console.log(obj);
                     obj.stop();
                 }
                 document.getElementById("pause-menu").style.display = "block";
@@ -285,8 +294,6 @@ function init() {
         hearts.innerHTML = "HEARTS: " + collisionsDetector_.getHearts();
         score.innerHTML = "SCORE: " + collisionsDetector_.getScore();
         renderer.render(scene, camera);
-        let posa=controls.getPos();
-        let rota=controls.getCenter();
         requestAnimationFrame(render);
 
     };

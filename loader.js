@@ -3,24 +3,8 @@ import {OBJLoader} from './libs/OBJLoader.js';
 import {MTLLoader} from './libs/MTLLoader.js';
 import {GLTFLoader} from './libs/GLTFLoader.js';
 
-function onTransitionEnd( event ) {
-
-	event.target.remove();
-
-}
-
-export const loadingManager = new THREE.LoadingManager( () => {
-
-    const loadingScreen = document.getElementById( 'loading-screen' );
-    loadingScreen.classList.add( 'fade-out' );
-
-    // optional: remove loader from DOM via event listener
-    //loadingScreen.addEventListener( 'transitionend', onTransitionEnd );
-
-} );
-
 export const ninjaHead = {
-    manager: loadingManager,
+    manager: 0,
 
     loaded: false,
 
@@ -70,7 +54,7 @@ export const ninjaHead = {
 }
 
 export const lavaGround={
-    loader: new GLTFLoader(loadingManager),
+    loader: new GLTFLoader(),
 
     gltfHref: './assets/lava-2/scene.gltf',
 
@@ -362,8 +346,9 @@ export class Rock{
 
 export class Stalagmites{
 
-    constructor(){
-        this.loader=new GLTFLoader(loadingManager);
+    constructor(params){
+		this.loadingManager=params.loadingManager;
+        this.loader=new GLTFLoader(this.loadingManager);
         this.gltfHref='./assets/stalagmites/scene.gltf';
     }
 
