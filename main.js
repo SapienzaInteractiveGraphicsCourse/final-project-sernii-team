@@ -34,6 +34,7 @@ function init() {
             //esc
             case 27:
                 escFlag=true;
+                //stampFlag=!stampFlag;
             break;
 
             //1
@@ -53,12 +54,9 @@ function init() {
             break;
 
             case 52:
-                if(controls.enabled){
-                    controls.enabled=false;
-                }
-                else{
-                    controls.enabled=true;
-                }
+
+                controls.enabled=!controls.enabled;
+
             break;
 
             default:
@@ -210,8 +208,6 @@ function init() {
         document.body.appendChild(div);
         div.appendChild(hearts);
         div.appendChild(score);
-        //score.appendChild(hearts);
-        //document.body.appendChild(div);
         requestAnimationFrame(render);
         clock.start();
     }
@@ -224,6 +220,7 @@ function init() {
     let timeElapsed_=0;
     let tweensTemp;
 
+    //let stampFlag=false;
     const render = function(timeElapsed) {
         //renderer.clear()
         if (resizeRendererToDisplaySize(renderer)) {
@@ -255,7 +252,7 @@ function init() {
         //console.log(pauseTime);
         //console.log(timeElapsed);
 
-
+        //if(!stampFlag){
         if (!collisionsDetector_.getgameOverFlag()) {
             if(escFlag){
                 clock.stop();
@@ -275,19 +272,20 @@ function init() {
             collisionsDetector_.Update();
 
         }
+
         else{
             document.getElementById("gameOver").style.display = "block";
             TWEEN.update();
             setInterval(function(){TWEEN.removeAll(); }, 2500);
 
         }
+        //}
+
         hearts.innerHTML = "HEARTS: " + collisionsDetector_.getHearts();
         score.innerHTML = "SCORE: " + collisionsDetector_.getScore();
         renderer.render(scene, camera);
         let posa=controls.getPos();
         let rota=controls.getCenter();
-        console.log("pos: "+ "x: "+ posa.x + " y:"+ posa.y + "z: " + posa.z );
-        console.log("rot: " + "x: "+ rota.x + " y:"+ rota.y + "z: " + rota.z );
         requestAnimationFrame(render);
 
     };

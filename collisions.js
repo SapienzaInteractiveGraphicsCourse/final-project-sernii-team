@@ -30,6 +30,8 @@ export class CollisionsDetector{
         this.detected={};
         this.gameOverFlag=false;
         this.invulnerableFlag=false;
+
+        this.detectedLength=0;
     }
 
     getgameOverFlag(){
@@ -41,7 +43,7 @@ export class CollisionsDetector{
     }
 
     getHearts(){
-        return actualHearts;
+        return 3-this.detectedLength;
     }
 
 
@@ -80,15 +82,15 @@ export class CollisionsDetector{
 
         this.character=this.parts.waist;
         recursiveBlink(1, 1400, 1399, RED, this.character);
-        recursiveBlink(1400, 2300, 50, RED, this.character);
-        recursiveBlink(2300, 3000, 10, RED, this.character);
+        recursiveBlink(1401, 2300, 50, RED, this.character);
+        recursiveBlink(2301, 3000, 10, RED, this.character);
         setInterval(()=>{
             this.character.traverse((node)=>{
                 if(node.isMesh){
                         node.material.emissive=BLACK;
                 }
             });
-        },3000);
+        },3010);
 
     }
 
@@ -98,20 +100,22 @@ export class CollisionsDetector{
     dopo che si è colpiti si ha del tempo di invulnerabilità -> invulnerableFlag
     */
 
+    //detected lengh è il numero di collisioni con le spikeballs
+
     Update(timeElapsed){
 
         let objects=this.world.getObjects();
         let playerBox=this.player.getCharacterBox();
         let collisionDetected=false;
 
-        let detectedLength=0;
+        this.detectedLength=0;
         for(let key of Object.keys(this.detected)){
             if(this.detected[key]==2){
-                detectedLength++;
+                this.detectedLength++;
             }
         }
-        detectedLength-=totalHearts;
-        if(detectedLength>=3){
+        this.detectedLength-=totalHearts;
+        if(this.detectedLength>=3){
             this.gameOverFlag=true;
             this.animationManager.fallAnimation();
 
@@ -143,7 +147,7 @@ export class CollisionsDetector{
                                     else{
                                         this.waist.position.z+=1;
                                     }
-                                    if(detectedLength<2){
+                                    if(this.detectedLength<2){
                                         this.blink();
                                     }
                                     setTimeout(()=>{
@@ -159,9 +163,14 @@ export class CollisionsDetector{
                                     this.detected[id]=HEART;
                                     if (this.waist.position.z>0){
                                         this.waist.position.z+=-1;
+                                        totalHearts++;
                                     }
-                                    totalHearts++;
-                                    actualHearts++;
+                                    else{
+                                        actualHearts++;
+                                        totalHearts++;
+                                    }
+
+
                                 break;
 
                                 case STAR:
@@ -204,7 +213,7 @@ export class CollisionsDetector{
                                     else{
                                         this.waist.position.z+=1;
                                     }
-                                    if(detectedLength<2){
+                                    if(this.detectedLength<2){
                                         this.blink();
                                     }
                                     setTimeout(()=>{
@@ -219,9 +228,13 @@ export class CollisionsDetector{
                                     this.detected[id]=HEART;
                                     if (this.waist.position.z>0){
                                         this.waist.position.z+=-1;
+                                        totalHearts++;
                                     }
-                                    actualHearts++;
-                                    totalHearts++;
+                                    else{
+                                        actualHearts++;
+                                        totalHearts++;
+                                    }
+
                                 break;
 
                                 case STAR:
@@ -264,7 +277,7 @@ export class CollisionsDetector{
                                     else{
                                         this.waist.position.z+=1;
                                     }
-                                    if(detectedLength<2){
+                                    if(this.detectedLength<2){
                                         this.blink();
                                     }
                                     setTimeout(()=>{
@@ -281,9 +294,13 @@ export class CollisionsDetector{
                                     this.detected[id]=HEART;
                                     if (this.waist.position.z>0){
                                         this.waist.position.z+=-1;
+                                        totalHearts++;
                                     }
-                                    actualHearts++;
-                                    totalHearts++;
+                                    else{
+                                        actualHearts++;
+                                        totalHearts++;
+                                    }
+
                                 break;
 
                                 case STAR:
@@ -303,6 +320,10 @@ export class CollisionsDetector{
 
             }
         }
+        console.log("detected: "+ this.detectedLength);
+        console.log("actual h: "+actualHearts );
+        console.log("total h: "+totalHearts );
+
 
     }
 };

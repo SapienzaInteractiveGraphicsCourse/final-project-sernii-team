@@ -62,6 +62,7 @@ class WorldObject {
     }
 
     randomSpawn() {
+
         let value = Math.random();
         if (value <= 0.55) {
             this.type = SPIKEBALL;
@@ -480,6 +481,7 @@ export class WorldManager {
             mesh.castShadow = true;
             mesh.receiveShadow = true;
             mesh.position.y += -0.1;
+            mesh.position.z+= 50;
 
 
 
@@ -495,7 +497,7 @@ export class WorldManager {
                 rotateFlag = true;
             }
             //mesh.scale.set(1,0.5,0.1)
-            this.scene.add(mesh);
+            this.bridge.add(mesh);
         }
 
         let length = 12,
@@ -590,7 +592,9 @@ export class WorldManager {
         let boxSize = box.getSize(new THREE.Vector3());
         mesh.scale.set(0.1, 0.05, 104 / boxSize.z);
         mesh.position.z = -96;
-        this.scene.add(mesh);
+        mesh.position.z+=50;
+        mesh.position.y+=(boxSize.y)*0.05*0.5;
+        this.bridge.add(mesh);
 
 
         let rightArmRest = new THREE.ExtrudeGeometry(shape, extrudeSettings);
@@ -666,7 +670,9 @@ export class WorldManager {
         boxSize = box.getSize(new THREE.Vector3());
         mesh2.scale.set(0.1, 0.05, 104 / boxSize.z);
         mesh2.position.z = -96;
-        this.scene.add(mesh2);
+        mesh2.position.z+=50;
+        mesh2.position.y+=(boxSize.y)*0.05*0.5;
+        this.bridge.add(mesh2);
 
 
     }
@@ -749,7 +755,7 @@ export class WorldManager {
     SpawnObj(type) {
 
         const obj = new WorldObject({
-            scene: this.scene
+            scene: this.bridge,
         });
 
         switch (type) {
