@@ -154,26 +154,8 @@ export class WorldManager {
     setupLights() {
         //lights
         //const ambientLight = new THREE.AmbientLight(0x404040);
-        const ambientLight = new THREE.AmbientLight(0xffffff);
+        const ambientLight = new THREE.AmbientLight(0x16141E);
         this.scene.add(ambientLight);
-
-        /*this.dirLight = new THREE.DirectionalLight(0xffffff);
-      this.dirLight.castShadow=true;
-      this.dirLight.position.set(0, 10, 2);
-      this.dirLight.lookAt(0,0,0);
-      this.dirLight.shadow.camera.near=1;
-      this.dirLight.shadow.camera.far=15;
-      //dirLight.shadow.camera.left=1;
-      //dirLight.shadow.camera.right=1;
-      //dirLight.shadow.camera.top=1;
-     // dirLight.shadow.camera.bottom=1;
-      /*const cameraHelper = new THREE.CameraHelper(dirLight.shadow.camera);
-      this.scene.add(cameraHelper);
-
-      const helper = new THREE.DirectionalLightHelper(dirLight);
-      this.scene.add(helper);*/
-
-        //this.scene.add(this.dirLight);
 
         const spotLight = new THREE.SpotLight(0xcf6010);
         spotLight.position.set(0, 10, 0);
@@ -183,9 +165,9 @@ export class WorldManager {
         //light.position.set( 0, 0, 0 );
         //scene.add( light );
 
-        const skyColor = 0x0F0F0F; // light blue
-        const groundColor = 0xff4e01; // brownish orange
-        const intensity = 1;
+        const skyColor = 0x000000;
+        const groundColor = 0xFF5900;
+        const intensity = 8;
         const hemispherelight = new THREE.HemisphereLight(skyColor, groundColor, intensity);
         this.scene.add(hemispherelight);
     }
@@ -478,8 +460,8 @@ export class WorldManager {
             ]
             let archGeometry = new THREE.ExtrudeGeometry(arch, extrudeSettings);
             let mesh = new THREE.Mesh(archGeometry, archMat);
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
+            //mesh.castShadow = true;
+            //mesh.receiveShadow = true;
             mesh.position.y += -0.1;
             mesh.position.z+= 50;
 
@@ -584,8 +566,8 @@ export class WorldManager {
         ];
 
         mesh = new THREE.Mesh(leftArmRest, leftArmRestMat);
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
+        //mesh.castShadow = true;
+        //mesh.receiveShadow = true;
         mesh.rotation.z = Math.PI / 2;
         mesh.position.x += -4 + 0.45;
         let box = new THREE.Box3().setFromObject(mesh);
@@ -662,8 +644,8 @@ export class WorldManager {
         ];
 
         let mesh2 = new THREE.Mesh(rightArmRest, rightArmRestMat);
-        mesh2.castShadow = true;
-        mesh2.receiveShadow = true;
+        //mesh2.castShadow = true;
+        //mesh2.receiveShadow = true;
         mesh2.rotation.z = Math.PI / 2;
         mesh2.position.x += 4;
         box = new THREE.Box3().setFromObject(mesh2);
