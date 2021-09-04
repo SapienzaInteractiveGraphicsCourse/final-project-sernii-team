@@ -12,8 +12,9 @@ If you want to download the folder and play the game locally you have to open th
 - line 5 "final-project-sernii-team"
 - line 10 "/final-project-sernii-team"
 - line 11 "/final-project-sernii-team"
-Now you just press double left click on index.htmò
-## Command 
+Now you just press double left click on index.html
+
+## Commands
 
 - Press **ESC** to pause the game
 - Press **SPACE** to jump 
