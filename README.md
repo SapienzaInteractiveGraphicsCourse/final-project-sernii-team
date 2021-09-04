@@ -3,7 +3,7 @@
 ## Game
 
 ### Play from browser
-To open the game from the link below i suggest you to not use chrome. 
+To open the game i suggest you to **NOT USE** chrome. 
 You can use edge, opera or firefox. 
 You can play the game [Here](https://sapienzainteractivegraphicscourse.github.io/final-project-sernii-team/).
 
